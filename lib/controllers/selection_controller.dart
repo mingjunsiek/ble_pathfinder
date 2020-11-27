@@ -3,11 +3,9 @@ import 'package:ble_pathfinder/models/beacon_data.dart';
 import 'package:ble_pathfinder/models/poi.dart';
 import 'package:ble_pathfinder/models/poinode.dart';
 import 'package:get/state_manager.dart';
-import 'package:sortedmap/sortedmap.dart';
 
 //BLE Library Imports
 import 'dart:async';
-import 'dart:io' show Platform;
 import 'package:beacons_plugin/beacons_plugin.dart';
 
 class SelectionController extends GetxController {
@@ -20,14 +18,15 @@ class SelectionController extends GetxController {
   final StreamController<String> beaconEventsController =
       StreamController<String>.broadcast();
 
-  var beaconsMap = new SortedMap(Ordering.byValue());
   Comparator<BeaconData> rssiComparator = (a, b) => a.rssi.compareTo(b.rssi);
+  List<BeaconData> beaconDataPriorityQueue = [];
 
   @override
-  void onInit() async {
+  void onInit() {
     super.onInit();
     poiNodes = fetchPoiNodes();
     fetchPoiList();
+    beaconInitPlatformState();
     setCurrentLocation();
   }
 
@@ -53,49 +52,52 @@ class SelectionController extends GetxController {
   }
 
   Future<void> beaconInitPlatformState() async {
+    BeaconsPlugin.listenToBeacons(beaconEventsController);
+    print('listenToBeacons Init');
+
     for (var node in poiNodes.entries) {
       await BeaconsPlugin.addRegion(
           node.value.nodeName, node.value.nodeESP32ID);
     }
     print('addRegion Init');
 
-    await BeaconsPlugin.runInBackground(true);
-    print('runInBackground Init');
-
-    if (Platform.isAndroid) {
-      print('Android init');
-      BeaconsPlugin.channel.setMethodCallHandler((call) async {
-        print('call method: ' + call.method);
-        if (call.method == 'scannerReady') {
-          await BeaconsPlugin.startMonitoring;
-          print('Beacon Monitoring is Running');
-        }
-      });
-    } else if (Platform.isIOS) {
-      await BeaconsPlugin.startMonitoring;
-    }
-
-    BeaconsPlugin.listenToBeacons(beaconEventsController);
-    print('listenToBeacons Init');
-
     beaconEventsController.stream.listen(
         (data) {
           if (data.isNotEmpty) {
-            beaconResult.value = data;
-            print("Beacons DataReceived: " + data);
+            BeaconData beaconData = BeaconData.fromJson(data);
+            addToListAndSort(beaconData);
           }
         },
         onDone: () {},
         onError: (error) {
           print("Error: $error");
         });
+
+    //await BeaconsPlugin.runInBackground(false);
+    print('runInBackground Init');
+    await BeaconsPlugin.startMonitoring;
+  }
+
+  void addToListAndSort(BeaconData beaconData) {
+    var beaconIndex = beaconDataPriorityQueue
+        .indexWhere((beacon) => beacon.uuid == beaconData.uuid);
+
+    if (beaconIndex == -1)
+      beaconDataPriorityQueue.add(beaconData);
+    else {
+      beaconDataPriorityQueue[beaconIndex] = beaconData;
+    }
+    beaconDataPriorityQueue.sort(rssiComparator);
+    var tempString = '';
+    for (var item in beaconDataPriorityQueue) {
+      tempString += item.name + " : " + item.rssi + '\n';
+    }
+    beaconResult.value = tempString;
   }
 
   void setCurrentLocation() async {
     print('Setting current location');
-    beaconInitPlatformState();
     print('Beacon init');
-    await BeaconsPlugin.startMonitoring;
     print('Beacon Monitoring');
 
     startingPoint = poiList[0];
