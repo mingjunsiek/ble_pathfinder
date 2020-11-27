@@ -9,6 +9,8 @@ class SelectionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    selectionController.setCurrentLocation();
+
     return Scaffold(
       body: Center(
         child: Obx(

@@ -22,18 +22,15 @@ class SelectionController extends GetxController {
   List<BeaconData> beaconDataPriorityQueue = [];
 
   @override
-  void onInit() {
-    super.onInit();
-    poiNodes = fetchPoiNodes();
-    fetchPoiList();
-    beaconInitPlatformState();
-    setCurrentLocation();
-  }
-
-  @override
   void dispose() {
     super.dispose();
     beaconEventsController.close();
+  }
+
+  Future<void> initializeBeaconScanning() async {
+    poiNodes = fetchPoiNodes();
+    fetchPoiList();
+    await beaconInitPlatformState();
   }
 
   void fetchPoiList() {
