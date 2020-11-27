@@ -5,16 +5,16 @@ import 'package:get/get.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 
 class SelectionPage extends StatelessWidget {
-  final selectionController = Get.put(SelectionController());
+  final beaconController = Get.put(BeaconController());
 
   @override
   Widget build(BuildContext context) {
-    selectionController.setCurrentLocation();
+    beaconController.setCurrentLocation();
 
     return Scaffold(
       body: Center(
         child: Obx(
-          () => selectionController.fetchedStartingPoint == false.obs
+          () => beaconController.fetchedStartingPoint == false.obs
               ? CircularProgressIndicator()
               : SingleChildScrollView(
                   child: Padding(
@@ -26,18 +26,18 @@ class SelectionPage extends StatelessWidget {
                       children: [
                         DropdownSearch<POI>(
                           label: 'Starting Point',
-                          items: selectionController.poiList,
+                          items: beaconController.poiList,
                           itemAsString: (POI poi) => poi.name,
-                          selectedItem: selectionController.startingPoint,
+                          selectedItem: beaconController.startingPoint,
                           enabled: false,
                         ),
                         Divider(),
                         DropdownSearch<POI>(
                           label: 'Destination',
-                          items: selectionController.poiList,
+                          items: beaconController.poiList,
                           itemAsString: (POI poi) => poi.name,
                         ),
-                        Text(selectionController.beaconResult.value),
+                        Text(beaconController.beaconResult.value),
                       ],
                     ),
                   ),

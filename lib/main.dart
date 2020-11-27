@@ -10,7 +10,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  final selectionController = Get.put(SelectionController());
+  final selectionController = Get.put(BeaconController());
 
   @override
   Widget build(BuildContext context) {

@@ -8,7 +8,7 @@ import 'package:get/state_manager.dart';
 import 'dart:async';
 import 'package:beacons_plugin/beacons_plugin.dart';
 
-class SelectionController extends GetxController {
+class BeaconController extends GetxController {
   var poiNodes = HashMap<int, POINode>();
   var poiList = List<POI>();
   var startingPoint;
@@ -90,6 +90,7 @@ class SelectionController extends GetxController {
       tempString += item.name + " : " + item.rssi + '\n';
     }
     beaconResult.value = tempString;
+    print(tempString);
   }
 
   void setCurrentLocation() async {
