@@ -1,19 +1,22 @@
 import 'dart:collection';
+import 'dart:async';
 import 'package:ble_pathfinder/models/beacon_data.dart';
 import 'package:ble_pathfinder/models/poi.dart';
 import 'package:ble_pathfinder/models/poinode.dart';
 import 'package:get/state_manager.dart';
 
 //BLE Library Imports
-import 'dart:async';
 import 'package:beacons_plugin/beacons_plugin.dart';
 
 class BeaconController extends GetxController {
   var poiNodes = HashMap<int, POINode>();
   var poiList = List<POI>();
-  var startingPoint;
-  var fetchedStartingPoint = false.obs;
+  POI currentLocation;
+  var fetchingBeacons = true.obs;
+  var haveCurrentLocation = false.obs;
   var beaconResult = ''.obs;
+  Timer _timer;
+  int _timerTime;
 
   final StreamController<String> beaconEventsController =
       StreamController<String>.broadcast();
@@ -22,33 +25,47 @@ class BeaconController extends GetxController {
   List<BeaconData> beaconDataPriorityQueue = [];
 
   @override
+  void onInit() {
+    super.onInit();
+    poiNodes = fetchPoiNodes();
+    fetchPoiList();
+  }
+
+  @override
   void dispose() {
     super.dispose();
+    _timer.cancel();
     beaconEventsController.close();
   }
 
-  Future<void> initializeBeaconScanning() async {
-    poiNodes = fetchPoiNodes();
-    fetchPoiList();
-    await beaconInitPlatformState();
+  void startTimer() {
+    const oneSec = const Duration(seconds: 1);
+    _timerTime = 5;
+    _timer = new Timer.periodic(oneSec, (Timer timer) {
+      if (_timerTime < 1) {
+        timer.cancel();
+        fetchingBeacons.value = false;
+      } else {
+        _timerTime = _timerTime - 1;
+      }
+    });
   }
 
-  void fetchPoiList() {
-    var lists = [
-      POI(poiID: 1, level: 1, name: ' SCSE Lounge', nodeID: 7),
-      POI(poiID: 2, level: 1, name: ' Software Lab 1', nodeID: 7),
-      POI(poiID: 3, level: 1, name: ' Hardware Lab 1', nodeID: 6),
-      POI(poiID: 4, level: 1, name: ' Hardware Lab 2', nodeID: 4),
-      POI(poiID: 5, level: 1, name: ' Software Lab 2', nodeID: 3),
-      POI(poiID: 6, level: 1, name: ' Hardware Project Lab', nodeID: 1),
-      POI(poiID: 7, level: 2, name: ' Software Lab 3', nodeID: 8),
-      POI(poiID: 8, level: 2, name: ' Software Project Lab', nodeID: 12),
-      POI(poiID: 9, level: 2, name: ' Hardware Lab 3', nodeID: 14),
-    ];
-    poiList = lists;
+  void cancelTimer() {
+    if (_timer != null) {
+      _timer.cancel();
+      _timer = null;
+    }
+  }
+
+  void resetScanner() {
+    fetchingBeacons.value = true;
+    startTimer();
   }
 
   Future<void> beaconInitPlatformState() async {
+    startTimer();
+
     BeaconsPlugin.listenToBeacons(beaconEventsController);
     print('listenToBeacons Init');
 
@@ -61,8 +78,18 @@ class BeaconController extends GetxController {
     beaconEventsController.stream.listen(
         (data) {
           if (data.isNotEmpty) {
+            fetchingBeacons.value = false;
+
+            cancelTimer();
+
             BeaconData beaconData = BeaconData.fromJson(data);
             addToListAndSort(beaconData);
+            setCurrentLocation(beaconData.uuid);
+          } else {
+            if (_timer == null) {
+              startTimer();
+            }
+            print("Not nearby beacon");
           }
         },
         onDone: () {},
@@ -93,14 +120,108 @@ class BeaconController extends GetxController {
     print(tempString);
   }
 
-  void setCurrentLocation() async {
+  void setCurrentLocation(String uuid) {
     print('Setting current location');
-    print('Beacon init');
-    print('Beacon Monitoring');
 
-    startingPoint = poiList[0];
-    fetchedStartingPoint.value = true;
-    print("Set Current location");
+    currentLocation = poiList.firstWhere((element) => element.uuid == uuid);
+    haveCurrentLocation.value = true;
+    print("Set Current location: " + currentLocation.nodeID.toString());
+  }
+
+  void fetchPoiList() {
+    var lists = [
+      POI(
+          poiID: 1,
+          level: 1,
+          name: ' Hardware Project Lab',
+          nodeID: 1,
+          uuid: '1510eae0-be73-451f-8faf-6b622f92ac5f'),
+      POI(
+          poiID: 2,
+          level: 1,
+          name: ' Intersection',
+          nodeID: 2,
+          uuid: '5f0868e1-a25a-4213-8d81-66d2517fa79e'),
+      POI(
+          poiID: 3,
+          level: 1,
+          name: ' Software Lab 2',
+          nodeID: 3,
+          uuid: '91551886-569b-4993-aa64-1ae9739a46b4'),
+      POI(
+          poiID: 4,
+          level: 1,
+          name: ' Hardware Lab 2',
+          nodeID: 4,
+          uuid: '89206b21-ec85-4487-a051-c20819b40833'),
+      POI(
+          poiID: 5,
+          level: 1,
+          name: ' Intersection',
+          nodeID: 5,
+          uuid: '9f3442b9-5672-4501-9459-c74d7ce4e5dd'),
+      POI(
+          poiID: 6,
+          level: 1,
+          name: ' Hardware Lab 1',
+          nodeID: 6,
+          uuid: '1ba53596-0322-4cac-a3a1-af2135008c2e'),
+      POI(
+          poiID: 7,
+          level: 1,
+          name: ' SCSE Lounge',
+          nodeID: 7,
+          uuid: 'cbe5998b-842e-4b48-b3a2-dbd6f1f2c015'),
+      POI(
+          poiID: 8,
+          level: 1,
+          name: ' Software Lab 1',
+          nodeID: 7,
+          uuid: 'cbe5998b-842e-4b48-b3a2-dbd6f1f2c015'),
+      POI(
+          poiID: 9,
+          level: 2,
+          name: ' Software Lab 3',
+          nodeID: 8,
+          uuid: 'ae558d63-13f3-4efb-a78a-c8f279d11f9c'),
+      POI(
+          poiID: 10,
+          level: 2,
+          name: ' Intersection',
+          nodeID: 9,
+          uuid: 'e7b4f5ea-2b25-4ba8-9a6f-ed0786436c80'),
+      POI(
+          poiID: 11,
+          level: 2,
+          name: ' Intersection',
+          nodeID: 10,
+          uuid: 'f92fb96a-19c0-4a91-9d63-1d77520d63bd'),
+      POI(
+          poiID: 12,
+          level: 2,
+          name: ' Intersection',
+          nodeID: 11,
+          uuid: 'b40b5dbb-4a36-4226-b80f-bcd4139c77e3'),
+      POI(
+          poiID: 13,
+          level: 2,
+          name: ' Software Project Lab',
+          nodeID: 12,
+          uuid: '38471efb-f2a4-427b-92db-aa6e5401df0e'),
+      POI(
+          poiID: 14,
+          level: 2,
+          name: ' Intersection',
+          nodeID: 13,
+          uuid: 'a1005b84-1da4-4e12-8663-7bc3194787b4'),
+      POI(
+          poiID: 15,
+          level: 2,
+          name: ' Hardware Lab 3',
+          nodeID: 14,
+          uuid: 'ac39d55e-8d33-49be-9da1-5a960cf66ba9'),
+    ];
+    poiList = lists;
   }
 
   HashMap<int, POINode> fetchPoiNodes() {
@@ -213,7 +334,7 @@ class BeaconController extends GetxController {
         nodeName: 'POI Node 12',
         nodeESP32ID: '38471efb-f2a4-427b-92db-aa6e5401df0e',
         neighbourArray: [11, 13],
-        nodeLocationArray: ['Software Projecet Lab']);
+        nodeLocationArray: ['Software Project Lab']);
 
     var node13 = POINode(
         nodeID: 13,

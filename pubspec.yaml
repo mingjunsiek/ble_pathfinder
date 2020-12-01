@@ -26,14 +26,21 @@ dependencies:
   get: ^3.17.1
   dropdown_search: ^0.4.8
   beacons_plugin: ^1.0.17
-  animated_splash: ^1.0.0
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
+  flutter_launcher_icons: ^0.8.1
   cupertino_icons: ^1.0.1
+  animated_splash_screen: ^1.0.1+2
+  page_transition: ^1.1.7+2
+  permission_handler: ^5.0.1+1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter_icons:
+  android: true
+  image_path: "assets/launcher/icon.png"
+  adaptive_icon_background: "assets/launcher/Background.png" # only available for Android 8.0 devices and above
+  adaptive_icon_foreground: "assets/launcher/Foreground.png" # only available for Android 8.0 devices and above
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -47,7 +54,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/splashicon.png
+    - assets/images/ic_splash.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

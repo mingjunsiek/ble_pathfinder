@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.ble_pathfinder">
    <application
-        android:label="ble_pathfinder"
+        android:label="SCSE Pathfinder"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
