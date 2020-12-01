@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:ble_pathfinder/models/beacon_data.dart';
 import 'package:ble_pathfinder/models/poi.dart';
 import 'package:ble_pathfinder/models/poinode.dart';
+import 'package:flutter_blue/flutter_blue.dart';
 import 'package:get/state_manager.dart';
 
 //BLE Library Imports
@@ -23,6 +24,8 @@ class BeaconController extends GetxController {
 
   Comparator<BeaconData> rssiComparator = (a, b) => a.rssi.compareTo(b.rssi);
   List<BeaconData> beaconDataPriorityQueue = [];
+
+  FlutterBlue flutterBlue = FlutterBlue.instance;
 
   @override
   void onInit() {

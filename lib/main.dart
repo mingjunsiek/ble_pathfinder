@@ -33,7 +33,8 @@ class MyApp extends StatelessWidget {
       //   nextScreen: SelectionPage(),
       // ),
       home: Obx(
-        () => permissionController.permissionGranted.value == false
+        () => permissionController.permissionGranted.value == false ||
+                permissionController.bluetoothStatus.value == false
             ? Scaffold(
                 body: Center(
                   child: SingleChildScrollView(
@@ -44,7 +45,13 @@ class MyApp extends StatelessWidget {
                       child: Column(
                         children: [
                           Text(
-                              "Please turn on Bluetooth and allow Location Permission to continue using this app"),
+                              "Please ensure the following are enabled or turned on:"),
+                          if (permissionController.permissionGranted.value ==
+                              false)
+                            Text("Allow Location Permission"),
+                          if (permissionController.bluetoothStatus.value ==
+                              false)
+                            Text("Turn on Bluetooth"),
                           RaisedButton.icon(
                             icon: const Icon(Icons.settings),
                             label: Text("Settings"),
@@ -56,7 +63,7 @@ class MyApp extends StatelessWidget {
                             icon: const Icon(Icons.done),
                             label: Text("Completed"),
                             onPressed: () async {
-                              permissionController.getPermissionStatus();
+                              permissionController.checkPermissionStatus();
                             },
                           ),
                         ],

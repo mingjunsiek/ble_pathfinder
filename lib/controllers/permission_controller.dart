@@ -1,3 +1,4 @@
+import 'package:flutter_blue/flutter_blue.dart';
 import 'package:get/state_manager.dart';
 import 'package:get/get.dart';
 
@@ -7,33 +8,37 @@ import 'beacon_controller.dart';
 
 class PermissionController extends GetxController {
   var permissionGranted = false.obs;
+  var bluetoothStatus = false.obs;
   final beaconController = Get.put(BeaconController());
+  FlutterBlue flutterBlue;
 
   @override
   void onInit() {
     super.onInit();
-    getPermissionStatus();
+    checkPermissionStatus();
+  }
+
+  void checkPermissionStatus() async {
+    var status = await Permission.location.status;
+
+    if (status != PermissionStatus.granted) {
+      permissionGranted.value = await Permission.location.request().isGranted;
+    } else {
+      permissionGranted.value = true;
+    }
+    bluetoothStatus.value = await FlutterBlue.instance.isOn;
+    print("Permission Status: " + permissionGranted.value.toString());
+    print("Bluetooth Status: " + bluetoothStatus.value.toString());
+    if (permissionGranted.value && bluetoothStatus.value) {
+      beaconController.beaconInitPlatformState();
+    }
   }
 
   void getPermissionStatus() async {
     var status = await Permission.location.status;
-    print("Permission Status: " + status.toString());
 
-    setPermission(status);
-  }
-
-  void setPermission(PermissionStatus status) async {
-    switch (status) {
-      case PermissionStatus.granted:
-        permissionGranted.value = true;
-        beaconController.beaconInitPlatformState();
-        break;
-
-      default:
-        permissionGranted.value = false;
-      // PermissionStatus permission =
-      //     await LocationPermissions().requestPermissions();
-      // setPermission(permission);
+    if (status == PermissionStatus.granted) {
+      permissionGranted.value = true;
     }
   }
 }

@@ -26,6 +26,7 @@ dependencies:
   get: ^3.17.1
   dropdown_search: ^0.4.8
   beacons_plugin: ^1.0.17
+  flutter_blue: ^0.7.3
   flutter_launcher_icons: ^0.8.1
   cupertino_icons: ^1.0.1
   animated_splash_screen: ^1.0.1+2
