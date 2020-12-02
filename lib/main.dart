@@ -1,4 +1,5 @@
 import 'package:ble_pathfinder/controllers/permission_controller.dart';
+import 'package:ble_pathfinder/utils/constants.dart';
 import 'package:flutter/services.dart';
 import 'package:ble_pathfinder/views/selection_page.dart';
 import 'package:flutter/material.dart';
@@ -18,12 +19,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        primaryColor: Color(0xFF1976d2),
-        primaryColorLight: Color(0xFF63a4ff),
-        primaryColorDark: Color(0x004ba0),
-        accentColor: Color(0xFF0077d1),
-        backgroundColor: Color(0xFF1976d2),
-        // scaffoldBackgroundColor: Color(0xFF1976d2),
+        scaffoldBackgroundColor: Colors.white,
+        fontFamily: "Muli",
+        textTheme: TextTheme(
+          bodyText1: TextStyle(color: kTextColor),
+          bodyText2: TextStyle(color: kTextColor),
+        ),
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       // home: AnimatedSplashScreen(
       //   backgroundColor: Theme.of(context).primaryColor,

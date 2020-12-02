@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:ble_pathfinder/models/beacon_data.dart';
 import 'package:ble_pathfinder/models/poi.dart';
 import 'package:ble_pathfinder/models/poinode.dart';
-import 'package:flutter_blue/flutter_blue.dart';
 import 'package:get/state_manager.dart';
 
 //BLE Library Imports
@@ -12,10 +11,11 @@ import 'package:beacons_plugin/beacons_plugin.dart';
 class BeaconController extends GetxController {
   var poiNodes = HashMap<int, POINode>();
   var poiList = List<POI>();
-  POI currentLocation;
+  var currentLocation = POI().obs;
   var fetchingBeacons = true.obs;
   var haveCurrentLocation = false.obs;
   var beaconResult = ''.obs;
+  int beaconRssiCutoff = 80;
   Timer _timer;
   int _timerTime;
 
@@ -25,12 +25,10 @@ class BeaconController extends GetxController {
   Comparator<BeaconData> rssiComparator = (a, b) => a.rssi.compareTo(b.rssi);
   List<BeaconData> beaconDataPriorityQueue = [];
 
-  FlutterBlue flutterBlue = FlutterBlue.instance;
-
   @override
   void onInit() {
     super.onInit();
-    poiNodes = fetchPoiNodes();
+    fetchPoiNodes();
     fetchPoiList();
   }
 
@@ -77,28 +75,25 @@ class BeaconController extends GetxController {
           node.value.nodeName, node.value.nodeESP32ID);
     }
     print('addRegion Init');
+    beaconEventsController.stream.listen((data) {
+      if (data.isNotEmpty) {
+        fetchingBeacons.value = false;
 
-    beaconEventsController.stream.listen(
-        (data) {
-          if (data.isNotEmpty) {
-            fetchingBeacons.value = false;
+        cancelTimer();
 
-            cancelTimer();
-
-            BeaconData beaconData = BeaconData.fromJson(data);
-            addToListAndSort(beaconData);
-            setCurrentLocation(beaconData.uuid);
-          } else {
-            if (_timer == null) {
-              startTimer();
-            }
-            print("Not nearby beacon");
-          }
-        },
-        onDone: () {},
-        onError: (error) {
-          print("Error: $error");
-        });
+        BeaconData beaconData = BeaconData.fromJson(data);
+        addToListAndSort(beaconData);
+      } else {
+        if (_timer == null) {
+          startTimer();
+        }
+        print("Not nearby beacon");
+      }
+    }, onDone: () {
+      print("beaconEventsController: onDone");
+    }, onError: (error) {
+      print("Error: $error");
+    });
 
     //await BeaconsPlugin.runInBackground(false);
     print('runInBackground Init');
@@ -106,29 +101,44 @@ class BeaconController extends GetxController {
   }
 
   void addToListAndSort(BeaconData beaconData) {
-    var beaconIndex = beaconDataPriorityQueue
-        .indexWhere((beacon) => beacon.uuid == beaconData.uuid);
+    var beaconIndexInList =
+        poiList.indexWhere((beacon) => beacon.uuid == beaconData.uuid);
 
-    if (beaconIndex == -1)
-      beaconDataPriorityQueue.add(beaconData);
-    else {
-      beaconDataPriorityQueue[beaconIndex] = beaconData;
+    if (beaconIndexInList != -1) {
+      var beaconIndexInQueue = beaconDataPriorityQueue
+          .indexWhere((beacon) => beacon.uuid == beaconData.uuid);
+
+      if (beaconIndexInQueue == -1)
+        beaconDataPriorityQueue.add(beaconData);
+      else {
+        beaconDataPriorityQueue[beaconIndexInQueue] = beaconData;
+      }
+
+      beaconDataPriorityQueue.removeWhere((item) {
+        var diff = DateTime.now().difference(item.dateTime);
+        if (diff.inSeconds >= 1) return true;
+        return false;
+      });
+
+      beaconDataPriorityQueue.sort(rssiComparator);
+      var tempString = '';
+      for (var item in beaconDataPriorityQueue) {
+        tempString += item.name + " : " + item.rssi + '\n';
+      }
+      beaconResult.value = tempString;
+      print(tempString);
+      if (int.parse(beaconDataPriorityQueue.first.rssi) < beaconRssiCutoff)
+        setCurrentLocation(beaconDataPriorityQueue.first.uuid);
     }
-    beaconDataPriorityQueue.sort(rssiComparator);
-    var tempString = '';
-    for (var item in beaconDataPriorityQueue) {
-      tempString += item.name + " : " + item.rssi + '\n';
-    }
-    beaconResult.value = tempString;
-    print(tempString);
   }
 
   void setCurrentLocation(String uuid) {
     print('Setting current location');
 
-    currentLocation = poiList.firstWhere((element) => element.uuid == uuid);
+    currentLocation.value =
+        poiList.firstWhere((element) => element.uuid == uuid);
     haveCurrentLocation.value = true;
-    print("Set Current location: " + currentLocation.nodeID.toString());
+    print("Set Current location: " + currentLocation.value.nodeID.toString());
   }
 
   void fetchPoiList() {
@@ -227,7 +237,7 @@ class BeaconController extends GetxController {
     poiList = lists;
   }
 
-  HashMap<int, POINode> fetchPoiNodes() {
+  void fetchPoiNodes() {
     var node1 = POINode(
         nodeID: 1,
         level: 1,
@@ -379,6 +389,6 @@ class BeaconController extends GetxController {
     for (var i = 1; i <= 14; i++) {
       poiHashMap[i] = poiNodeArray[i - 1];
     }
-    return poiHashMap;
+    poiNodes = poiHashMap;
   }
 }

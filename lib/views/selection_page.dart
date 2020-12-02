@@ -30,13 +30,19 @@ class SelectionPage extends StatelessWidget {
                         : Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              DropdownSearch<POI>(
-                                label: 'Starting Point',
-                                items: beaconController.poiList,
-                                itemAsString: (POI poi) => poi.name,
-                                selectedItem: beaconController.currentLocation,
-                                enabled: false,
+                              Text(
+                                beaconController.currentLocation.value.name,
+                                textAlign: TextAlign.end,
+                                // style: TextStyle(s),
                               ),
+                              // DropdownSearch<POI>(
+                              //   label: 'Starting Point',
+                              //   items: beaconController.poiList,
+                              //   itemAsString: (POI poi) => poi.name,
+                              //   selectedItem:
+                              //       beaconController.currentLocation.value,
+                              //   enabled: false,
+                              // ),
                               Divider(),
                               DropdownSearch<POI>(
                                 label: 'Destination',

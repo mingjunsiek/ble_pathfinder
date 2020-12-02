@@ -10,7 +10,6 @@ class PermissionController extends GetxController {
   var permissionGranted = false.obs;
   var bluetoothStatus = false.obs;
   final beaconController = Get.put(BeaconController());
-  FlutterBlue flutterBlue;
 
   @override
   void onInit() {

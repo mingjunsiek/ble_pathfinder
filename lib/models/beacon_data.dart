@@ -11,6 +11,7 @@ class BeaconData {
   String scanTime;
   String rssi;
   String txPower;
+  DateTime dateTime;
 
   BeaconData({
     this.name,
@@ -23,6 +24,7 @@ class BeaconData {
     this.scanTime,
     this.rssi,
     this.txPower,
+    this.dateTime,
   });
 
   Map<String, dynamic> toMap() {
@@ -37,6 +39,7 @@ class BeaconData {
       'scanTime': scanTime,
       'rssi': rssi,
       'txPower': txPower,
+      'dateTime': dateTime?.millisecondsSinceEpoch,
     };
   }
 
@@ -54,6 +57,7 @@ class BeaconData {
       scanTime: map['scanTime'],
       rssi: map['rssi'],
       txPower: map['txPower'],
+      dateTime: DateTime.now(),
     );
   }
 
