@@ -2,6 +2,8 @@ import 'package:ble_pathfinder/controllers/beacon_controller.dart';
 import 'package:ble_pathfinder/models/poi.dart';
 import 'package:ble_pathfinder/utils/constants.dart';
 import 'package:ble_pathfinder/utils/size_config.dart';
+import 'package:ble_pathfinder/utils/size_helpers.dart';
+import 'package:ble_pathfinder/views/navigation_page.dart';
 import 'package:ble_pathfinder/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -37,7 +39,7 @@ class SelectionPage extends StatelessWidget {
                             textAlign: TextAlign.center,
                           ),
                           SizedBox(
-                            height: getProportionateScreenHeight(10),
+                            height: displayHeight(context) * 0.02,
                           ),
                           Text(
                             "Please move to the nearest Point Of Interest",
@@ -87,7 +89,9 @@ class SelectionPage extends StatelessWidget {
                                   RoundedButton(
                                     btnText: 'Continue',
                                     btnColor: kPrimaryColor,
-                                    btnFunction: () {},
+                                    btnFunction: () {
+                                      Get.to(NavigationPage());
+                                    },
                                   )
                                 ],
                               ),

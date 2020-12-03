@@ -1,5 +1,7 @@
+import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
 import 'package:ble_pathfinder/controllers/permission_controller.dart';
 import 'package:ble_pathfinder/utils/constants.dart';
+import 'package:ble_pathfinder/views/navigation_page.dart';
 import 'package:ble_pathfinder/views/permission_page.dart';
 import 'package:flutter/services.dart';
 import 'package:ble_pathfinder/views/selection_page.dart';
@@ -9,6 +11,10 @@ import 'package:get/get.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  print('ARCORE IS AVAILABLE?');
+  print(await ArCoreController.checkArCoreAvailability());
+  print('AR SERVICES INSTALLED?');
+  print(await ArCoreController.checkIsArCoreInstalled());
   runApp(MyApp());
 }
 
@@ -17,7 +23,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
         fontFamily: "Mulish",
@@ -34,10 +40,14 @@ class MyApp extends StatelessWidget {
       //   pageTransitionType: PageTransitionType.leftToRightWithFade,
       //   nextScreen: SelectionPage(),
       // ),
-      home: Obx(() => permissionController.permissionGranted.value == false ||
-              permissionController.bluetoothStatus.value == false
-          ? PermissionPage()
-          : SelectionPage()),
+      home:
+          // NavigationPage(),
+          Obx(() => permissionController.locationPermissionGranted.value ==
+                      false ||
+                  permissionController.bluetoothStatus.value == false ||
+                  permissionController.cameraPermissionGranted.value == false
+              ? PermissionPage()
+              : SelectionPage()),
     );
   }
 }
