@@ -17,6 +17,7 @@ class PermissionController extends GetxController {
     checkPermissionStatus();
   }
 
+  // TODO:
   void checkPermissionStatus() async {
     var status = await Permission.location.status;
 
@@ -30,14 +31,6 @@ class PermissionController extends GetxController {
     print("Bluetooth Status: " + bluetoothStatus.value.toString());
     if (permissionGranted.value && bluetoothStatus.value) {
       beaconController.beaconInitPlatformState();
-    }
-  }
-
-  void getPermissionStatus() async {
-    var status = await Permission.location.status;
-
-    if (status == PermissionStatus.granted) {
-      permissionGranted.value = true;
     }
   }
 }

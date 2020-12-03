@@ -1,10 +1,10 @@
 import 'package:ble_pathfinder/controllers/permission_controller.dart';
 import 'package:ble_pathfinder/utils/constants.dart';
+import 'package:ble_pathfinder/views/permission_page.dart';
 import 'package:flutter/services.dart';
 import 'package:ble_pathfinder/views/selection_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
-        fontFamily: "Muli",
+        fontFamily: "Mulish",
         textTheme: TextTheme(
           bodyText1: TextStyle(color: kTextColor),
           bodyText2: TextStyle(color: kTextColor),
@@ -34,48 +34,10 @@ class MyApp extends StatelessWidget {
       //   pageTransitionType: PageTransitionType.leftToRightWithFade,
       //   nextScreen: SelectionPage(),
       // ),
-      home: Obx(
-        () => permissionController.permissionGranted.value == false ||
-                permissionController.bluetoothStatus.value == false
-            ? Scaffold(
-                body: Center(
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 20,
-                      ),
-                      child: Column(
-                        children: [
-                          Text(
-                              "Please ensure the following are enabled or turned on:"),
-                          if (permissionController.permissionGranted.value ==
-                              false)
-                            Text("Allow Location Permission"),
-                          if (permissionController.bluetoothStatus.value ==
-                              false)
-                            Text("Turn on Bluetooth"),
-                          RaisedButton.icon(
-                            icon: const Icon(Icons.settings),
-                            label: Text("Settings"),
-                            onPressed: () async {
-                              openAppSettings();
-                            },
-                          ),
-                          RaisedButton.icon(
-                            icon: const Icon(Icons.done),
-                            label: Text("Completed"),
-                            onPressed: () async {
-                              permissionController.checkPermissionStatus();
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              )
-            : SelectionPage(),
-      ),
+      home: Obx(() => permissionController.permissionGranted.value == false ||
+              permissionController.bluetoothStatus.value == false
+          ? PermissionPage()
+          : SelectionPage()),
     );
   }
 }

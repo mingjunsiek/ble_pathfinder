@@ -32,6 +32,7 @@ dependencies:
   animated_splash_screen: ^1.0.1+2
   page_transition: ^1.1.7+2
   permission_handler: ^5.0.1+1
+  arcore_flutter_plugin: ^0.0.10
 
 dev_dependencies:
   flutter_test:
@@ -56,6 +57,8 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/ic_splash.png
+    - assets/images/Bluetooth.png
+    - assets/images/Location.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -70,12 +73,12 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Muli
+    - family: Mulish
       fonts:
-        - asset: assets/fonts/muli/Muli.ttf
-        - asset: assets/fonts/muli/Muli-Bold.ttf
+        - asset: assets/fonts/mulish/Mulish-Regular.ttf
+        - asset: assets/fonts/mulish/Mulish-Bold.ttf
           weight: 700
-        - asset: assets/fonts/muli/Muli-Light.ttf
+        - asset: assets/fonts/mulish/Mulish-Light.ttf
           weight: 300
   #   - family: Trajan Pro
   #     fonts:
