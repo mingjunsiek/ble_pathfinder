@@ -20,9 +20,10 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   final permissionController = Get.put(PermissionController());
-
   @override
   Widget build(BuildContext context) {
+    permissionController.checkPermissionStatus();
+
     return GetMaterialApp(
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,

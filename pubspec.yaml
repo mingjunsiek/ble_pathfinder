@@ -60,7 +60,6 @@ flutter:
     - assets/images/Bluetooth.png
     - assets/images/Location.png
     - assets/images/Camera.png
-    - assets/images/ar_images/earth.jpg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

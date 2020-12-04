@@ -19,6 +19,7 @@ class ARCoreController extends GetxController {
     arCoreController.onNodeTap = (name) => onTapHandler(name);
     arCoreController.onPlaneTap = _handleOnPlaneTap;
     _addArrow(arCoreController);
+    _addDestinationPin(arCoreController);
     // _addSphere(arCoreController);
     // _addCylindre(arCoreController);
     // _addCube(arCoreController);
@@ -63,7 +64,16 @@ class ARCoreController extends GetxController {
     final arrow = ArCoreReferenceNode(
       name: 'direction_arrow.sfb',
       object3DFileName: 'direction_arrow.sfb',
-      position: vector.Vector3(0, 0, -1.5),
+      position: vector.Vector3(-3, 0, -5),
+    );
+    controller.addArCoreNode(arrow);
+  }
+
+  void _addDestinationPin(ArCoreController controller) {
+    final arrow = ArCoreReferenceNode(
+      name: 'location_pin.sfb',
+      object3DFileName: 'location_pin.sfb',
+      position: vector.Vector3(3, 0, -5),
     );
     controller.addArCoreNode(arrow);
   }

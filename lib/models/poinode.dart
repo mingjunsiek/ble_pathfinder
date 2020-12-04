@@ -7,7 +7,7 @@ class POINode {
   String nodeName;
   String nodeESP32ID;
   var neighbourArray;
-  var nodeLocationArray;
+  String name;
 
   POINode(
       {this.nodeID,
@@ -17,5 +17,5 @@ class POINode {
       this.nodeName,
       this.nodeESP32ID,
       this.neighbourArray,
-      this.nodeLocationArray});
+      this.name});
 }

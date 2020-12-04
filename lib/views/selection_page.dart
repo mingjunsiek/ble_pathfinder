@@ -1,5 +1,5 @@
 import 'package:ble_pathfinder/controllers/beacon_controller.dart';
-import 'package:ble_pathfinder/models/poi.dart';
+import 'package:ble_pathfinder/controllers/navigation_controller.dart';
 import 'package:ble_pathfinder/utils/constants.dart';
 import 'package:ble_pathfinder/utils/size_config.dart';
 import 'package:ble_pathfinder/utils/size_helpers.dart';
@@ -9,8 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 
+import '../models/poinode.dart';
+
 class SelectionPage extends StatelessWidget {
   final beaconController = Get.put(BeaconController());
+  final navigationController = Get.put(NavigationController());
 
   @override
   Widget build(BuildContext context) {
@@ -81,15 +84,31 @@ class SelectionPage extends StatelessWidget {
                                     ),
                                     textAlign: TextAlign.center,
                                   ),
-                                  DropdownSearch<POI>(
+                                  DropdownSearch<POINode>(
                                     label: 'Destination',
                                     items: beaconController.poiList,
-                                    itemAsString: (POI poi) => poi.name,
+                                    itemAsString: (POINode poi) => poi.name,
+                                    onChanged: (value) {
+                                      beaconController.destinationLocation =
+                                          value;
+                                      print(beaconController
+                                          .destinationLocation.name);
+                                    },
                                   ),
                                   RoundedButton(
                                     btnText: 'Continue',
                                     btnColor: kPrimaryColor,
                                     btnFunction: () {
+                                      navigationController
+                                          .setNavigationSettings(
+                                              beaconController.poiNodes,
+                                              beaconController.poiList,
+                                              beaconController
+                                                  .currentLocation.value.nodeID,
+                                              beaconController
+                                                  .destinationLocation.nodeID);
+                                      navigationController
+                                          .findPathToDestination();
                                       Get.to(NavigationPage());
                                     },
                                   )
