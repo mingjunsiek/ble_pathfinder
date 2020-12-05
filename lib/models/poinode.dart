@@ -1,3 +1,5 @@
+import 'package:ble_pathfinder/models/neighbour_node.dart';
+
 class POINode {
   int nodeID;
   int level;
@@ -6,7 +8,7 @@ class POINode {
   int nextLevelStairs;
   String nodeName;
   String nodeESP32ID;
-  var neighbourArray;
+  List<NeighbourNode> neighbourArray;
   String name;
 
   POINode(

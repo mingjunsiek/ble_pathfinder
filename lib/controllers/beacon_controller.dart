@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'dart:async';
 import 'package:ble_pathfinder/models/beacon_data.dart';
+import 'package:ble_pathfinder/models/neighbour_node.dart';
 import 'package:ble_pathfinder/models/poinode.dart';
 import 'package:get/get.dart';
 
@@ -106,11 +107,7 @@ class BeaconController extends GetxController {
   void addToListAndSort(BeaconData beaconData) {
     var beaconIndexInList =
         poiList.indexWhere((beacon) => beacon.nodeESP32ID == beaconData.uuid);
-    print("Start");
-    poiList.forEach((element) {
-      print(element.name);
-    });
-    print("End");
+
     if (beaconIndexInList != -1) {
       print("Index: $beaconIndexInList");
       var beaconIndexInQueue = beaconDataPriorityQueue
@@ -157,7 +154,12 @@ class BeaconController extends GetxController {
         nearestStairs: 3,
         nodeName: 'POI Node 1',
         nodeESP32ID: '1510eae0-be73-451f-8faf-6b622f92ac5f',
-        neighbourArray: [2],
+        neighbourArray: [
+          NeighbourNode(
+            nodeID: 2,
+            direction: 270,
+          ),
+        ],
         name: 'Hardware Project Lab');
 
     var node2 = POINode(
@@ -166,7 +168,20 @@ class BeaconController extends GetxController {
         nearestStairs: 3,
         nodeName: 'POI Node 2',
         nodeESP32ID: '5f0868e1-a25a-4213-8d81-66d2517fa79e',
-        neighbourArray: [1, 3, 4],
+        neighbourArray: [
+          NeighbourNode(
+            nodeID: 1,
+            direction: 90,
+          ),
+          NeighbourNode(
+            nodeID: 3,
+            direction: 0,
+          ),
+          NeighbourNode(
+            nodeID: 4,
+            direction: 270,
+          ),
+        ],
         name: 'Intersection');
 
     var node3 = POINode(
@@ -176,7 +191,12 @@ class BeaconController extends GetxController {
         nextLevelStairs: 10,
         nodeName: 'POI Node 3',
         nodeESP32ID: '91551886-569b-4993-aa64-1ae9739a46b4',
-        neighbourArray: [2],
+        neighbourArray: [
+          NeighbourNode(
+            nodeID: 2,
+            direction: 180,
+          ),
+        ],
         name: 'Software Lab 2');
 
     var node4 = POINode(
@@ -185,7 +205,16 @@ class BeaconController extends GetxController {
         nearestStairs: 3,
         nodeName: 'POI Node 4',
         nodeESP32ID: '89206b21-ec85-4487-a051-c20819b40833',
-        neighbourArray: [2, 5],
+        neighbourArray: [
+          NeighbourNode(
+            nodeID: 2,
+            direction: 90,
+          ),
+          NeighbourNode(
+            nodeID: 5,
+            direction: 270,
+          ),
+        ],
         name: 'Hardware Lab 2');
 
     var node5 = POINode(
@@ -194,7 +223,20 @@ class BeaconController extends GetxController {
         nearestStairs: 6,
         nodeName: 'POI Node 5',
         nodeESP32ID: '9f3442b9-5672-4501-9459-c74d7ce4e5dd',
-        neighbourArray: [4, 6, 7],
+        neighbourArray: [
+          NeighbourNode(
+            nodeID: 4,
+            direction: 90,
+          ),
+          NeighbourNode(
+            nodeID: 6,
+            direction: 0,
+          ),
+          NeighbourNode(
+            nodeID: 7,
+            direction: 270,
+          ),
+        ],
         name: 'Intersection');
 
     var node6 = POINode(
@@ -204,7 +246,12 @@ class BeaconController extends GetxController {
         nextLevelStairs: 14,
         nodeName: 'POI Node 6',
         nodeESP32ID: '1ba53596-0322-4cac-a3a1-af2135008c2e',
-        neighbourArray: [5],
+        neighbourArray: [
+          NeighbourNode(
+            nodeID: 5,
+            direction: 180,
+          ),
+        ],
         name: 'Hardware Lab 1');
 
     var node7 = POINode(
@@ -213,7 +260,12 @@ class BeaconController extends GetxController {
         nearestStairs: 6,
         nodeName: 'POI Node 7',
         nodeESP32ID: 'cbe5998b-842e-4b48-b3a2-dbd6f1f2c015',
-        neighbourArray: [5],
+        neighbourArray: [
+          NeighbourNode(
+            nodeID: 5,
+            direction: 90,
+          ),
+        ],
         name: 'SCSE Lounge / Software Lab 1');
 
     var node8 = POINode(
@@ -222,7 +274,12 @@ class BeaconController extends GetxController {
         nearestStairs: 10,
         nodeName: 'POI Node 8',
         nodeESP32ID: 'ae558d63-13f3-4efb-a78a-c8f279d11f9c',
-        neighbourArray: [9],
+        neighbourArray: [
+          NeighbourNode(
+            nodeID: 9,
+            direction: 270,
+          ),
+        ],
         name: 'Software Lab 3');
 
     var node9 = POINode(
@@ -231,7 +288,16 @@ class BeaconController extends GetxController {
         nearestStairs: 10,
         nodeName: 'POI Node 9',
         nodeESP32ID: 'e7b4f5ea-2b25-4ba8-9a6f-ed0786436c80',
-        neighbourArray: [8, 10],
+        neighbourArray: [
+          NeighbourNode(
+            nodeID: 8,
+            direction: 90,
+          ),
+          NeighbourNode(
+            nodeID: 10,
+            direction: 180,
+          ),
+        ],
         name: 'Intersection');
 
     var node10 = POINode(
@@ -241,7 +307,16 @@ class BeaconController extends GetxController {
         nextLevelStairs: 3,
         nodeName: 'POI Node 10',
         nodeESP32ID: 'f92fb96a-19c0-4a91-9d63-1d77520d63bd',
-        neighbourArray: [9, 11],
+        neighbourArray: [
+          NeighbourNode(
+            nodeID: 9,
+            direction: 0,
+          ),
+          NeighbourNode(
+            nodeID: 11,
+            direction: 180,
+          ),
+        ],
         name: 'Intersection');
 
     var node11 = POINode(
@@ -250,7 +325,16 @@ class BeaconController extends GetxController {
         nearestStairs: 10,
         nodeName: 'POI Node 11',
         nodeESP32ID: 'b40b5dbb-4a36-4226-b80f-bcd4139c77e3',
-        neighbourArray: [10, 12],
+        neighbourArray: [
+          NeighbourNode(
+            nodeID: 10,
+            direction: 0,
+          ),
+          NeighbourNode(
+            nodeID: 12,
+            direction: 270,
+          ),
+        ],
         name: 'Intersection');
 
     var node12 = POINode(
@@ -259,7 +343,16 @@ class BeaconController extends GetxController {
         nearestStairs: 10,
         nodeName: 'POI Node 12',
         nodeESP32ID: '38471efb-f2a4-427b-92db-aa6e5401df0e',
-        neighbourArray: [11, 13],
+        neighbourArray: [
+          NeighbourNode(
+            nodeID: 11,
+            direction: 90,
+          ),
+          NeighbourNode(
+            nodeID: 13,
+            direction: 270,
+          ),
+        ],
         name: 'Software Project Lab');
 
     var node13 = POINode(
@@ -269,7 +362,16 @@ class BeaconController extends GetxController {
         nextLevelStairs: 6,
         nodeName: 'POI Node 13',
         nodeESP32ID: 'a1005b84-1da4-4e12-8663-7bc3194787b4',
-        neighbourArray: [12, 14],
+        neighbourArray: [
+          NeighbourNode(
+            nodeID: 12,
+            direction: 90,
+          ),
+          NeighbourNode(
+            nodeID: 14,
+            direction: 0,
+          ),
+        ],
         name: 'Intersection');
 
     var node14 = POINode(
@@ -279,7 +381,12 @@ class BeaconController extends GetxController {
         nextLevelStairs: 6,
         nodeName: 'POI Node 14',
         nodeESP32ID: 'ac39d55e-8d33-49be-9da1-5a960cf66ba9',
-        neighbourArray: [13],
+        neighbourArray: [
+          NeighbourNode(
+            nodeID: 13,
+            direction: 180,
+          ),
+        ],
         name: 'Hardware Lab 3');
 
     poiList = [
