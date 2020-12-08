@@ -43,6 +43,13 @@ class BeaconController extends GetxController {
     beaconEventsController.close();
   }
 
+  List<POINode> getSelectionList(String currLocation) {
+    return poiList
+        .where((element) =>
+            element.name != 'Intersection' && element.name != currLocation)
+        .toList();
+  }
+
   void startTimer() {
     const oneSec = const Duration(seconds: 1);
     _timerTime = 5;
@@ -69,8 +76,6 @@ class BeaconController extends GetxController {
   }
 
   Future<void> beaconInitPlatformState() async {
-    startTimer();
-
     BeaconsPlugin.listenToBeacons(beaconEventsController);
     print('listenToBeacons Init');
 
@@ -79,6 +84,8 @@ class BeaconController extends GetxController {
           node.value.nodeName, node.value.nodeESP32ID);
     }
     print('addRegion Init');
+
+    startTimer();
     beaconEventsController.stream.listen((data) {
       if (data.isNotEmpty) {
         fetchingBeacons.value = false;
@@ -138,11 +145,10 @@ class BeaconController extends GetxController {
   }
 
   void setCurrentLocation(String uuid) {
-    print('Setting current location');
     final navController = Get.find<NavigationController>();
     currentLocation.value =
         poiList.firstWhere((element) => element.nodeESP32ID == uuid);
-    navController.currentNodeId.value = currentLocation.value.nodeID;
+    navController.setCurrentLocation(currentLocation.value.nodeID);
     haveCurrentLocation.value = true;
     print("Set Current location: " + currentLocation.value.nodeID.toString());
   }

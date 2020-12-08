@@ -1,12 +1,15 @@
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
 import 'package:ble_pathfinder/controllers/permission_controller.dart';
 import 'package:ble_pathfinder/utils/constants.dart';
-import 'package:ble_pathfinder/views/navigation_page.dart';
+import 'package:ble_pathfinder/utils/size_config.dart';
 import 'package:ble_pathfinder/views/permission_page.dart';
+import 'package:ble_pathfinder/views/splash_screen_page.dart';
 import 'package:flutter/services.dart';
 import 'package:ble_pathfinder/views/selection_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:page_transition/page_transition.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,26 +32,25 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white,
         fontFamily: "Mulish",
         textTheme: TextTheme(
-          bodyText1: TextStyle(color: kTextColor),
-          bodyText2: TextStyle(color: kTextColor),
+          bodyText1: TextStyle(
+            color: kTextColor,
+          ),
+          bodyText2: TextStyle(
+            color: kTextColor,
+          ),
         ),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      // home: AnimatedSplashScreen(
-      //   backgroundColor: Theme.of(context).primaryColor,
-      //   splash: './assets/images/ic_splash.png',
-      //   splashTransition: SplashTransition.rotationTransition,
-      //   pageTransitionType: PageTransitionType.leftToRightWithFade,
-      //   nextScreen: SelectionPage(),
-      // ),
+      // home:
       home:
           // NavigationPage(),
-          Obx(() => permissionController.locationPermissionGranted.value ==
-                      false ||
-                  permissionController.bluetoothStatus.value == false ||
-                  permissionController.cameraPermissionGranted.value == false
-              ? PermissionPage()
-              : SelectionPage()),
+          Obx(
+        () => permissionController.locationPermissionGranted.value == false ||
+                permissionController.bluetoothStatus.value == false ||
+                permissionController.cameraPermissionGranted.value == false
+            ? PermissionPage()
+            : SelectionPage(),
+      ),
     );
   }
 }

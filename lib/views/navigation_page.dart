@@ -1,5 +1,5 @@
-// import 'package:ble_pathfinder/controllers/ar_core_controller.dart';
-// import 'package:ble_pathfinder/controllers/beacon_controller.dart';
+import 'package:ble_pathfinder/controllers/ar_core_controller.dart';
+import 'package:ble_pathfinder/controllers/beacon_controller.dart';
 import 'package:ble_pathfinder/controllers/compass_controller.dart';
 import 'package:ble_pathfinder/controllers/navigation_controller.dart';
 import 'package:ble_pathfinder/utils/size_config.dart';
@@ -23,11 +23,20 @@ class NavigationPage extends StatelessWidget {
                   navigationController.currentNodeId.value.toString(),
                 ),
               ),
-              Text(
-                navigationController.printList,
+              Obx(
+                () => Text(
+                  navigationController.printList,
+                ),
               ),
               Container(
-                height: displayHeight(context) * 0.70,
+                height: displayHeight(context) * 0.40,
+                child: GetBuilder<ARCoreController>(
+                  init: ARCoreController(),
+                  builder: (controller) => controller.initArCoreview(),
+                ),
+              ),
+              Container(
+                height: displayHeight(context) * 0.40,
                 child: GetX<CompassController>(
                     init: CompassController(),
                     builder: (controller) {
@@ -40,23 +49,16 @@ class NavigationPage extends StatelessWidget {
                       );
                     }),
               ),
+              Obx(
+                () => navigationController.reachedDestination.value
+                    ? Text("Reached Destination")
+                    : Text(
+                        navigationController.directionString,
+                      ),
+              ),
             ],
           ),
         ),
-        // Column(
-        //   children: [
-        //     Container(
-        //       height: displayHeight(context) * 0.80,
-        //       child: GetBuilder<ARCoreController>(
-        //         init: ARCoreController(),
-        //         builder: (controller) => controller.initArCoreview(),
-        //       ),
-        //     ),
-        //     SizedBox(
-        //         // height: displayHeight(context) * 0.20,
-        //         ),
-        //   ],
-        // ),
       ),
     );
   }

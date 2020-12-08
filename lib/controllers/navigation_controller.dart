@@ -12,7 +12,9 @@ class NavigationController extends GetxController {
   int startingNodeId, destinationNodeId;
   final currentNodeId = 0.obs;
 
-  var visitedArray = <NeighbourNode>[].obs;
+  final visitedArray = <NeighbourNode>[].obs;
+  final directionDegree = 0.0.obs;
+  final reachedDestination = false.obs;
 
   void setNavigationSettings(
     HashMap<int, POINode> hashMap,
@@ -20,6 +22,8 @@ class NavigationController extends GetxController {
     int currentId,
     int destinationId,
   ) {
+    visitedArray.clear();
+    reachedDestination.value = false;
     nodesHashMap = HashMap.from(hashMap);
     poiPriorityQueue = List.from(priorityQueue);
     startingNodeId = currentId;
@@ -33,6 +37,25 @@ class NavigationController extends GetxController {
       tempString += "${element.nodeID} : ${element.direction}\n";
     });
     return tempString;
+  }
+
+  String get directionString {
+    return 'Walk towards ${directionDegree.value}';
+  }
+
+  void setCurrentLocation(int nodeID) {
+    if (visitedArray.isNotEmpty) {
+      print('List Length: ${visitedArray.length}');
+      currentNodeId.value = nodeID;
+      if (visitedArray.first.nodeID == nodeID) {
+        print('Same Node ID');
+        visitedArray.removeAt(0);
+        directionDegree.value = visitedArray.first.direction;
+      }
+    } else {
+      print("Reached Destination");
+      reachedDestination.value = true;
+    }
   }
 
   Future<void> findPathToDestination() {
@@ -57,7 +80,10 @@ class NavigationController extends GetxController {
     for (var i = 1; i <= 14; i++) {
       nodesHashMap[i].heuristic = 10000;
     }
-    visitedArray.add(NeighbourNode(nodeID: currentNode.nodeID));
+
+    visitedArray
+        .add(NeighbourNode(nodeID: currentNode.nodeID, isStartingNode: true));
+
     while (currentNode.nodeID != destinationNode.nodeID || startAtStairs) {
       poiPriorityQueue.removeWhere((item) => item.nodeID == currentNode.nodeID);
       // visitedArray.add(currentNode.nodeID);

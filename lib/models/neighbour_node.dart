@@ -3,16 +3,19 @@ import 'dart:convert';
 class NeighbourNode {
   int nodeID;
   double direction;
+  bool isStartingNode;
 
   NeighbourNode({
     this.nodeID,
-    this.direction,
+    this.direction = 0.0,
+    this.isStartingNode = false,
   });
 
   Map<String, dynamic> toMap() {
     return {
       'nodeID': nodeID,
       'direction': direction,
+      'isStartingNode': isStartingNode,
     };
   }
 
@@ -22,6 +25,7 @@ class NeighbourNode {
     return NeighbourNode(
       nodeID: map['nodeID'],
       direction: map['direction'],
+      isStartingNode: map['isStartingNode'],
     );
   }
 

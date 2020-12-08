@@ -29,7 +29,7 @@ class SelectionPage extends StatelessWidget {
                 ? Center(
                     child: Padding(
                       padding: EdgeInsets.symmetric(
-                        horizontal: 20,
+                        horizontal: 40,
                       ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -58,7 +58,7 @@ class SelectionPage extends StatelessWidget {
                 : SafeArea(
                     child: Padding(
                       padding: EdgeInsets.symmetric(
-                        horizontal: 20,
+                        horizontal: 40,
                       ),
                       child: SizedBox(
                         width: double.infinity,
@@ -66,27 +66,36 @@ class SelectionPage extends StatelessWidget {
                           children: [
                             Expanded(
                               child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
+                                  Spacer(),
                                   Text(
-                                    'Your Current Location:',
+                                    'Current Location:',
                                     style: TextStyle(
                                       fontSize: getProportionateScreenWidth(20),
                                     ),
                                   ),
+                                  Spacer(),
                                   Text(
                                     beaconController.currentLocation.value.name,
                                     style: TextStyle(
                                       fontSize: getProportionateScreenWidth(36),
                                       color: kPrimaryColor,
-                                      fontWeight: FontWeight.bold,
+                                      fontWeight: FontWeight.w800,
                                     ),
                                     textAlign: TextAlign.center,
                                   ),
+                                  Image.asset(
+                                    'assets/images/vectors/vector_shadow.png',
+                                    width: displayWidth(context) * 0.8,
+                                  ),
+                                  Spacer(),
                                   DropdownSearch<POINode>(
-                                    label: 'Destination',
-                                    items: beaconController.poiList,
+                                    label: 'Select Destination',
+                                    mode: Mode.BOTTOM_SHEET,
+                                    items: beaconController.getSelectionList(
+                                        beaconController
+                                            .currentLocation.value.name),
                                     itemAsString: (POINode poi) => poi.name,
                                     onChanged: (value) {
                                       beaconController.destinationLocation =
@@ -94,6 +103,9 @@ class SelectionPage extends StatelessWidget {
                                       print(beaconController
                                           .destinationLocation.name);
                                     },
+                                  ),
+                                  SizedBox(
+                                    height: displayHeight(context) * 0.02,
                                   ),
                                   RoundedButton(
                                     btnText: 'Continue',
@@ -111,7 +123,8 @@ class SelectionPage extends StatelessWidget {
                                           .findPathToDestination();
                                       Get.to(NavigationPage());
                                     },
-                                  )
+                                  ),
+                                  Spacer(),
                                 ],
                               ),
                             ),
