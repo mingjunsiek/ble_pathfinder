@@ -38,6 +38,7 @@ class BeaconController extends GetxController {
 
   @override
   void dispose() {
+    print('Disposing Controller');
     super.dispose();
     _timer.cancel();
     beaconEventsController.close();
@@ -103,11 +104,11 @@ class BeaconController extends GetxController {
     }, onDone: () {
       print("beaconEventsController: onDone");
     }, onError: (error) {
-      print("Error: $error");
+      print("beaconEventsController Error: $error");
     });
+  }
 
-    //await BeaconsPlugin.runInBackground(false);
-    print('runInBackground Init');
+  void startMonitoring() async {
     await BeaconsPlugin.startMonitoring;
   }
 

@@ -55,10 +55,5 @@ class PermissionController extends GetxController {
     print("Permission Status: " + locationPermissionGranted.value.toString());
     print("Bluetooth Status: " + bluetoothStatus.value.toString());
     print("Camera Status: " + cameraPermissionGranted.value.toString());
-    if (locationPermissionGranted.value &&
-        bluetoothStatus.value &&
-        cameraPermissionGranted.value) {
-      beaconController.beaconInitPlatformState();
-    }
   }
 }

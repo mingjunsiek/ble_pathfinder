@@ -1,3 +1,4 @@
+import 'package:ble_pathfinder/controllers/image_controller.dart';
 import 'package:ble_pathfinder/utils/constants.dart';
 import 'package:ble_pathfinder/utils/size_config.dart';
 import 'package:ble_pathfinder/controllers/permission_controller.dart';
@@ -9,11 +10,10 @@ import 'package:permission_handler/permission_handler.dart';
 
 class PermissionPage extends StatelessWidget {
   final permissionController = Get.put(PermissionController());
+  final imageController = Get.put(ImageController());
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
-
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -33,8 +33,8 @@ class PermissionPage extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 Spacer(),
-                Image.asset(
-                  'assets/images/vectors/vector_permission.png',
+                Image(
+                  image: imageController.vectorPermission.image,
                   width: displayWidth(context) * 0.8,
                 ),
                 Spacer(),

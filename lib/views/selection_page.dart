@@ -1,4 +1,5 @@
 import 'package:ble_pathfinder/controllers/beacon_controller.dart';
+import 'package:ble_pathfinder/controllers/image_controller.dart';
 import 'package:ble_pathfinder/controllers/navigation_controller.dart';
 import 'package:ble_pathfinder/utils/constants.dart';
 import 'package:ble_pathfinder/utils/size_config.dart';
@@ -14,10 +15,11 @@ import '../models/poinode.dart';
 class SelectionPage extends StatelessWidget {
   final beaconController = Get.put(BeaconController());
   final navigationController = Get.put(NavigationController());
+  final imageController = Get.put(ImageController());
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
+    beaconController.startMonitoring();
 
     return Scaffold(
       body: Obx(
@@ -76,18 +78,30 @@ class SelectionPage extends StatelessWidget {
                                     ),
                                   ),
                                   Spacer(),
-                                  Text(
-                                    beaconController.currentLocation.value.name,
-                                    style: TextStyle(
-                                      fontSize: getProportionateScreenWidth(36),
-                                      color: kPrimaryColor,
-                                      fontWeight: FontWeight.w800,
+                                  Container(
+                                    height: getProportionateScreenHeight(130),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          beaconController
+                                              .currentLocation.value.name,
+                                          style: TextStyle(
+                                            fontSize:
+                                                getProportionateScreenWidth(36),
+                                            color: kPrimaryColor,
+                                            fontWeight: FontWeight.w800,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        Image(
+                                          image: imageController
+                                              .vectorShadow.image,
+                                          width: displayWidth(context) * 0.8,
+                                        ),
+                                      ],
                                     ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  Image.asset(
-                                    'assets/images/vectors/vector_shadow.png',
-                                    width: displayWidth(context) * 0.8,
                                   ),
                                   Spacer(),
                                   DropdownSearch<POINode>(

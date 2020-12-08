@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:page_transition/page_transition.dart';
 
+import 'controllers/image_controller.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
@@ -21,12 +23,36 @@ void main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   final permissionController = Get.put(PermissionController());
+  final imageController = Get.put(ImageController());
+
+  Image vectorPermission;
+  Image vectorShadow;
+
+  @override
+  void initState() {
+    imageController.vectorPermission =
+        Image.asset('assets/images/vectors/vector_permission.png');
+    imageController.vectorShadow =
+        Image.asset('assets/images/vectors/vector_shadow.png');
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    precacheImage(imageController.vectorPermission.image, context);
+    precacheImage(imageController.vectorShadow.image, context);
+  }
+
   @override
   Widget build(BuildContext context) {
-    permissionController.checkPermissionStatus();
-
     return GetMaterialApp(
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
@@ -41,16 +67,7 @@ class MyApp extends StatelessWidget {
         ),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      // home:
-      home:
-          // NavigationPage(),
-          Obx(
-        () => permissionController.locationPermissionGranted.value == false ||
-                permissionController.bluetoothStatus.value == false ||
-                permissionController.cameraPermissionGranted.value == false
-            ? PermissionPage()
-            : SelectionPage(),
-      ),
+      home: SplashScreenPage(),
     );
   }
 }
