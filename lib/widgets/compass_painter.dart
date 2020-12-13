@@ -18,10 +18,10 @@ class CompassPainter extends CustomPainter {
 
     Paint needle = _brush..color = Colors.red[400];
 
-    double radius = min(size.width / 4, size.height / 4);
+    double radius = min(size.width / 2.6, size.height / 2.6);
     Offset center = Offset(size.width / 2, size.height / 2);
-    Offset start = Offset.lerp(Offset(center.dx, radius), center, .4);
-    Offset end = Offset.lerp(Offset(center.dx, radius), center, 0.1);
+    Offset start = Offset.lerp(Offset(center.dx, radius), center, 0.4);
+    Offset end = Offset.lerp(Offset(center.dx, radius), center, -0.1);
 
     canvas.translate(center.dx, center.dy);
     canvas.rotate(rotation);

@@ -1,4 +1,5 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:ble_pathfinder/controllers/ar_core_controller.dart';
 import 'package:ble_pathfinder/controllers/beacon_controller.dart';
 import 'package:ble_pathfinder/controllers/permission_controller.dart';
 import 'package:ble_pathfinder/utils/size_config.dart';
@@ -9,8 +10,9 @@ import 'package:get/get.dart';
 import 'package:page_transition/page_transition.dart';
 
 class SplashScreenPage extends StatelessWidget {
-  final beaconController = Get.put(BeaconController());
-  final permissionController = Get.put(PermissionController());
+  final beaconController = Get.put(BeaconController(), permanent: true);
+  final permissionController = Get.put(PermissionController(), permanent: true);
+  final arCoreController = Get.put(ARCoreController());
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,6 @@ class SplashScreenPage extends StatelessWidget {
     SizeConfig().init(context);
 
     return AnimatedSplashScreen(
-      // backgroundColor: Theme.of(context).primaryColor,
       splash: './assets/images/splash/ic_splash.png',
       splashTransition: SplashTransition.rotationTransition,
       pageTransitionType: PageTransitionType.leftToRightWithFade,

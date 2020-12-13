@@ -1,20 +1,24 @@
 import 'dart:convert';
 
+import 'package:vector_math/vector_math_64.dart' as vector;
+
 class NeighbourNode {
   int nodeID;
-  double direction;
+  double heading;
   bool isStartingNode;
+  vector.Vector3 modelPosition;
 
   NeighbourNode({
     this.nodeID,
-    this.direction = 0.0,
+    this.heading,
     this.isStartingNode = false,
+    this.modelPosition,
   });
 
   Map<String, dynamic> toMap() {
     return {
       'nodeID': nodeID,
-      'direction': direction,
+      'heading': heading,
       'isStartingNode': isStartingNode,
     };
   }
@@ -24,7 +28,7 @@ class NeighbourNode {
 
     return NeighbourNode(
       nodeID: map['nodeID'],
-      direction: map['direction'],
+      heading: map['heading'],
       isStartingNode: map['isStartingNode'],
     );
   }

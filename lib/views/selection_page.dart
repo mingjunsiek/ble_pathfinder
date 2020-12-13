@@ -13,8 +13,11 @@ import 'package:dropdown_search/dropdown_search.dart';
 import '../models/poinode.dart';
 
 class SelectionPage extends StatelessWidget {
-  final beaconController = Get.put(BeaconController());
-  final navigationController = Get.put(NavigationController());
+  final beaconController = Get.find<BeaconController>();
+  final navigationController = Get.put(
+    NavigationController(),
+    permanent: true,
+  );
   final imageController = Get.put(ImageController());
 
   @override
@@ -135,6 +138,7 @@ class SelectionPage extends StatelessWidget {
                                                   .destinationLocation.nodeID);
                                       navigationController
                                           .findPathToDestination();
+                                      navigationController.isNavigating = true;
                                       Get.to(NavigationPage());
                                     },
                                   ),

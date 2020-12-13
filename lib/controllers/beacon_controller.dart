@@ -4,6 +4,7 @@ import 'package:ble_pathfinder/models/beacon_data.dart';
 import 'package:ble_pathfinder/models/neighbour_node.dart';
 import 'package:ble_pathfinder/models/poinode.dart';
 import 'package:get/get.dart';
+import 'package:vector_math/vector_math_64.dart' as vector;
 
 //BLE Library Imports
 import 'package:beacons_plugin/beacons_plugin.dart';
@@ -149,7 +150,8 @@ class BeaconController extends GetxController {
     final navController = Get.find<NavigationController>();
     currentLocation.value =
         poiList.firstWhere((element) => element.nodeESP32ID == uuid);
-    navController.setCurrentLocation(currentLocation.value.nodeID);
+    navController.setCurrentLocation(currentLocation.value);
+    navController.beaconList.assignAll(beaconDataPriorityQueue);
     haveCurrentLocation.value = true;
     print("Set Current location: " + currentLocation.value.nodeID.toString());
   }
@@ -164,9 +166,13 @@ class BeaconController extends GetxController {
         neighbourArray: [
           NeighbourNode(
             nodeID: 2,
-            direction: 270,
+            heading: 270,
           ),
         ],
+        otherNodesPosition: {
+          2: vector.Vector3(0, 0, -1),
+          3: vector.Vector3(0, 0, -2),
+        },
         name: 'Hardware Project Lab');
 
     var node2 = POINode(
@@ -178,17 +184,21 @@ class BeaconController extends GetxController {
         neighbourArray: [
           NeighbourNode(
             nodeID: 1,
-            direction: 90,
+            heading: 90,
           ),
           NeighbourNode(
             nodeID: 3,
-            direction: 0,
+            heading: 0,
           ),
           NeighbourNode(
             nodeID: 4,
-            direction: 270,
+            heading: 270,
           ),
         ],
+        otherNodesPosition: {
+          1: vector.Vector3(0, 0, -1),
+          3: vector.Vector3(0, 0, -2),
+        },
         name: 'Intersection');
 
     var node3 = POINode(
@@ -201,7 +211,7 @@ class BeaconController extends GetxController {
         neighbourArray: [
           NeighbourNode(
             nodeID: 2,
-            direction: 180,
+            heading: 180,
           ),
         ],
         name: 'Software Lab 2');
@@ -215,11 +225,11 @@ class BeaconController extends GetxController {
         neighbourArray: [
           NeighbourNode(
             nodeID: 2,
-            direction: 90,
+            heading: 90,
           ),
           NeighbourNode(
             nodeID: 5,
-            direction: 270,
+            heading: 270,
           ),
         ],
         name: 'Hardware Lab 2');
@@ -233,15 +243,15 @@ class BeaconController extends GetxController {
         neighbourArray: [
           NeighbourNode(
             nodeID: 4,
-            direction: 90,
+            heading: 90,
           ),
           NeighbourNode(
             nodeID: 6,
-            direction: 0,
+            heading: 0,
           ),
           NeighbourNode(
             nodeID: 7,
-            direction: 270,
+            heading: 270,
           ),
         ],
         name: 'Intersection');
@@ -256,7 +266,7 @@ class BeaconController extends GetxController {
         neighbourArray: [
           NeighbourNode(
             nodeID: 5,
-            direction: 180,
+            heading: 180,
           ),
         ],
         name: 'Hardware Lab 1');
@@ -270,7 +280,7 @@ class BeaconController extends GetxController {
         neighbourArray: [
           NeighbourNode(
             nodeID: 5,
-            direction: 90,
+            heading: 90,
           ),
         ],
         name: 'SCSE Lounge / Software Lab 1');
@@ -284,7 +294,7 @@ class BeaconController extends GetxController {
         neighbourArray: [
           NeighbourNode(
             nodeID: 9,
-            direction: 270,
+            heading: 270,
           ),
         ],
         name: 'Software Lab 3');
@@ -298,11 +308,11 @@ class BeaconController extends GetxController {
         neighbourArray: [
           NeighbourNode(
             nodeID: 8,
-            direction: 90,
+            heading: 90,
           ),
           NeighbourNode(
             nodeID: 10,
-            direction: 180,
+            heading: 180,
           ),
         ],
         name: 'Intersection');
@@ -317,11 +327,11 @@ class BeaconController extends GetxController {
         neighbourArray: [
           NeighbourNode(
             nodeID: 9,
-            direction: 0,
+            heading: 0,
           ),
           NeighbourNode(
             nodeID: 11,
-            direction: 180,
+            heading: 180,
           ),
         ],
         name: 'Intersection');
@@ -335,11 +345,11 @@ class BeaconController extends GetxController {
         neighbourArray: [
           NeighbourNode(
             nodeID: 10,
-            direction: 0,
+            heading: 0,
           ),
           NeighbourNode(
             nodeID: 12,
-            direction: 270,
+            heading: 270,
           ),
         ],
         name: 'Intersection');
@@ -353,11 +363,11 @@ class BeaconController extends GetxController {
         neighbourArray: [
           NeighbourNode(
             nodeID: 11,
-            direction: 90,
+            heading: 90,
           ),
           NeighbourNode(
             nodeID: 13,
-            direction: 270,
+            heading: 270,
           ),
         ],
         name: 'Software Project Lab');
@@ -372,11 +382,11 @@ class BeaconController extends GetxController {
         neighbourArray: [
           NeighbourNode(
             nodeID: 12,
-            direction: 90,
+            heading: 90,
           ),
           NeighbourNode(
             nodeID: 14,
-            direction: 0,
+            heading: 0,
           ),
         ],
         name: 'Intersection');
@@ -391,7 +401,7 @@ class BeaconController extends GetxController {
         neighbourArray: [
           NeighbourNode(
             nodeID: 13,
-            direction: 180,
+            heading: 180,
           ),
         ],
         name: 'Hardware Lab 3');

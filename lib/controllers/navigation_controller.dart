@@ -1,5 +1,8 @@
+import 'package:ble_pathfinder/controllers/ar_core_controller.dart';
+import 'package:ble_pathfinder/models/beacon_data.dart';
 import 'package:ble_pathfinder/models/neighbour_node.dart';
 import 'package:ble_pathfinder/models/poinode.dart';
+import 'package:vector_math/vector_math_64.dart' as vector;
 import 'dart:collection';
 import 'package:get/get.dart';
 
@@ -10,11 +13,13 @@ class NavigationController extends GetxController {
       (a, b) => a.heuristic.compareTo(b.heuristic);
 
   int startingNodeId, destinationNodeId;
-  final currentNodeId = 0.obs;
+  final currentNode = POINode().obs;
 
   final visitedArray = <NeighbourNode>[].obs;
   final directionDegree = 0.0.obs;
   final reachedDestination = false.obs;
+  final beaconList = <BeaconData>[].obs;
+  bool isNavigating = false;
 
   void setNavigationSettings(
     HashMap<int, POINode> hashMap,
@@ -32,9 +37,15 @@ class NavigationController extends GetxController {
   }
 
   String get printList {
+    // var tempString = "";
+    // visitedArray.forEach((element) {
+    //   tempString += "${element.nodeID} : ${element.direction}\n";
+    // });
+    // return tempString;
+
     var tempString = "";
-    visitedArray.forEach((element) {
-      tempString += "${element.nodeID} : ${element.direction}\n";
+    beaconList.forEach((element) {
+      tempString += "${element.name} : ${element.rssi}\n";
     });
     return tempString;
   }
@@ -43,18 +54,28 @@ class NavigationController extends GetxController {
     return 'Walk towards ${directionDegree.value}';
   }
 
-  void setCurrentLocation(int nodeID) {
-    if (visitedArray.isNotEmpty) {
-      print('List Length: ${visitedArray.length}');
-      currentNodeId.value = nodeID;
-      if (visitedArray.first.nodeID == nodeID) {
-        print('Same Node ID');
-        visitedArray.removeAt(0);
-        directionDegree.value = visitedArray.first.direction;
+  void setCurrentLocation(POINode node) {
+    currentNode.value = node;
+    if (isNavigating) {
+      final arController = Get.find<ARCoreController>();
+      if (visitedArray.isNotEmpty) {
+        print('List Length: ${visitedArray.length}');
+        if (visitedArray.first.nodeID == node.nodeID) {
+          if (visitedArray.length != 1) {
+            visitedArray.removeAt(0);
+            directionDegree.value = visitedArray.first.heading;
+
+            // arController.addArrowWithPosition(
+            //   vector.Vector3(0, 0, -1),
+            //   visitedArray.first.heading,
+            // );
+          } else {
+            print("Reached Destination");
+            // arController.addDestinationPin();
+            reachedDestination.value = true;
+          }
+        }
       }
-    } else {
-      print("Reached Destination");
-      reachedDestination.value = true;
     }
   }
 

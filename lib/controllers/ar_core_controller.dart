@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
+import 'package:ble_pathfinder/controllers/compass_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -18,11 +21,6 @@ class ARCoreController extends GetxController {
     arCoreController = controller;
     arCoreController.onNodeTap = (name) => onTapHandler(name);
     arCoreController.onPlaneTap = _handleOnPlaneTap;
-    _addArrow(arCoreController);
-    _addDestinationPin(arCoreController);
-    // _addSphere(arCoreController);
-    // _addCylindre(arCoreController);
-    // _addCube(arCoreController);
   }
 
   Future _addSphere(ArCoreHitTestResult hit) async {
@@ -60,26 +58,60 @@ class ARCoreController extends GetxController {
     arCoreController.addArCoreNodeWithAnchor(earth);
   }
 
-  void _addArrow(ArCoreController controller) {
+  void addArrow(ArCoreHitTestResult hit) {
+    final compassController = Get.find<CompassController>();
+    final v3 = hit.pose.translation + vector.Vector3(0.0, 0, 0.5);
     final arrow = ArCoreReferenceNode(
-      name: 'direction_arrow.sfb',
-      object3DFileName: 'direction_arrow.sfb',
-      position: vector.Vector3(-3, 0, -5),
-    );
-    controller.addArCoreNode(arrow);
+        name: 'blue_arrow.sfb',
+        object3DFileName: 'blue_arrow.sfb',
+        position: v3,
+        rotation: vector.Vector4(
+          v3.x,
+          v3.y,
+          v3.z, 180 * (pi / 180),
+          // ((360 - 180) + compassController.heading.value),
+        ));
+    arCoreController.addArCoreNodeWithAnchor(arrow);
   }
 
-  void _addDestinationPin(ArCoreController controller) {
+  void addArrowWithPosition(vector.Vector3 modelPos) {
+    final compassController = Get.find<CompassController>();
+    print("AR DEBUG: " + arCoreController.trackingState);
+    final arrow = ArCoreReferenceNode(
+      name: 'blue_arrow.sfb',
+      object3DFileName: 'blue_arrow.sfb',
+      position: modelPos,
+      rotation: vector.Vector4(
+        modelPos.x, modelPos.y, modelPos.z,
+        // modelHeading * (pi / 180),
+        ((360 - 180) + compassController.heading.value),
+      ),
+    );
+
+    arCoreController.addArCoreNode(arrow);
+  }
+
+  void addDestinationPin() {
     final arrow = ArCoreReferenceNode(
       name: 'location_pin.sfb',
       object3DFileName: 'location_pin.sfb',
-      position: vector.Vector3(3, 0, -5),
+      position: vector.Vector3(0, 0, -5),
     );
-    controller.addArCoreNode(arrow);
+    arCoreController.addArCoreNode(arrow);
+  }
+
+  void addDestinationPinWithPosition(vector.Vector3 modelPos) {
+    final arrow = ArCoreReferenceNode(
+      name: 'location_pin.sfb',
+      object3DFileName: 'location_pin.sfb',
+      position: modelPos,
+    );
+    arCoreController.addArCoreNode(arrow);
   }
 
   void _handleOnPlaneTap(List<ArCoreHitTestResult> hits) {
     final hit = hits.first;
+    addArrow(hit);
     // _addSphere(hit);
     // _addArrow(hit);
   }
@@ -91,7 +123,7 @@ class ARCoreController extends GetxController {
     );
   }
 
-  void _addSphere2(ArCoreController controller) {
+  void _addSphere2() {
     final material = ArCoreMaterial(color: Color.fromARGB(120, 66, 134, 244));
     final sphere = ArCoreSphere(
       materials: [material],
@@ -101,10 +133,10 @@ class ARCoreController extends GetxController {
       shape: sphere,
       position: vector.Vector3(0, 0, -1.5),
     );
-    controller.addArCoreNode(node);
+    arCoreController.addArCoreNode(node);
   }
 
-  void _addCylindre(ArCoreController controller) {
+  void _addCylindre() {
     final material = ArCoreMaterial(
       color: Colors.red,
       reflectance: 1.0,
@@ -118,10 +150,10 @@ class ARCoreController extends GetxController {
       shape: cylindre,
       position: vector.Vector3(0.0, -0.5, -2.0),
     );
-    controller.addArCoreNode(node);
+    arCoreController.addArCoreNode(node);
   }
 
-  void _addCube(ArCoreController controller) {
+  void _addCube() {
     final material = ArCoreMaterial(
       color: Color.fromARGB(120, 66, 134, 244),
       metallic: 1.0,
@@ -134,7 +166,7 @@ class ARCoreController extends GetxController {
       shape: cube,
       position: vector.Vector3(-0.5, 0.5, -3.5),
     );
-    controller.addArCoreNode(node);
+    arCoreController.addArCoreNode(node);
   }
 
   @override
