@@ -28,7 +28,7 @@ class PermissionPage extends StatelessWidget {
                 Text(
                   "Please Allow / Enable The Following Permissions",
                   style: TextStyle(
-                    fontSize: getProportionateScreenWidth(20),
+                    fontSize: getDefaultProportionateScreenWidth(),
                   ),
                   textAlign: TextAlign.center,
                 ),

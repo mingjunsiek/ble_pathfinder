@@ -9,3 +9,10 @@ const kPrimaryGradientColor = LinearGradient(
 );
 const kSecondaryColor = Color(0xFF3D3A61);
 const kTextColor = Color(0xFF3D3A61);
+
+enum LevelNavigation {
+  same_level,
+  go_up,
+  go_down,
+  empty,
+}

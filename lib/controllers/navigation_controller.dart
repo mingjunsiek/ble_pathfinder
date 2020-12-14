@@ -2,6 +2,7 @@ import 'package:ble_pathfinder/controllers/ar_core_controller.dart';
 import 'package:ble_pathfinder/models/beacon_data.dart';
 import 'package:ble_pathfinder/models/neighbour_node.dart';
 import 'package:ble_pathfinder/models/poinode.dart';
+import 'package:ble_pathfinder/utils/constants.dart';
 import 'package:vector_math/vector_math_64.dart' as vector;
 import 'dart:collection';
 import 'package:get/get.dart';
@@ -20,6 +21,7 @@ class NavigationController extends GetxController {
   final reachedDestination = false.obs;
   final beaconList = <BeaconData>[].obs;
   bool isNavigating = false;
+  final levelNavigation = LevelNavigation.empty.obs;
 
   void setNavigationSettings(
     HashMap<int, POINode> hashMap,
@@ -33,21 +35,20 @@ class NavigationController extends GetxController {
     poiPriorityQueue = List.from(priorityQueue);
     startingNodeId = currentId;
     destinationNodeId = destinationId;
-    // findPathToDestination();
   }
 
   String get printList {
-    // var tempString = "";
-    // visitedArray.forEach((element) {
-    //   tempString += "${element.nodeID} : ${element.direction}\n";
-    // });
-    // return tempString;
-
     var tempString = "";
-    beaconList.forEach((element) {
-      tempString += "${element.name} : ${element.rssi}\n";
+    visitedArray.forEach((element) {
+      tempString += "${element.nodeID} : ${element.heading}\n";
     });
     return tempString;
+
+    // var tempString = "";
+    // beaconList.forEach((element) {
+    //   tempString += "${element.name} : ${element.rssi}\n";
+    // });
+    // return tempString;
   }
 
   String get directionString {
@@ -57,12 +58,25 @@ class NavigationController extends GetxController {
   void setCurrentLocation(POINode node) {
     currentNode.value = node;
     if (isNavigating) {
-      final arController = Get.find<ARCoreController>();
+      // final arController = Get.find<ARCoreController>();
       if (visitedArray.isNotEmpty) {
         print('List Length: ${visitedArray.length}');
         if (visitedArray.first.nodeID == node.nodeID) {
           if (visitedArray.length != 1) {
             visitedArray.removeAt(0);
+
+            switch (visitedArray.first.levelNavigation) {
+              case LevelNavigation.go_down:
+                levelNavigation.value = LevelNavigation.go_down;
+                break;
+              case LevelNavigation.go_up:
+                levelNavigation.value = LevelNavigation.go_up;
+                break;
+              default:
+                levelNavigation.value = LevelNavigation.same_level;
+                break;
+            }
+
             directionDegree.value = visitedArray.first.heading;
 
             // arController.addArrowWithPosition(
@@ -102,8 +116,10 @@ class NavigationController extends GetxController {
       nodesHashMap[i].heuristic = 10000;
     }
 
-    visitedArray
-        .add(NeighbourNode(nodeID: currentNode.nodeID, isStartingNode: true));
+    visitedArray.add(NeighbourNode(
+      nodeID: currentNode.nodeID,
+      isStartingNode: true,
+    ));
 
     while (currentNode.nodeID != destinationNode.nodeID || startAtStairs) {
       poiPriorityQueue.removeWhere((item) => item.nodeID == currentNode.nodeID);
@@ -146,8 +162,16 @@ class NavigationController extends GetxController {
         sameLevel = true;
 
         currentNode = nextLevelStairNode;
+        LevelNavigation tempLevel = LevelNavigation.same_level;
+        if (currentNode.nodeID >= 8)
+          tempLevel = LevelNavigation.go_down;
+        else
+          tempLevel = LevelNavigation.go_up;
 
-        visitedArray.add(NeighbourNode(nodeID: currentNode.nodeID));
+        visitedArray.add(NeighbourNode(
+          nodeID: currentNode.nodeID,
+          levelNavigation: tempLevel,
+        ));
 
         destinationNode = nextLevelDestinationNode;
         for (POINode node in poiPriorityQueue) {

@@ -28,3 +28,9 @@ double getProportionateScreenWidth(double inputWidth) {
   // 375 is the layout width that designer use
   return (inputWidth / 375.0) * screenWidth;
 }
+
+double getDefaultProportionateScreenWidth() {
+  double screenWidth = SizeConfig.screenWidth;
+  // 375 is the layout width that designer use
+  return (20 / 375.0) * screenWidth;
+}

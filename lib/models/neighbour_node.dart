@@ -1,18 +1,18 @@
 import 'dart:convert';
 
-import 'package:vector_math/vector_math_64.dart' as vector;
+import 'package:ble_pathfinder/utils/constants.dart';
 
 class NeighbourNode {
   int nodeID;
   double heading;
   bool isStartingNode;
-  vector.Vector3 modelPosition;
+  LevelNavigation levelNavigation;
 
   NeighbourNode({
     this.nodeID,
     this.heading,
     this.isStartingNode = false,
-    this.modelPosition,
+    this.levelNavigation = LevelNavigation.same_level,
   });
 
   Map<String, dynamic> toMap() {

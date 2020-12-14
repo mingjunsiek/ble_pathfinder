@@ -42,7 +42,7 @@ class SelectionPage extends StatelessWidget {
                           Text(
                             "You are not near a Point Of Interest",
                             style: TextStyle(
-                              fontSize: getProportionateScreenWidth(20),
+                              fontSize: getDefaultProportionateScreenWidth(),
                             ),
                             textAlign: TextAlign.center,
                           ),
@@ -52,7 +52,7 @@ class SelectionPage extends StatelessWidget {
                           Text(
                             "Please move to the nearest Point Of Interest",
                             style: TextStyle(
-                              fontSize: getProportionateScreenWidth(20),
+                              fontSize: getDefaultProportionateScreenWidth(),
                             ),
                             textAlign: TextAlign.center,
                           ),
@@ -77,7 +77,8 @@ class SelectionPage extends StatelessWidget {
                                   Text(
                                     'Current Location:',
                                     style: TextStyle(
-                                      fontSize: getProportionateScreenWidth(20),
+                                      fontSize:
+                                          getDefaultProportionateScreenWidth(),
                                     ),
                                   ),
                                   Spacer(),

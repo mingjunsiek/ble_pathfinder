@@ -1,15 +1,9 @@
-import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
-import 'package:ble_pathfinder/controllers/permission_controller.dart';
 import 'package:ble_pathfinder/utils/constants.dart';
-import 'package:ble_pathfinder/utils/size_config.dart';
-import 'package:ble_pathfinder/views/permission_page.dart';
 import 'package:ble_pathfinder/views/splash_screen_page.dart';
 import 'package:flutter/services.dart';
-import 'package:ble_pathfinder/views/selection_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:page_transition/page_transition.dart';
 
 import 'controllers/image_controller.dart';
 
@@ -29,7 +23,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final permissionController = Get.put(PermissionController());
   final imageController = Get.put(ImageController());
 
   Image vectorPermission;

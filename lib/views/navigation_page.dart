@@ -13,8 +13,9 @@ import 'package:get/get.dart';
 
 class NavigationPage extends StatelessWidget {
   final navigationController = Get.find<NavigationController>();
-  final compassController = Get.put(CompassController());
-  final arController = Get.put(ARCoreController());
+  final compassController = Get.find<CompassController>();
+  // final arController = Get.put(ARCoreController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,25 +28,26 @@ class NavigationPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Obx(
-                  () => Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('Current Location: '),
-                      Text(
-                        navigationController.currentNode.value.name,
-                        style: TextStyle(
-                          color: kPrimaryColor,
-                        ),
-                      ),
-                    ],
+                Text(
+                  'Current Location: ',
+                  style: TextStyle(
+                    fontSize: getDefaultProportionateScreenWidth(),
                   ),
                 ),
                 Obx(
                   () => Text(
-                    navigationController.printList,
+                    navigationController.currentNode.value.name,
+                    style: TextStyle(
+                      color: kPrimaryColor,
+                      fontSize: getDefaultProportionateScreenWidth(),
+                    ),
                   ),
                 ),
+                // Obx(
+                //   () => Text(
+                //     navigationController.printList,
+                //   ),
+                // ),
                 // AR Navigation
                 // Container(
                 //   height: displayHeight(context) * 0.70,
@@ -62,26 +64,83 @@ class NavigationPage extends StatelessWidget {
                 // Compass Navigation
                 Container(
                   height: displayHeight(context) * 0.7,
+                  alignment: Alignment(0, 0),
                   child: Obx(
-                    () => CustomPaint(
-                      foregroundPainter: CompassParentPainter(
-                        locationAngle:
-                            navigationController.directionDegree.value,
+                    () => AnimatedSwitcher(
+                      duration: Duration(milliseconds: 1000),
+                      transitionBuilder: (widget, animation) => ScaleTransition(
+                        scale: animation,
+                        child: widget,
                       ),
-                      child: CustomPaint(
-                        foregroundPainter: CompassPainter(
-                          angle: compassController.heading.value,
-                        ),
-                        child: Center(
-                          child: Text(compassController.readout),
-                        ),
-                      ),
+                      switchOutCurve: Curves.easeOutExpo,
+                      switchInCurve: Curves.easeInExpo,
+                      child: navigationController.levelNavigation.value ==
+                              LevelNavigation.go_down
+                          ? Container(
+                              alignment: Alignment(0, 0),
+                              height: displayHeight(context) * 0.35,
+                              key: UniqueKey(),
+                              child: Text(
+                                'Go Up One Level',
+                                style: TextStyle(
+                                  fontSize:
+                                      getDefaultProportionateScreenWidth(),
+                                ),
+                              ),
+                            )
+                          : navigationController.levelNavigation.value ==
+                                  LevelNavigation.go_up
+                              ? Container(
+                                  alignment: Alignment(0, 0),
+                                  height: displayHeight(context) * 0.35,
+                                  key: UniqueKey(),
+                                  child: Text(
+                                    'Go Down One Level',
+                                    style: TextStyle(
+                                      fontSize:
+                                          getDefaultProportionateScreenWidth(),
+                                    ),
+                                  ),
+                                )
+                              : navigationController.levelNavigation.value ==
+                                      LevelNavigation.same_level
+                                  ? Container(
+                                      alignment: Alignment(0, 0),
+                                      key: UniqueKey(),
+                                      child: CustomPaint(
+                                        foregroundPainter: CompassParentPainter(
+                                          locationAngle: navigationController
+                                              .directionDegree.value,
+                                        ),
+                                        child: CustomPaint(
+                                          foregroundPainter: CompassPainter(
+                                            angle:
+                                                compassController.heading.value,
+                                          ),
+                                          child: Center(
+                                            child:
+                                                Text(compassController.readout),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  : Container(
+                                      alignment: Alignment(0, 0),
+                                      height: displayHeight(context) * 0.35,
+                                      key: UniqueKey(),
+                                      child: Text(
+                                        'Finding Path to Destination',
+                                        style: TextStyle(
+                                          fontSize:
+                                              getDefaultProportionateScreenWidth(),
+                                        ),
+                                      ),
+                                    ),
                     ),
                   ),
                 ),
                 Container(
                   height: displayHeight(context) * 0.1,
-                  alignment: Alignment(0, 0),
                   child: Obx(
                     () => navigationController.reachedDestination.value
                         ? Column(
