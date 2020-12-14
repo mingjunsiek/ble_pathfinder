@@ -16,7 +16,7 @@ class SelectionPage extends StatelessWidget {
   final beaconController = Get.find<BeaconController>();
   final navigationController = Get.put(
     NavigationController(),
-    permanent: true,
+    // permanent: true,
   );
   final imageController = Get.put(ImageController());
 
@@ -128,18 +128,59 @@ class SelectionPage extends StatelessWidget {
                                     btnText: 'Continue',
                                     btnColor: kPrimaryColor,
                                     btnFunction: () {
-                                      navigationController
-                                          .setNavigationSettings(
-                                              beaconController.poiNodes,
-                                              beaconController.poiList,
-                                              beaconController
-                                                  .currentLocation.value.nodeID,
-                                              beaconController
-                                                  .destinationLocation.nodeID);
-                                      navigationController
-                                          .findPathToDestination();
-                                      navigationController.isNavigating = true;
-                                      Get.to(NavigationPage());
+                                      if (beaconController
+                                          .destinationLocation.isNull) {
+                                        Get.rawSnackbar(
+                                          titleText: Text(
+                                            'Error',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w800,
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                          messageText: Text(
+                                            'Please select a destination',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                          // snackPosition: SnackPosition.BOTTOM,
+                                          // snackStyle: SnackStyle.FLOATING,
+                                        );
+                                        // Get.snackbar(
+                                        //   'Error',
+                                        //   null,
+                                        //   titleText: Text(
+                                        //     'Error',
+                                        //     style: TextStyle(
+                                        //       color: Colors.black,
+                                        //       fontWeight: FontWeight.w800,
+                                        //       fontSize: 16,
+                                        //     ),
+                                        //   ),
+                                        //   messageText: Text(
+                                        //       'Please select a destination'),
+                                        //   snackPosition: SnackPosition.BOTTOM,
+                                        //   snackStyle: SnackStyle.FLOATING,
+                                        // );
+                                      } else {
+                                        navigationController
+                                            .setNavigationSettings(
+                                                beaconController.poiNodes,
+                                                beaconController.poiList,
+                                                beaconController.currentLocation
+                                                    .value.nodeID,
+                                                beaconController
+                                                    .destinationLocation
+                                                    .nodeID);
+                                        navigationController
+                                            .findPathToDestination();
+                                        navigationController.isNavigating =
+                                            true;
+                                        Get.to(NavigationPage());
+                                      }
                                     },
                                   ),
                                   Spacer(),

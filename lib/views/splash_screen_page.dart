@@ -12,7 +12,6 @@ import 'package:page_transition/page_transition.dart';
 class SplashScreenPage extends StatelessWidget {
   final beaconController = Get.put(BeaconController(), permanent: true);
   final permissionController = Get.put(PermissionController(), permanent: true);
-  final arCoreController = Get.put(ARCoreController());
 
   @override
   Widget build(BuildContext context) {

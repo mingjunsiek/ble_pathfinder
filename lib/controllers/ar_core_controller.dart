@@ -9,6 +9,7 @@ import 'package:vector_math/vector_math_64.dart' as vector;
 
 class ARCoreController extends GetxController {
   ArCoreController arCoreController;
+  final modelPosition = "".obs;
 
   Widget initArCoreview() {
     return ArCoreView(
@@ -60,17 +61,18 @@ class ARCoreController extends GetxController {
 
   void addArrow(ArCoreHitTestResult hit) {
     final compassController = Get.find<CompassController>();
-    final v3 = hit.pose.translation + vector.Vector3(0.0, 0, 0.5);
+    final v3 = hit.pose.translation + vector.Vector3(0.0, 1, 0);
     final arrow = ArCoreReferenceNode(
-        name: 'blue_arrow.sfb',
-        object3DFileName: 'blue_arrow.sfb',
-        position: v3,
-        rotation: vector.Vector4(
-          v3.x,
-          v3.y,
-          v3.z, 180 * (pi / 180),
-          // ((360 - 180) + compassController.heading.value),
-        ));
+      name: 'blue_arrow.sfb',
+      object3DFileName: 'blue_arrow.sfb',
+      position: v3,
+      // rotation: vector.Vector4(
+      //   v3.x,
+      //   v3.y,
+      //   v3.z, 180 * (pi / 180),
+      //   // ((360 - 180) + compassController.heading.value),
+      // ),
+    );
     arCoreController.addArCoreNodeWithAnchor(arrow);
   }
 
@@ -111,6 +113,7 @@ class ARCoreController extends GetxController {
 
   void _handleOnPlaneTap(List<ArCoreHitTestResult> hits) {
     final hit = hits.first;
+    modelPosition.value = hit.pose.translation.xyz.toString();
     addArrow(hit);
     // _addSphere(hit);
     // _addArrow(hit);
