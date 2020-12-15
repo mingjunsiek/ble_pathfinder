@@ -7,6 +7,7 @@ import 'package:ble_pathfinder/utils/size_config.dart';
 import 'package:ble_pathfinder/utils/size_helpers.dart';
 import 'package:ble_pathfinder/widgets/compass_painter.dart';
 import 'package:ble_pathfinder/widgets/compass_parent_painter.dart';
+import 'package:ble_pathfinder/widgets/compass_widget.dart';
 import 'package:ble_pathfinder/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -81,7 +82,7 @@ class NavigationPage extends StatelessWidget {
                               height: displayHeight(context) * 0.35,
                               key: UniqueKey(),
                               child: Text(
-                                'Go Up One Level',
+                                'Go Down One Level',
                                 style: TextStyle(
                                   fontSize:
                                       getDefaultProportionateScreenWidth(),
@@ -95,7 +96,7 @@ class NavigationPage extends StatelessWidget {
                                   height: displayHeight(context) * 0.35,
                                   key: UniqueKey(),
                                   child: Text(
-                                    'Go Down One Level',
+                                    'Go Up One Level',
                                     style: TextStyle(
                                       fontSize:
                                           getDefaultProportionateScreenWidth(),
@@ -107,22 +108,7 @@ class NavigationPage extends StatelessWidget {
                                   ? Container(
                                       alignment: Alignment(0, 0),
                                       key: UniqueKey(),
-                                      child: CustomPaint(
-                                        foregroundPainter: CompassParentPainter(
-                                          locationAngle: navigationController
-                                              .directionDegree.value,
-                                        ),
-                                        child: CustomPaint(
-                                          foregroundPainter: CompassPainter(
-                                            angle:
-                                                compassController.heading.value,
-                                          ),
-                                          child: Center(
-                                            child:
-                                                Text(compassController.readout),
-                                          ),
-                                        ),
-                                      ),
+                                      child: CompassWidget(),
                                     )
                                   : Container(
                                       alignment: Alignment(0, 0),

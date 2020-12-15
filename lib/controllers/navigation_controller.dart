@@ -73,7 +73,8 @@ class NavigationController extends GetxController {
                 levelNavigation.value = LevelNavigation.go_up;
                 break;
               default:
-                levelNavigation.value = LevelNavigation.same_level;
+                if (levelNavigation.value != LevelNavigation.same_level)
+                  levelNavigation.value = LevelNavigation.same_level;
                 break;
             }
 

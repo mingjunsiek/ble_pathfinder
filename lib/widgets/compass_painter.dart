@@ -1,12 +1,35 @@
 import 'dart:math';
 
+import 'package:ble_pathfinder/controllers/compass_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CompassPainter extends CustomPainter {
-  CompassPainter({@required this.angle}) : super();
+  CompassPainter({
+    @required this.currentBearing,
+    @required this.locationBearing,
+  }) : super();
 
-  final double angle;
-  double get rotation => ((angle ?? 0) * (pi / 180));
+  final double currentBearing, locationBearing;
+  final compassController = Get.find<CompassController>();
+  double get rotation => ((currentBearing ?? 0) * (pi / 180));
+
+  // double get rotation {
+  //   if (compassController.currentBearingSnapshot == null) {
+  //     compassController.currentBearingSnapshot = currentBearing;
+  //     compassController.locationBearingSnapshot = locationBearing;
+  //     return locationBearing;
+  //   } else {
+  //     return ((currentBearing - compassController.currentBearingSnapshot) *
+  //             -1) *
+  //         (pi / 180);
+  //   }
+  //   // var currentRotation = ((currentBearing ?? 0) * (pi / 180));
+  //   // var offsetRotation = (currentBearing - locationBearing).abs() * (pi / 180);
+  //   // return currentRotation + offsetRotation;
+
+  //   // return (angle - bearingDiff).abs() * (pi / 180);
+  // }
 
   Paint get _brush => new Paint()
     ..style = PaintingStyle.stroke

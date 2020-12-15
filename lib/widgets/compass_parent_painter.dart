@@ -1,13 +1,25 @@
 import 'dart:math';
 
+import 'package:ble_pathfinder/controllers/compass_controller.dart';
 import 'package:ble_pathfinder/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CompassParentPainter extends CustomPainter {
-  CompassParentPainter({@required this.locationAngle}) : super();
+  CompassParentPainter({
+    @required this.currentBearing,
+    @required this.locationBearing,
+  }) : super();
 
-  final double locationAngle;
-  double get rotation => ((locationAngle ?? 0) * (pi / 180));
+  final double currentBearing, locationBearing;
+  final compassController = Get.find<CompassController>();
+  // double get rotation => ((currentBearing ?? 0) * (pi / 180) * -1);
+
+  double get rotation {
+    double direction = locationBearing - currentBearing;
+    if (direction < 0) direction += 360;
+    return direction * (pi / 180);
+  }
 
   Paint get _brush => new Paint()
     ..style = PaintingStyle.stroke

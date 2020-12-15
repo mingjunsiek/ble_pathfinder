@@ -30,7 +30,7 @@ dependencies:
   flutter_launcher_icons: ^0.8.1
   cupertino_icons: ^1.0.1
   animated_splash_screen: ^1.0.1+2
-  page_transition: ^1.1.7+2
+  # page_transition: ^1.1.7+2
   permission_handler: ^5.0.1+1
   arcore_flutter_plugin: ^0.0.10
   flutter_compass: "^0.4.3"

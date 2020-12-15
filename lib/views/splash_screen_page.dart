@@ -25,8 +25,9 @@ class SplashScreenPage extends StatelessWidget {
       pageTransitionType: PageTransitionType.leftToRightWithFade,
       nextScreen: Obx(
         () => permissionController.locationPermissionGranted.value == false ||
-                permissionController.bluetoothStatus.value == false ||
-                permissionController.cameraPermissionGranted.value == false
+                permissionController.bluetoothStatus.value == false
+
+            // || permissionController.cameraPermissionGranted.value == false
             ? PermissionPage()
             : SelectionPage(),
       ),

@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 
 class CompassController extends GetxController {
   final heading = 0.0.obs;
+  double currentBearingSnapshot;
+  double locationBearingSnapshot;
   String get readout => heading.toStringAsFixed(0) + '°';
 
   @override
