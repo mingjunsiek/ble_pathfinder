@@ -59,7 +59,10 @@ flutter:
   assets:
     - assets/images/vectors/vector_permission.png
     - assets/images/vectors/vector_shadow.png
+    - assets/images/vectors/vector_loading.png
     - assets/images/splash/ic_splash.png
+    - assets/images/arrow_animation.gif
+    - assets/images/location_pin.gif
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

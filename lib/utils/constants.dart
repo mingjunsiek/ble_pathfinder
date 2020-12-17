@@ -15,4 +15,5 @@ enum LevelNavigation {
   go_up,
   go_down,
   empty,
+  reach_destination,
 }

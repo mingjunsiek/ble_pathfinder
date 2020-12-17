@@ -25,15 +25,18 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final imageController = Get.put(ImageController());
 
-  Image vectorPermission;
-  Image vectorShadow;
-
   @override
   void initState() {
     imageController.vectorPermission =
         Image.asset('assets/images/vectors/vector_permission.png');
     imageController.vectorShadow =
         Image.asset('assets/images/vectors/vector_shadow.png');
+    imageController.vectorLoading =
+        Image.asset('assets/images/vectors/vector_loading.png');
+    imageController.gifNavigation =
+        Image.asset('assets/images/arrow_animation.gif');
+    imageController.gifDestinationPin =
+        Image.asset('assets/images/location_pin.gif');
     super.initState();
   }
 
@@ -42,6 +45,9 @@ class _MyAppState extends State<MyApp> {
     super.didChangeDependencies();
     precacheImage(imageController.vectorPermission.image, context);
     precacheImage(imageController.vectorShadow.image, context);
+    precacheImage(imageController.vectorLoading.image, context);
+    precacheImage(imageController.gifNavigation.image, context);
+    precacheImage(imageController.gifDestinationPin.image, context);
   }
 
   @override

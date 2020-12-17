@@ -52,13 +52,16 @@ class BeaconController extends GetxController {
         .toList();
   }
 
-  void startTimer() {
+  void startTimer(int timeSet) {
     const oneSec = const Duration(seconds: 1);
-    _timerTime = 5;
+    _timerTime = timeSet;
     _timer = new Timer.periodic(oneSec, (Timer timer) {
       if (_timerTime < 1) {
         timer.cancel();
+        _timer = null;
         fetchingBeacons.value = false;
+        haveCurrentLocation.value = false;
+        print("Not nearby beacon");
       } else {
         _timerTime = _timerTime - 1;
       }
@@ -72,11 +75,6 @@ class BeaconController extends GetxController {
     }
   }
 
-  void resetScanner() {
-    fetchingBeacons.value = true;
-    startTimer();
-  }
-
   Future<void> beaconInitPlatformState() async {
     BeaconsPlugin.listenToBeacons(beaconEventsController);
     print('listenToBeacons Init');
@@ -87,8 +85,9 @@ class BeaconController extends GetxController {
     }
     print('addRegion Init');
 
-    startTimer();
+    startTimer(5);
     beaconEventsController.stream.listen((data) {
+      print('DATA: $data');
       if (data.isNotEmpty) {
         fetchingBeacons.value = false;
 
@@ -96,11 +95,6 @@ class BeaconController extends GetxController {
         // print(data);
         BeaconData beaconData = BeaconData.fromJson(data);
         addToListAndSort(beaconData);
-      } else {
-        if (_timer == null) {
-          startTimer();
-        }
-        print("Not nearby beacon");
       }
     }, onDone: () {
       print("beaconEventsController: onDone");
@@ -153,6 +147,10 @@ class BeaconController extends GetxController {
     navController.setCurrentLocation(currentLocation.value);
     navController.beaconList.assignAll(beaconDataPriorityQueue);
     haveCurrentLocation.value = true;
+    if (_timer == null) {
+      startTimer(5);
+    }
+
     print("Set Current location: " + currentLocation.value.nodeID.toString());
   }
 

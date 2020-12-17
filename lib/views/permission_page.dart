@@ -10,7 +10,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 class PermissionPage extends StatelessWidget {
   final permissionController = Get.put(PermissionController());
-  final imageController = Get.put(ImageController());
+  final imageController = Get.find<ImageController>();
 
   @override
   Widget build(BuildContext context) {

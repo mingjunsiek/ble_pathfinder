@@ -88,6 +88,7 @@ class NavigationController extends GetxController {
             print("Reached Destination");
             // arController.addDestinationPin();
             reachedDestination.value = true;
+            levelNavigation.value = LevelNavigation.reach_destination;
           }
         }
       }

@@ -1,6 +1,7 @@
 import 'package:ble_pathfinder/controllers/ar_core_controller.dart';
 import 'package:ble_pathfinder/controllers/beacon_controller.dart';
 import 'package:ble_pathfinder/controllers/compass_controller.dart';
+import 'package:ble_pathfinder/controllers/image_controller.dart';
 import 'package:ble_pathfinder/controllers/navigation_controller.dart';
 import 'package:ble_pathfinder/utils/constants.dart';
 import 'package:ble_pathfinder/utils/size_config.dart';
@@ -8,6 +9,7 @@ import 'package:ble_pathfinder/utils/size_helpers.dart';
 import 'package:ble_pathfinder/widgets/compass_painter.dart';
 import 'package:ble_pathfinder/widgets/compass_parent_painter.dart';
 import 'package:ble_pathfinder/widgets/compass_widget.dart';
+import 'package:ble_pathfinder/widgets/navigation_widget.dart';
 import 'package:ble_pathfinder/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,6 +17,7 @@ import 'package:get/get.dart';
 class NavigationPage extends StatelessWidget {
   final navigationController = Get.find<NavigationController>();
   final compassController = Get.find<CompassController>();
+  final imageController = Get.find<ImageController>();
   // final arController = Get.put(ARCoreController());
 
   @override
@@ -36,11 +39,33 @@ class NavigationPage extends StatelessWidget {
                   ),
                 ),
                 Obx(
-                  () => Text(
-                    navigationController.currentNode.value.name,
-                    style: TextStyle(
-                      color: kPrimaryColor,
-                      fontSize: getDefaultProportionateScreenWidth(),
+                  () => AnimatedSwitcher(
+                    duration: Duration(milliseconds: 2000),
+                    transitionBuilder: (widget, animation) {
+                      final offsetAnimation = Tween<Offset>(
+                        begin: const Offset(1.5, 0.0),
+                        end: Offset.zero,
+                      ).animate(animation);
+                      return SlideTransition(
+                        position: offsetAnimation,
+                        child: widget,
+                      );
+                    },
+                    switchOutCurve: Curves.elasticOut,
+                    switchInCurve: Curves.elasticIn,
+                    child: Container(
+                      height: displayHeight(context) * 0.1,
+                      alignment: Alignment(0, 0),
+                      key: UniqueKey(),
+                      width: displayWidth(context) * 0.6,
+                      child: Text(
+                        navigationController.currentNode.value.name,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: kPrimaryColor,
+                          fontSize: getDefaultProportionateScreenWidth(),
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -108,64 +133,63 @@ class NavigationPage extends StatelessWidget {
                                   ? Container(
                                       alignment: Alignment(0, 0),
                                       key: UniqueKey(),
-                                      child: CompassWidget(),
+                                      child: NavigationWidget(),
                                     )
-                                  : Container(
-                                      alignment: Alignment(0, 0),
-                                      height: displayHeight(context) * 0.35,
-                                      key: UniqueKey(),
-                                      child: Text(
-                                        'Finding Path to Destination',
-                                        style: TextStyle(
-                                          fontSize:
-                                              getDefaultProportionateScreenWidth(),
+                                  : navigationController
+                                              .levelNavigation.value ==
+                                          LevelNavigation.empty
+                                      ? Container(
+                                          alignment: Alignment(0, 0),
+                                          height: displayHeight(context) * 0.35,
+                                          key: UniqueKey(),
+                                          child: Text(
+                                            'Finding Path to Destination',
+                                            style: TextStyle(
+                                              fontSize:
+                                                  getDefaultProportionateScreenWidth(),
+                                            ),
+                                          ),
+                                        )
+                                      : Container(
+                                          alignment: Alignment(0, 0),
+                                          height: displayHeight(context) * 0.35,
+                                          key: UniqueKey(),
+                                          child: Image(
+                                            image: imageController
+                                                .gifDestinationPin.image,
+                                          ),
                                         ),
-                                      ),
-                                    ),
                     ),
                   ),
                 ),
                 Container(
-                  height: displayHeight(context) * 0.1,
+                  height: displayHeight(context) * 0.06,
+                  width: displayWidth(context) * 0.5,
                   child: Obx(
-                    () => navigationController.reachedDestination.value
-                        ? Column(
-                            children: [
-                              Text("Reached Destination"),
-                              Spacer(),
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: displayWidth(context) * 0.2,
-                                ),
-                                child: RoundedButton(
-                                    btnColor: Color(0xFF42CF1F),
-                                    btnText: 'DONE',
-                                    btnFunction: () {
-                                      Get.back();
-                                    }),
-                              ),
-                            ],
-                          )
-                        : Column(
-                            children: [
-                              Text(
-                                navigationController.directionString,
-                              ),
-                              Spacer(),
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: displayWidth(context) * 0.2,
-                                ),
-                                child: RoundedButton(
-                                  btnColor: Color(0xFFCF1F1F),
-                                  btnText: 'CANCEL',
-                                  btnFunction: () {
-                                    Get.back();
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
+                    () => AnimatedSwitcher(
+                      duration: Duration(milliseconds: 1000),
+                      transitionBuilder: (widget, animation) => ScaleTransition(
+                        scale: animation,
+                        child: widget,
+                      ),
+                      switchOutCurve: Curves.easeOutExpo,
+                      switchInCurve: Curves.easeInExpo,
+                      child: navigationController.levelNavigation.value ==
+                              LevelNavigation.reach_destination
+                          ? RoundedButton(
+                              btnColor: Color(0xFF42CF1F),
+                              btnText: 'DONE',
+                              btnFunction: () {
+                                Get.back();
+                              })
+                          : RoundedButton(
+                              btnColor: Color(0xFFCF1F1F),
+                              btnText: 'CANCEL',
+                              btnFunction: () {
+                                Get.back();
+                              },
+                            ),
+                    ),
                   ),
                 ),
               ],
