@@ -34,7 +34,7 @@ class SplashScreenPage extends StatelessWidget {
             ? PermissionPage()
             : SelectionPage(),
       ),
-      duration: 20,
+      duration: 1,
       splashIconSize: getProportionateScreenWidth(300),
     );
   }

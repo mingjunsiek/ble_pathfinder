@@ -28,11 +28,11 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     imageController.vectorPermission =
-        Image.asset('assets/images/vectors/vector_permission.png');
+        Image.asset('assets/images/vectors/vector_permission.gif');
     imageController.vectorShadow =
         Image.asset('assets/images/vectors/vector_shadow.png');
     imageController.vectorLoading =
-        Image.asset('assets/images/vectors/vector_loading.png');
+        Image.asset('assets/images/vectors/vector_loading.gif');
     imageController.gifNavigation =
         Image.asset('assets/images/arrow_animation.gif');
     imageController.gifDestinationPin =

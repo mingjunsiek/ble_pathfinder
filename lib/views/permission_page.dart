@@ -35,7 +35,6 @@ class PermissionPage extends StatelessWidget {
                 Spacer(),
                 Image(
                   image: imageController.vectorPermission.image,
-                  width: displayWidth(context) * 0.8,
                 ),
                 Spacer(),
                 RoundedButton(
