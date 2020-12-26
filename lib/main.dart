@@ -1,20 +1,30 @@
-import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
 import 'package:ble_pathfinder/utils/constants.dart';
 import 'package:ble_pathfinder/views/splash_screen_page.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'controllers/beacon_controller.dart';
+import 'controllers/compass_controller.dart';
 import 'controllers/image_controller.dart';
+import 'controllers/navigation_controller.dart';
+import 'controllers/permission_controller.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  print('ARCORE IS AVAILABLE?');
-  print(await ArCoreController.checkArCoreAvailability());
-  print('AR SERVICES INSTALLED?');
-  print(await ArCoreController.checkIsArCoreInstalled());
+  await Get.putAsync(() => InitializeService().init());
   runApp(MyApp());
+}
+
+class InitializeService extends GetxService {
+  Future<InitializeService> init() async {
+    // Get.put(BeaconController(), permanent: true);
+    Get.put(PermissionController());
+    Get.put(CompassController());
+    Get.put(NavigationController());
+    return this;
+  }
 }
 
 class MyApp extends StatefulWidget {

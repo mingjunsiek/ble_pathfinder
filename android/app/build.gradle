@@ -66,17 +66,7 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.google.ar.sceneform.ux:sceneform-ux:1.8.0'
-    implementation 'com.google.ar.sceneform:core:1.8.0'
-    implementation 'com.google.ar:core:1.8.0'
+
 }
 
-sceneform.asset('sampledata/blue_arrow.obj',
-        'default',
-        'sampledata/blue_arrow.sfa',
-        'src/main/assets/blue_arrow')
-        
-sceneform.asset('sampledata/location_pin.obj',
-        'default',
-        'sampledata/location_pin.sfa',
-        'src/main/assets/location_pin')
+

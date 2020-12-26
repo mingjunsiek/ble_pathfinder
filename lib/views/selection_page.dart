@@ -1,6 +1,5 @@
 import 'package:ble_pathfinder/controllers/beacon_controller.dart';
 import 'package:ble_pathfinder/controllers/image_controller.dart';
-import 'package:ble_pathfinder/controllers/navigation_controller.dart';
 import 'package:ble_pathfinder/utils/size_config.dart';
 import 'package:ble_pathfinder/utils/size_helpers.dart';
 import 'package:ble_pathfinder/widgets/selection_widget.dart';
@@ -8,13 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class SelectionPage extends StatelessWidget {
-  final beaconController = Get.find<BeaconController>();
+  final beaconController = Get.put(BeaconController());
   final imageController = Get.find<ImageController>();
 
   @override
   Widget build(BuildContext context) {
-    beaconController.startMonitoring();
-
+    beaconController.beaconInitPlatformState();
     return Scaffold(
       body: SafeArea(
         child: Padding(

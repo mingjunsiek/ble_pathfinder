@@ -4,7 +4,6 @@ import 'package:ble_pathfinder/models/beacon_data.dart';
 import 'package:ble_pathfinder/models/neighbour_node.dart';
 import 'package:ble_pathfinder/models/poinode.dart';
 import 'package:get/get.dart';
-import 'package:vector_math/vector_math_64.dart' as vector;
 
 //BLE Library Imports
 import 'package:beacons_plugin/beacons_plugin.dart';
@@ -76,12 +75,13 @@ class BeaconController extends GetxController {
   }
 
   Future<void> beaconInitPlatformState() async {
+    BeaconsPlugin.setDebugLevel(2);
+
     BeaconsPlugin.listenToBeacons(beaconEventsController);
     print('listenToBeacons Init');
 
     for (var node in poiNodes.entries) {
-      await BeaconsPlugin.addRegion(
-          node.value.nodeName, node.value.nodeESP32ID);
+      BeaconsPlugin.addRegion(node.value.nodeName, node.value.nodeESP32ID);
     }
     print('addRegion Init');
 
@@ -101,9 +101,11 @@ class BeaconController extends GetxController {
     }, onError: (error) {
       print("beaconEventsController Error: $error");
     });
+
+    await BeaconsPlugin.startMonitoring;
   }
 
-  void startMonitoring() async {
+  Future<void> startMonitoring() async {
     await BeaconsPlugin.startMonitoring;
   }
 
@@ -167,10 +169,6 @@ class BeaconController extends GetxController {
             heading: 270,
           ),
         ],
-        otherNodesPosition: {
-          2: vector.Vector3(0, 0, -1),
-          3: vector.Vector3(0, 0, -2),
-        },
         name: 'Hardware Project Lab');
 
     var node2 = POINode(
@@ -193,10 +191,6 @@ class BeaconController extends GetxController {
             heading: 270,
           ),
         ],
-        otherNodesPosition: {
-          1: vector.Vector3(0, 0, -1),
-          3: vector.Vector3(0, 0, -2),
-        },
         name: 'Intersection');
 
     var node3 = POINode(

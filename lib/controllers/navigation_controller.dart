@@ -1,9 +1,7 @@
-import 'package:ble_pathfinder/controllers/ar_core_controller.dart';
 import 'package:ble_pathfinder/models/beacon_data.dart';
 import 'package:ble_pathfinder/models/neighbour_node.dart';
 import 'package:ble_pathfinder/models/poinode.dart';
 import 'package:ble_pathfinder/utils/constants.dart';
-import 'package:vector_math/vector_math_64.dart' as vector;
 import 'dart:collection';
 import 'package:get/get.dart';
 
@@ -58,7 +56,6 @@ class NavigationController extends GetxController {
   void setCurrentLocation(POINode node) {
     currentNode.value = node;
     if (isNavigating) {
-      // final arController = Get.find<ARCoreController>();
       if (visitedArray.isNotEmpty) {
         print('List Length: ${visitedArray.length}');
         if (visitedArray.first.nodeID == node.nodeID) {
@@ -79,14 +76,8 @@ class NavigationController extends GetxController {
             }
 
             directionDegree.value = visitedArray.first.heading;
-
-            // arController.addArrowWithPosition(
-            //   vector.Vector3(0, 0, -1),
-            //   visitedArray.first.heading,
-            // );
           } else {
             print("Reached Destination");
-            // arController.addDestinationPin();
             reachedDestination.value = true;
             levelNavigation.value = LevelNavigation.reach_destination;
           }

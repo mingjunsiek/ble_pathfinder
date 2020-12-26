@@ -1,14 +1,9 @@
-import 'package:ble_pathfinder/controllers/ar_core_controller.dart';
-import 'package:ble_pathfinder/controllers/beacon_controller.dart';
 import 'package:ble_pathfinder/controllers/compass_controller.dart';
 import 'package:ble_pathfinder/controllers/image_controller.dart';
 import 'package:ble_pathfinder/controllers/navigation_controller.dart';
 import 'package:ble_pathfinder/utils/constants.dart';
 import 'package:ble_pathfinder/utils/size_config.dart';
 import 'package:ble_pathfinder/utils/size_helpers.dart';
-import 'package:ble_pathfinder/widgets/compass_painter.dart';
-import 'package:ble_pathfinder/widgets/compass_parent_painter.dart';
-import 'package:ble_pathfinder/widgets/compass_widget.dart';
 import 'package:ble_pathfinder/widgets/navigation_widget.dart';
 import 'package:ble_pathfinder/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';

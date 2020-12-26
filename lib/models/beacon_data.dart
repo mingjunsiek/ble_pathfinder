@@ -7,7 +7,7 @@ class BeaconData {
   String major;
   String minor;
   String distance;
-  String proxumity;
+  String proximity;
   String scanTime;
   String rssi;
   String txPower;
@@ -20,7 +20,7 @@ class BeaconData {
     this.major,
     this.minor,
     this.distance,
-    this.proxumity,
+    this.proximity,
     this.scanTime,
     this.rssi,
     this.txPower,
@@ -35,7 +35,7 @@ class BeaconData {
       'major': major,
       'minor': minor,
       'distance': distance,
-      'proxumity': proxumity,
+      'proximity': proximity,
       'scanTime': scanTime,
       'rssi': rssi,
       'txPower': txPower,
@@ -53,7 +53,7 @@ class BeaconData {
       major: map['major'],
       minor: map['minor'],
       distance: map['distance'],
-      proxumity: map['proxumity'],
+      proximity: map['proximity'],
       scanTime: map['scanTime'],
       rssi: map['rssi'],
       txPower: map['txPower'],
