@@ -126,7 +126,7 @@ class BeaconController extends GetxController {
 
       beaconDataPriorityQueue.removeWhere((item) {
         var diff = DateTime.now().difference(item.dateTime);
-        if (diff.inSeconds >= 1) return true;
+        if (diff.inSeconds >= 3) return true;
         return false;
       });
 

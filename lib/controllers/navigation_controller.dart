@@ -36,17 +36,18 @@ class NavigationController extends GetxController {
   }
 
   String get printList {
-    var tempString = "";
-    visitedArray.forEach((element) {
-      tempString += "${element.nodeID} : ${element.heading}\n";
-    });
-    return tempString;
-
     // var tempString = "";
-    // beaconList.forEach((element) {
-    //   tempString += "${element.name} : ${element.rssi}\n";
+    // visitedArray.forEach((element) {
+    //   tempString +=
+    //       "${element.nodeID} : ${element.heading} \n";
     // });
     // return tempString;
+
+    var tempString = "";
+    beaconList.forEach((element) {
+      tempString += "${element.name} : ${element.rssi}\n";
+    });
+    return tempString;
   }
 
   String get directionString {

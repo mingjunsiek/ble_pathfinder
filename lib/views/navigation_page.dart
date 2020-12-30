@@ -13,7 +13,6 @@ class NavigationPage extends StatelessWidget {
   final navigationController = Get.find<NavigationController>();
   final compassController = Get.find<CompassController>();
   final imageController = Get.find<ImageController>();
-  // final arController = Get.put(ARCoreController());
 
   @override
   Widget build(BuildContext context) {
@@ -64,24 +63,11 @@ class NavigationPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                // Obx(
-                //   () => Text(
-                //     navigationController.printList,
-                //   ),
-                // ),
-                // AR Navigation
-                // Container(
-                //   height: displayHeight(context) * 0.70,
-                //   child: GetBuilder<ARCoreController>(
-                //     init: ARCoreController(),
-                //     builder: (controller) => controller.initArCoreview(),
-                //   ),
-                // ),
-                // Obx(
-                //   () => Text(
-                //     'Position: ${arController.modelPosition.value}',
-                //   ),
-                // ),
+                Obx(
+                  () => Text(
+                    navigationController.printList,
+                  ),
+                ),
                 // Compass Navigation
                 Container(
                   height: displayHeight(context) * 0.7,

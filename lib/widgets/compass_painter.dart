@@ -14,23 +14,6 @@ class CompassPainter extends CustomPainter {
   final compassController = Get.find<CompassController>();
   double get rotation => ((currentBearing ?? 0) * (pi / 180));
 
-  // double get rotation {
-  //   if (compassController.currentBearingSnapshot == null) {
-  //     compassController.currentBearingSnapshot = currentBearing;
-  //     compassController.locationBearingSnapshot = locationBearing;
-  //     return locationBearing;
-  //   } else {
-  //     return ((currentBearing - compassController.currentBearingSnapshot) *
-  //             -1) *
-  //         (pi / 180);
-  //   }
-  //   // var currentRotation = ((currentBearing ?? 0) * (pi / 180));
-  //   // var offsetRotation = (currentBearing - locationBearing).abs() * (pi / 180);
-  //   // return currentRotation + offsetRotation;
-
-  //   // return (angle - bearingDiff).abs() * (pi / 180);
-  // }
-
   Paint get _brush => new Paint()
     ..style = PaintingStyle.stroke
     ..strokeWidth = 2.0;
