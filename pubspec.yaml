@@ -31,7 +31,7 @@ dependencies:
   cupertino_icons: ^1.0.1
   animated_splash_screen: ^1.0.1+2
   permission_handler: ^5.0.1+1
-  flutter_compass: "^0.4.3"
+  flutter_compass: "^0.5.1"
 
 dev_dependencies:
   flutter_test:
@@ -63,6 +63,12 @@ flutter:
     - assets/images/splash/ic_splash.png
     - assets/images/arrow_animation.gif
     - assets/images/location_pin.gif
+    - assets/images/onboarding/onboarding_1.png
+    - assets/images/onboarding/onboarding_2.png
+    - assets/images/onboarding/onboarding_3.png
+    - assets/images/tutorial/tutorial_1.png
+    - assets/images/tutorial/tutorial_2.png
+    - assets/images/tutorial/tutorial_3.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
