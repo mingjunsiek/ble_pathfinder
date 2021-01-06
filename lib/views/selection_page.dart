@@ -30,7 +30,7 @@ class SelectionPage extends StatelessWidget {
                       alignment: Alignment(0, 0),
                       // height: displayWidth(context) * 0.7,
                       child: Image(
-                        image: imageController.vectorLoading.image,
+                        image: imageController.gifLoading.image,
                       ),
                     )
                   : beaconController.haveCurrentLocation == false.obs

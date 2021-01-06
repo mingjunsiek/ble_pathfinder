@@ -19,10 +19,3 @@ enum LevelNavigation {
   empty,
   reach_destination,
 }
-
-enum CompassAccuracy {
-  high,
-  medium,
-  low,
-  unknown,
-}

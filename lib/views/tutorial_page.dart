@@ -1,10 +1,11 @@
 import 'package:ble_pathfinder/utils/constants.dart';
 import 'package:ble_pathfinder/utils/size_config.dart';
-import 'package:ble_pathfinder/utils/size_helpers.dart';
-import 'package:ble_pathfinder/widgets/onboarding_widget.dart';
+import 'package:ble_pathfinder/views/calibration_page.dart';
 import 'package:ble_pathfinder/widgets/rounded_button.dart';
 import 'package:ble_pathfinder/widgets/tutorial_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TutorialPage extends StatefulWidget {
   @override
@@ -70,8 +71,11 @@ class _TutorialPageState extends State<TutorialPage> {
                   RoundedButton(
                     btnColor: kPrimaryColor,
                     btnText: 'CONTINUE',
-                    btnFunction: () {
-                      // openAppSettings();
+                    btnFunction: () async {
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      prefs.setBool('initial', true);
+                      Get.off(CalibrationPage());
                     },
                   ),
                   Spacer(),

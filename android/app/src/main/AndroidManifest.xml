@@ -13,7 +13,7 @@
   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
    <application
-        android:label="SCSE Pathfinder"
+        android:label="Pathfinder"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

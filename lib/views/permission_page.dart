@@ -36,7 +36,7 @@ class PermissionPage extends StatelessWidget {
                 ),
                 Spacer(),
                 Image(
-                  image: imageController.vectorPermission.image,
+                  image: imageController.gifPermission.image,
                 ),
                 Spacer(),
                 Text(

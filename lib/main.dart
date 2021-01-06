@@ -1,5 +1,4 @@
 import 'package:ble_pathfinder/utils/constants.dart';
-import 'package:ble_pathfinder/views/onboarding_page.dart';
 import 'package:ble_pathfinder/views/splash_screen_page.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +18,6 @@ Future<void> main() async {
 
 class InitializeService extends GetxService {
   Future<InitializeService> init() async {
-    // Get.put(BeaconController(), permanent: true);
     Get.put(PermissionController());
     Get.put(CompassController());
     Get.put(NavigationController());
@@ -37,27 +35,29 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    imageController.vectorPermission =
+    imageController.gifPermission =
         Image.asset('assets/images/vectors/vector_permission.gif');
     imageController.vectorShadow =
         Image.asset('assets/images/vectors/vector_shadow.png');
-    imageController.vectorLoading =
+    imageController.gifLoading =
         Image.asset('assets/images/vectors/vector_loading.gif');
     imageController.gifNavigation =
         Image.asset('assets/images/arrow_animation.gif');
     imageController.gifDestinationPin =
         Image.asset('assets/images/location_pin.gif');
+    imageController.gifCalibrate = Image.asset('assets/images/calibrate.gif');
     super.initState();
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    precacheImage(imageController.vectorPermission.image, context);
+    precacheImage(imageController.gifPermission.image, context);
     precacheImage(imageController.vectorShadow.image, context);
-    precacheImage(imageController.vectorLoading.image, context);
+    precacheImage(imageController.gifLoading.image, context);
     precacheImage(imageController.gifNavigation.image, context);
     precacheImage(imageController.gifDestinationPin.image, context);
+    precacheImage(imageController.gifCalibrate.image, context);
   }
 
   @override
@@ -77,8 +77,7 @@ class _MyAppState extends State<MyApp> {
         ),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      // home: SplashScreenPage(),
-      home: OnboardingPage(),
+      home: SplashScreenPage(),
     );
   }
 }
