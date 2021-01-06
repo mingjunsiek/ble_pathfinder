@@ -1,6 +1,5 @@
 import 'package:ble_pathfinder/utils/constants.dart';
 import 'package:ble_pathfinder/utils/size_config.dart';
-import 'package:ble_pathfinder/utils/size_helpers.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingWidget extends StatelessWidget {

@@ -1,6 +1,5 @@
 import 'package:flutter_compass/flutter_compass.dart';
 import 'package:get/get.dart';
-import 'package:ble_pathfinder/utils/constants.dart';
 
 class CompassController extends GetxController {
   final heading = 0.0.obs;

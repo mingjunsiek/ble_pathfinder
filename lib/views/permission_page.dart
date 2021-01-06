@@ -1,10 +1,7 @@
-import 'package:ble_pathfinder/controllers/beacon_controller.dart';
 import 'package:ble_pathfinder/controllers/image_controller.dart';
 import 'package:ble_pathfinder/utils/constants.dart';
 import 'package:ble_pathfinder/utils/size_config.dart';
-import 'package:ble_pathfinder/controllers/permission_controller.dart';
 import 'package:ble_pathfinder/utils/size_helpers.dart';
-import 'package:ble_pathfinder/views/selection_page.dart';
 import 'package:ble_pathfinder/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

@@ -30,22 +30,5 @@ class NavigationWidget extends StatelessWidget {
         ),
       ),
     );
-    // Obx(
-    //   () => CustomPaint(
-    //     foregroundPainter: CompassParentPainter(
-    //       currentBearing: compassController.heading.value,
-    //       locationBearing: navigationController.directionDegree.value,
-    //     ),
-    //     child: CustomPaint(
-    //       foregroundPainter: CompassPainter(
-    //         currentBearing: compassController.heading.value,
-    //         locationBearing: navigationController.directionDegree.value,
-    //       ),
-    //       child: Center(
-    //         child: Text(compassController.readout),
-    //       ),
-    //     ),
-    //   ),
-    // );
   }
 }
