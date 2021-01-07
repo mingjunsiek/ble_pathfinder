@@ -10,6 +10,11 @@ import 'package:ble_pathfinder/widgets/rounded_button.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:outline_material_icons/outline_material_icons.dart';
+
+import '../utils/constants.dart';
+import '../utils/size_helpers.dart';
+import '../utils/size_helpers.dart';
 
 class SelectionWidget extends StatelessWidget {
   final beaconController = Get.find<BeaconController>();
@@ -20,14 +25,41 @@ class SelectionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: SizedBox(
-        width: double.infinity,
         child: Column(
           children: [
             Expanded(
+              flex: 3,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Spacer(),
+                  SizedBox(
+                    height: displayHeight(context) * 0.03,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        // icon: Image.asset(
+                        //     'assets/images/buttons/setting_button.png'),
+                        icon: Icon(
+                          OMIcons.settings,
+                          color: kSecondaryColor,
+                          size: displayWidth(context) * 0.08,
+                        ),
+                        onPressed: () {},
+                      ),
+                      IconButton(
+                        // icon:
+                        //     Image.asset('assets/images/buttons/map_button.png'),
+                        icon: Icon(
+                          OMIcons.map,
+                          color: kSecondaryColor,
+                          size: displayWidth(context) * 0.08,
+                        ),
+                        onPressed: () {},
+                      ),
+                    ],
+                  ),
                   Text(
                     'Current Location:',
                     style: TextStyle(
@@ -78,17 +110,29 @@ class SelectionWidget extends StatelessWidget {
                     ),
                   ),
                   Spacer(),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Column(
+                children: [
                   Obx(
                     () => DropdownSearch<POINode>(
                       label: 'Select Destination',
                       mode: Mode.BOTTOM_SHEET,
-                      items: beaconController.getSelectionList(
-                          beaconController.currentLocation.value.name),
+                      // items: beaconController.getSelectionList(
+                      //     beaconController.currentLocation.value.name),
                       itemAsString: (POINode poi) => poi.name,
                       onChanged: (value) {
                         beaconController.destinationLocation = value;
                         print(beaconController.destinationLocation.name);
                       },
+                      showSearchBox: true,
+                      searchBoxDecoration: InputDecoration(
+                        labelText: 'Search POI',
+                      ),
+                      onFind: (String filter) =>
+                          beaconController.onSearch(filter),
                     ),
                   ),
                   SizedBox(
@@ -146,10 +190,9 @@ class SelectionWidget extends StatelessWidget {
                       }
                     },
                   ),
-                  Spacer(),
                 ],
               ),
-            ),
+            )
           ],
         ),
       ),

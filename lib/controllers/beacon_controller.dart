@@ -51,6 +51,15 @@ class BeaconController extends GetxController {
         .toList();
   }
 
+  Future<List<POINode>> onSearch(String filter) async {
+    return poiList
+        .where((element) =>
+            element.name != 'Intersection' &&
+            element.name != filter &&
+            element.name.contains(filter))
+        .toList();
+  }
+
   void startTimer(int timeSet) {
     const oneSec = const Duration(seconds: 1);
     _timerTime = timeSet;

@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../utils/size_helpers.dart';
+
 class SplashScreenPage extends StatelessWidget {
   final permissionController = Get.find<PermissionController>();
 
@@ -33,7 +35,7 @@ class SplashScreenPage extends StatelessWidget {
             return OnboardingPage();
         }
       },
-      splashIconSize: getProportionateScreenWidth(300),
+      splashIconSize: displayWidth(context) * 0.4,
     );
   }
 }
