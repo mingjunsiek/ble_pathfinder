@@ -55,7 +55,7 @@ class BeaconController extends GetxController {
     return poiList
         .where((element) =>
             element.name != 'Intersection' &&
-            element.name != filter &&
+            element.name != currentLocation.value.name &&
             element.name.contains(filter))
         .toList();
   }

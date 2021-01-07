@@ -116,25 +116,27 @@ class SelectionWidget extends StatelessWidget {
             Expanded(
               child: Column(
                 children: [
-                  Obx(
-                    () => DropdownSearch<POINode>(
-                      label: 'Select Destination',
-                      mode: Mode.BOTTOM_SHEET,
-                      // items: beaconController.getSelectionList(
-                      //     beaconController.currentLocation.value.name),
-                      itemAsString: (POINode poi) => poi.name,
-                      onChanged: (value) {
-                        beaconController.destinationLocation = value;
-                        print(beaconController.destinationLocation.name);
-                      },
-                      showSearchBox: true,
-                      searchBoxDecoration: InputDecoration(
-                        labelText: 'Search POI',
-                      ),
-                      onFind: (String filter) =>
-                          beaconController.onSearch(filter),
+                  // Obx(
+                  //   () =>
+                  DropdownSearch<POINode>(
+                    label: 'Select Destination',
+                    mode: Mode.BOTTOM_SHEET,
+                    // items: beaconController.getSelectionList(
+                    //     beaconController.currentLocation.value.name),
+                    itemAsString: (POINode poi) => poi.name,
+                    onChanged: (value) {
+                      beaconController.destinationLocation = value;
+                      print(beaconController.destinationLocation.name);
+                    },
+                    showSearchBox: true,
+                    searchBoxDecoration: InputDecoration(
+                      prefixIcon: Icon(OMIcons.search),
+                      labelText: 'Search POI',
                     ),
+                    onFind: (String filter) =>
+                        beaconController.onSearch(filter),
                   ),
+                  // ),
                   SizedBox(
                     height: displayHeight(context) * 0.02,
                   ),
