@@ -26,6 +26,7 @@ class NavigationPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Spacer(),
                 Text(
                   'Current Location: ',
                   style: TextStyle(
@@ -57,20 +58,44 @@ class NavigationPage extends StatelessWidget {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: kPrimaryColor,
-                          fontSize: getDefaultProportionateScreenWidth(),
+                          fontWeight: FontWeight.bold,
+                          fontSize: getProportionateScreenWidth(25),
                         ),
                       ),
                     ),
                   ),
                 ),
-                Obx(
-                  () => Text(
-                    navigationController.printList,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Compass Accuracy: ',
+                      style: TextStyle(
+                        fontSize: getProportionateScreenWidth(
+                          15,
+                        ),
+                      ),
+                    ),
+                    Obx(
+                      () => Text(
+                        compassController.accuracy.value,
+                        style: TextStyle(
+                          fontSize: getProportionateScreenWidth(15),
+                          color: kPrimaryColor,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
+
+                // Obx(
+                //   () => Text(
+                //     navigationController.printList,
+                //   ),
+                // ),
                 // Compass Navigation
                 Container(
-                  height: displayHeight(context) * 0.7,
+                  height: displayHeight(context) * 0.6,
                   alignment: Alignment(0, 0),
                   child: Obx(
                     () => AnimatedSwitcher(
@@ -123,12 +148,21 @@ class NavigationPage extends StatelessWidget {
                                           alignment: Alignment(0, 0),
                                           height: displayHeight(context) * 0.35,
                                           key: UniqueKey(),
-                                          child: Text(
-                                            'Finding Path to Destination',
-                                            style: TextStyle(
-                                              fontSize:
-                                                  getDefaultProportionateScreenWidth(),
-                                            ),
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                'Finding Path to Destination',
+                                                style: TextStyle(
+                                                  fontSize:
+                                                      getDefaultProportionateScreenWidth(),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: displayHeight(context) *
+                                                    0.1,
+                                              ),
+                                              CircularProgressIndicator(),
+                                            ],
                                           ),
                                         )
                                       : Container(
@@ -173,6 +207,7 @@ class NavigationPage extends StatelessWidget {
                     ),
                   ),
                 ),
+                Spacer(),
               ],
             ),
           ),

@@ -28,7 +28,7 @@ class BeaconController extends GetxController {
       StreamController<String>.broadcast();
 
   Comparator<BeaconData> rssiComparator = (a, b) => a.rssi.compareTo(b.rssi);
-  List<BeaconData> beaconDataPriorityQueue = [];
+  final beaconDataPriorityQueue = List<BeaconData>().obs;
 
   @override
   void onInit() {
@@ -156,13 +156,21 @@ class BeaconController extends GetxController {
     currentLocation.value =
         poiList.firstWhere((element) => element.nodeESP32ID == uuid);
     navController.setCurrentLocation(currentLocation.value);
-    navController.beaconList.assignAll(beaconDataPriorityQueue);
+    // navController.beaconList.assignAll(beaconDataPriorityQueue);
     haveCurrentLocation.value = true;
     if (_timer == null) {
       startTimer(5);
     }
 
     print("Set Current location: " + currentLocation.value.nodeID.toString());
+  }
+
+  String get printList {
+    var tempString = "";
+    beaconDataPriorityQueue.forEach((element) {
+      tempString += "${element.name} : ${element.rssi}\n";
+    });
+    return tempString;
   }
 
   void fetchPoiNodes() {

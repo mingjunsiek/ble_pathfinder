@@ -14,7 +14,6 @@ import 'package:outline_material_icons/outline_material_icons.dart';
 
 import '../utils/constants.dart';
 import '../utils/size_helpers.dart';
-import '../utils/size_helpers.dart';
 
 class SelectionWidget extends StatelessWidget {
   final beaconController = Get.find<BeaconController>();
@@ -39,18 +38,21 @@ class SelectionWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
-                        // icon: Image.asset(
-                        //     'assets/images/buttons/setting_button.png'),
                         icon: Icon(
                           OMIcons.settings,
                           color: kSecondaryColor,
                           size: displayWidth(context) * 0.08,
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.defaultDialog(
+                            title: 'Beacon List',
+                            content: Obx(
+                              () => Text(beaconController.printList),
+                            ),
+                          );
+                        },
                       ),
                       IconButton(
-                        // icon:
-                        //     Image.asset('assets/images/buttons/map_button.png'),
                         icon: Icon(
                           OMIcons.map,
                           color: kSecondaryColor,

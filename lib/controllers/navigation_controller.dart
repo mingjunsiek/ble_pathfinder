@@ -17,7 +17,7 @@ class NavigationController extends GetxController {
   final visitedArray = <NeighbourNode>[].obs;
   final directionDegree = 0.0.obs;
   final reachedDestination = false.obs;
-  final beaconList = <BeaconData>[].obs;
+  // final beaconList = <BeaconData>[].obs;
   bool isNavigating = false;
   final levelNavigation = LevelNavigation.empty.obs;
 
@@ -35,20 +35,20 @@ class NavigationController extends GetxController {
     destinationNodeId = destinationId;
   }
 
-  String get printList {
-    // var tempString = "";
-    // visitedArray.forEach((element) {
-    //   tempString +=
-    //       "${element.nodeID} : ${element.heading} \n";
-    // });
-    // return tempString;
+  // String get printList {
+  //   // var tempString = "";
+  //   // visitedArray.forEach((element) {
+  //   //   tempString +=
+  //   //       "${element.nodeID} : ${element.heading} \n";
+  //   // });
+  //   // return tempString;
 
-    var tempString = "";
-    beaconList.forEach((element) {
-      tempString += "${element.name} : ${element.rssi}\n";
-    });
-    return tempString;
-  }
+  //   var tempString = "";
+  //   beaconList.forEach((element) {
+  //     tempString += "${element.name} : ${element.rssi}\n";
+  //   });
+  //   return tempString;
+  // }
 
   String get directionString {
     return 'Walk towards ${directionDegree.value}';
