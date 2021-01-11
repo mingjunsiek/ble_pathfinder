@@ -87,6 +87,7 @@ class NavigationPage extends StatelessWidget {
                     ),
                   ],
                 ),
+                Spacer(),
 
                 // Obx(
                 //   () => Text(
@@ -110,28 +111,48 @@ class NavigationPage extends StatelessWidget {
                               LevelNavigation.go_down
                           ? Container(
                               alignment: Alignment(0, 0),
-                              height: displayHeight(context) * 0.35,
                               key: UniqueKey(),
-                              child: Text(
-                                'Go Down One Level',
-                                style: TextStyle(
-                                  fontSize:
-                                      getDefaultProportionateScreenWidth(),
-                                ),
+                              child: Column(
+                                children: [
+                                  Image.asset(
+                                    'assets/images/elevator_down.gif',
+                                    height: displayHeight(context) * 0.4,
+                                  ),
+                                  SizedBox(
+                                    height: displayHeight(context) * 0.02,
+                                  ),
+                                  Text(
+                                    'Go Down One Level',
+                                    style: TextStyle(
+                                      fontSize:
+                                          getDefaultProportionateScreenWidth(),
+                                    ),
+                                  ),
+                                ],
                               ),
                             )
                           : navigationController.levelNavigation.value ==
                                   LevelNavigation.go_up
                               ? Container(
                                   alignment: Alignment(0, 0),
-                                  height: displayHeight(context) * 0.35,
                                   key: UniqueKey(),
-                                  child: Text(
-                                    'Go Up One Level',
-                                    style: TextStyle(
-                                      fontSize:
-                                          getDefaultProportionateScreenWidth(),
-                                    ),
+                                  child: Column(
+                                    children: [
+                                      Image.asset(
+                                        'assets/images/elevator_up.gif',
+                                        height: displayHeight(context) * 0.4,
+                                      ),
+                                      SizedBox(
+                                        height: displayHeight(context) * 0.02,
+                                      ),
+                                      Text(
+                                        'Go Up One Level',
+                                        style: TextStyle(
+                                          fontSize:
+                                              getDefaultProportionateScreenWidth(),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 )
                               : navigationController.levelNavigation.value ==
@@ -146,9 +167,10 @@ class NavigationPage extends StatelessWidget {
                                           LevelNavigation.empty
                                       ? Container(
                                           alignment: Alignment(0, 0),
-                                          height: displayHeight(context) * 0.35,
                                           key: UniqueKey(),
                                           child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
                                             children: [
                                               Text(
                                                 'Finding Path to Destination',
@@ -167,7 +189,6 @@ class NavigationPage extends StatelessWidget {
                                         )
                                       : Container(
                                           alignment: Alignment(0, 0),
-                                          height: displayHeight(context) * 0.35,
                                           key: UniqueKey(),
                                           child: Image(
                                             image: imageController
@@ -177,6 +198,7 @@ class NavigationPage extends StatelessWidget {
                     ),
                   ),
                 ),
+                Spacer(),
                 Container(
                   height: displayHeight(context) * 0.06,
                   width: displayWidth(context) * 0.5,
