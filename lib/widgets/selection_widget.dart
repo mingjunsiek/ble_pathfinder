@@ -1,7 +1,7 @@
 import 'package:ble_pathfinder/controllers/beacon_controller.dart';
 import 'package:ble_pathfinder/controllers/image_controller.dart';
 import 'package:ble_pathfinder/controllers/navigation_controller.dart';
-import 'package:ble_pathfinder/models/poinode.dart';
+import 'package:ble_pathfinder/models/location.dart';
 import 'package:ble_pathfinder/utils/constants.dart';
 import 'package:ble_pathfinder/utils/size_config.dart';
 import 'package:ble_pathfinder/utils/size_helpers.dart';
@@ -120,14 +120,14 @@ class SelectionWidget extends StatelessWidget {
                 children: [
                   // Obx(
                   //   () =>
-                  DropdownSearch<POINode>(
+                  DropdownSearch<LocationInfo>(
                     label: 'Select Destination',
                     mode: Mode.BOTTOM_SHEET,
                     // items: beaconController.getSelectionList(
                     //     beaconController.currentLocation.value.name),
-                    itemAsString: (POINode poi) => poi.name,
+                    itemAsString: (LocationInfo loc) => loc.name,
                     onChanged: (value) {
-                      beaconController.destinationLocation = value;
+                      beaconController.setDestination(value.nodeID);
                       print(beaconController.destinationLocation.name);
                     },
                     showSearchBox: true,
@@ -163,25 +163,7 @@ class SelectionWidget extends StatelessWidget {
                               fontSize: 16,
                             ),
                           ),
-                          // snackPosition: SnackPosition.BOTTOM,
-                          // snackStyle: SnackStyle.FLOATING,
                         );
-                        // Get.snackbar(
-                        //   'Error',
-                        //   null,
-                        //   titleText: Text(
-                        //     'Error',
-                        //     style: TextStyle(
-                        //       color: Colors.black,
-                        //       fontWeight: FontWeight.w800,
-                        //       fontSize: 16,
-                        //     ),
-                        //   ),
-                        //   messageText: Text(
-                        //       'Please select a destination'),
-                        //   snackPosition: SnackPosition.BOTTOM,
-                        //   snackStyle: SnackStyle.FLOATING,
-                        // );
                       } else {
                         navigationController.setNavigationSettings(
                             beaconController.poiNodes,

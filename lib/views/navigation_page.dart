@@ -88,13 +88,6 @@ class NavigationPage extends StatelessWidget {
                   ],
                 ),
                 Spacer(),
-
-                // Obx(
-                //   () => Text(
-                //     navigationController.printList,
-                //   ),
-                // ),
-                // Compass Navigation
                 Container(
                   height: displayHeight(context) * 0.6,
                   alignment: Alignment(0, 0),

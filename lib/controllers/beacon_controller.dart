@@ -1,8 +1,10 @@
 import 'dart:collection';
 import 'dart:async';
 import 'package:ble_pathfinder/models/beacon_data.dart';
+import 'package:ble_pathfinder/models/location.dart';
 import 'package:ble_pathfinder/models/neighbour_node.dart';
 import 'package:ble_pathfinder/models/poinode.dart';
+import 'package:ble_pathfinder/utils/constants.dart';
 import 'package:get/get.dart';
 
 //BLE Library Imports
@@ -14,7 +16,20 @@ import 'navigation_controller.dart';
 class BeaconController extends GetxController {
   var poiNodes = HashMap<int, POINode>();
   var poiList = List<POINode>();
-  final currentLocation = POINode().obs;
+  var locationList = List<LocationInfo>();
+  final currentLocation = POINode(
+    level: null,
+    name: '',
+    nearestLift: null,
+    neighbourArray: [],
+    nodeESP32ID: '',
+    nodeID: null,
+    nodeName: '',
+    poiType: null,
+    section: '',
+    x: null,
+    y: null,
+  ).obs;
   var fetchingBeacons = true.obs;
   var haveCurrentLocation = false.obs;
   var beaconResult = ''.obs;
@@ -33,6 +48,7 @@ class BeaconController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    fetchLocationInfo();
     fetchPoiNodes();
   }
 
@@ -44,18 +60,23 @@ class BeaconController extends GetxController {
     beaconEventsController.close();
   }
 
-  List<POINode> getSelectionList(String currLocation) {
-    return poiList
-        .where((element) =>
-            element.name != 'Intersection' && element.name != currLocation)
-        .toList();
+  // List<POINode> getSelectionList(String currLocation) {
+  //   return poiList
+  //       .where((element) =>
+  //           element.poiType != POIType.intersection &&
+  //           element.name != currLocation)
+  //       .toList();
+  // }
+
+  void setDestination(int nodeID) {
+    destinationLocation =
+        poiList.firstWhere((element) => element.nodeID == nodeID);
   }
 
-  Future<List<POINode>> onSearch(String filter) async {
-    return poiList
+  Future<List<LocationInfo>> onSearch(String filter) async {
+    return locationList
         .where((element) =>
-            element.name != 'Intersection' &&
-            element.name != currentLocation.value.name &&
+            element.nodeID != currentLocation.value.nodeID &&
             element.name.contains(filter))
         .toList();
   }
@@ -173,247 +194,405 @@ class BeaconController extends GetxController {
     return tempString;
   }
 
+  void fetchLocationInfo() {
+    var loc1 = LocationInfo(
+      name: 'Hardware Project Lab',
+      nodeID: 1,
+    );
+    var loc2 = LocationInfo(
+      name: 'Software Lab 2',
+      nodeID: 3,
+    );
+    var loc3 = LocationInfo(
+      name: 'Hardware Lab 2',
+      nodeID: 4,
+    );
+    var loc4 = LocationInfo(
+      name: 'Hardware Lab 1',
+      nodeID: 6,
+    );
+    var loc5 = LocationInfo(
+      name: 'SCSE Lounge',
+      nodeID: 7,
+    );
+    var loc6 = LocationInfo(
+      name: 'Software Lab 1',
+      nodeID: 7,
+    );
+    var loc7 = LocationInfo(name: 'Software Lab 3', nodeID: 8);
+    var loc8 = LocationInfo(
+      name: 'Software Project Lab',
+      nodeID: 12,
+    );
+    var loc9 = LocationInfo(
+      name: 'Hardware Lab 3',
+      nodeID: 14,
+    );
+
+    locationList = [
+      loc1,
+      loc2,
+      loc3,
+      loc4,
+      loc5,
+      loc6,
+      loc7,
+      loc8,
+      loc9,
+    ];
+  }
+
   void fetchPoiNodes() {
     var node1 = POINode(
-        nodeID: 1,
-        level: 1,
-        nearestStairs: 3,
-        nodeName: 'POI Node 1',
-        nodeESP32ID: '1510eae0-be73-451f-8faf-6b622f92ac5f',
-        neighbourArray: [
-          NeighbourNode(
-            nodeID: 2,
-            heading: 270,
-          ),
-        ],
-        name: 'Hardware Project Lab');
+      nodeID: 1,
+      level: 0,
+      nearestLift: 3,
+      nodeName: 'POI Node 1',
+      nodeESP32ID: '1510eae0-be73-451f-8faf-6b622f92ac5f',
+      neighbourArray: [
+        NeighbourNode(
+          nodeID: 2,
+          heading: 270,
+          distanceTo: 5,
+        ),
+      ],
+      section: 'C',
+      x: 11,
+      y: 21,
+      name: 'Hardware Project Lab',
+      poiType: POIType.poi,
+    );
 
     var node2 = POINode(
-        nodeID: 2,
-        level: 1,
-        nearestStairs: 3,
-        nodeName: 'POI Node 2',
-        nodeESP32ID: '5f0868e1-a25a-4213-8d81-66d2517fa79e',
-        neighbourArray: [
-          NeighbourNode(
-            nodeID: 1,
-            heading: 90,
-          ),
-          NeighbourNode(
-            nodeID: 3,
-            heading: 0,
-          ),
-          NeighbourNode(
-            nodeID: 4,
-            heading: 270,
-          ),
-        ],
-        name: 'Intersection');
+      nodeID: 2,
+      level: 0,
+      nearestLift: 3,
+      nodeName: 'POI Node 2',
+      nodeESP32ID: '5f0868e1-a25a-4213-8d81-66d2517fa79e',
+      neighbourArray: [
+        NeighbourNode(
+          nodeID: 1,
+          heading: 90,
+          distanceTo: 5,
+        ),
+        NeighbourNode(
+          nodeID: 3,
+          heading: 0,
+          distanceTo: 5,
+        ),
+        NeighbourNode(
+          nodeID: 4,
+          heading: 270,
+          distanceTo: 5,
+        ),
+      ],
+      name: 'Intersection',
+      section: 'B-C',
+      x: 11,
+      y: 16,
+      poiType: POIType.intersection,
+    );
 
     var node3 = POINode(
-        nodeID: 3,
-        level: 1,
-        nearestStairs: 3,
-        nextLevelStairs: 10,
-        nodeName: 'POI Node 3',
-        nodeESP32ID: '91551886-569b-4993-aa64-1ae9739a46b4',
-        neighbourArray: [
-          NeighbourNode(
-            nodeID: 2,
-            heading: 180,
-          ),
-        ],
-        name: 'Software Lab 2');
+      nodeID: 3,
+      level: 0,
+      nearestLift: 3,
+      nextLevelLift: 10,
+      nodeName: 'POI Node 3',
+      nodeESP32ID: '91551886-569b-4993-aa64-1ae9739a46b4',
+      neighbourArray: [
+        NeighbourNode(
+          nodeID: 2,
+          heading: 180,
+          distanceTo: 5,
+        ),
+        NeighbourNode(
+          nodeID: 10,
+          levelNavigation: LevelNavigation.go_up,
+        ),
+      ],
+      name: 'Software Lab 2',
+      section: 'B-C',
+      x: 6,
+      y: 16,
+      poiType: POIType.poi,
+    );
 
     var node4 = POINode(
-        nodeID: 4,
-        level: 1,
-        nearestStairs: 3,
-        nodeName: 'POI Node 4',
-        nodeESP32ID: '89206b21-ec85-4487-a051-c20819b40833',
-        neighbourArray: [
-          NeighbourNode(
-            nodeID: 2,
-            heading: 90,
-          ),
-          NeighbourNode(
-            nodeID: 5,
-            heading: 270,
-          ),
-        ],
-        name: 'Hardware Lab 2');
+      nodeID: 4,
+      level: 0,
+      nearestLift: 3,
+      nodeName: 'POI Node 4',
+      nodeESP32ID: '89206b21-ec85-4487-a051-c20819b40833',
+      neighbourArray: [
+        NeighbourNode(
+          nodeID: 2,
+          heading: 90,
+          distanceTo: 5,
+        ),
+        NeighbourNode(
+          nodeID: 5,
+          heading: 270,
+          distanceTo: 5,
+        ),
+      ],
+      name: 'Hardware Lab 2',
+      section: 'B',
+      x: 11,
+      y: 11,
+      poiType: POIType.poi,
+    );
 
     var node5 = POINode(
-        nodeID: 5,
-        level: 1,
-        nearestStairs: 6,
-        nodeName: 'POI Node 5',
-        nodeESP32ID: '9f3442b9-5672-4501-9459-c74d7ce4e5dd',
-        neighbourArray: [
-          NeighbourNode(
-            nodeID: 4,
-            heading: 90,
-          ),
-          NeighbourNode(
-            nodeID: 6,
-            heading: 0,
-          ),
-          NeighbourNode(
-            nodeID: 7,
-            heading: 270,
-          ),
-        ],
-        name: 'Intersection');
+      nodeID: 5,
+      level: 0,
+      nearestLift: 6,
+      nodeName: 'POI Node 5',
+      nodeESP32ID: '9f3442b9-5672-4501-9459-c74d7ce4e5dd',
+      neighbourArray: [
+        NeighbourNode(
+          nodeID: 4,
+          heading: 90,
+          distanceTo: 5,
+        ),
+        NeighbourNode(
+          nodeID: 6,
+          heading: 0,
+          distanceTo: 5,
+        ),
+        NeighbourNode(
+          nodeID: 7,
+          heading: 270,
+          distanceTo: 5,
+        ),
+      ],
+      name: 'Intersection',
+      section: 'A-B',
+      x: 11,
+      y: 6,
+      poiType: POIType.intersection,
+    );
 
     var node6 = POINode(
-        nodeID: 6,
-        level: 1,
-        nearestStairs: 6,
-        nextLevelStairs: 14,
-        nodeName: 'POI Node 6',
-        nodeESP32ID: '1ba53596-0322-4cac-a3a1-af2135008c2e',
-        neighbourArray: [
-          NeighbourNode(
-            nodeID: 5,
-            heading: 180,
-          ),
-        ],
-        name: 'Hardware Lab 1');
+      nodeID: 6,
+      level: 0,
+      nearestLift: 6,
+      nextLevelLift: 14,
+      nodeName: 'POI Node 6',
+      nodeESP32ID: '1ba53596-0322-4cac-a3a1-af2135008c2e',
+      neighbourArray: [
+        NeighbourNode(
+          nodeID: 5,
+          heading: 180,
+          distanceTo: 5,
+        ),
+        NeighbourNode(
+          nodeID: 14,
+          levelNavigation: LevelNavigation.go_up,
+        ),
+      ],
+      name: 'Hardware Lab 1',
+      section: 'A-B',
+      x: 6,
+      y: 6,
+      poiType: POIType.poi,
+    );
 
     var node7 = POINode(
-        nodeID: 7,
-        level: 1,
-        nearestStairs: 6,
-        nodeName: 'POI Node 7',
-        nodeESP32ID: 'cbe5998b-842e-4b48-b3a2-dbd6f1f2c015',
-        neighbourArray: [
-          NeighbourNode(
-            nodeID: 5,
-            heading: 90,
-          ),
-        ],
-        name: 'SCSE Lounge / Software Lab 1');
+      nodeID: 7,
+      level: 0,
+      nearestLift: 6,
+      nodeName: 'POI Node 7',
+      nodeESP32ID: 'cbe5998b-842e-4b48-b3a2-dbd6f1f2c015',
+      neighbourArray: [
+        NeighbourNode(
+          nodeID: 5,
+          heading: 90,
+          distanceTo: 5,
+        ),
+      ],
+      name: 'SCSE Lounge / Software Lab 1',
+      section: 'A',
+      x: 11,
+      y: 1,
+      poiType: POIType.poi,
+    );
 
     var node8 = POINode(
-        nodeID: 8,
-        level: 2,
-        nearestStairs: 10,
-        nodeName: 'POI Node 8',
-        nodeESP32ID: 'ae558d63-13f3-4efb-a78a-c8f279d11f9c',
-        neighbourArray: [
-          NeighbourNode(
-            nodeID: 9,
-            heading: 270,
-          ),
-        ],
-        name: 'Software Lab 3');
+      nodeID: 8,
+      level: 1,
+      nearestLift: 10,
+      nodeName: 'POI Node 8',
+      nodeESP32ID: 'ae558d63-13f3-4efb-a78a-c8f279d11f9c',
+      neighbourArray: [
+        NeighbourNode(
+          nodeID: 9,
+          heading: 270,
+          distanceTo: 5,
+        ),
+      ],
+      name: 'Software Lab 3',
+      section: 'C',
+      x: 1,
+      y: 21,
+      poiType: POIType.poi,
+    );
 
     var node9 = POINode(
-        nodeID: 9,
-        level: 2,
-        nearestStairs: 10,
-        nodeName: 'POI Node 9',
-        nodeESP32ID: 'e7b4f5ea-2b25-4ba8-9a6f-ed0786436c80',
-        neighbourArray: [
-          NeighbourNode(
-            nodeID: 8,
-            heading: 90,
-          ),
-          NeighbourNode(
-            nodeID: 10,
-            heading: 180,
-          ),
-        ],
-        name: 'Intersection');
+      nodeID: 9,
+      level: 1,
+      nearestLift: 10,
+      nodeName: 'POI Node 9',
+      nodeESP32ID: 'e7b4f5ea-2b25-4ba8-9a6f-ed0786436c80',
+      neighbourArray: [
+        NeighbourNode(
+          nodeID: 8,
+          heading: 90,
+          distanceTo: 5,
+        ),
+        NeighbourNode(
+          nodeID: 10,
+          heading: 180,
+          distanceTo: 5,
+        ),
+      ],
+      name: 'Intersection',
+      section: 'B-C',
+      x: 1,
+      y: 16,
+      poiType: POIType.intersection,
+    );
 
     var node10 = POINode(
-        nodeID: 10,
-        level: 2,
-        nearestStairs: 10,
-        nextLevelStairs: 3,
-        nodeName: 'POI Node 10',
-        nodeESP32ID: 'f92fb96a-19c0-4a91-9d63-1d77520d63bd',
-        neighbourArray: [
-          NeighbourNode(
-            nodeID: 9,
-            heading: 0,
-          ),
-          NeighbourNode(
-            nodeID: 11,
-            heading: 180,
-          ),
-        ],
-        name: 'Intersection');
+      nodeID: 10,
+      level: 1,
+      nearestLift: 10,
+      nextLevelLift: 3,
+      nodeName: 'POI Node 10',
+      nodeESP32ID: 'f92fb96a-19c0-4a91-9d63-1d77520d63bd',
+      neighbourArray: [
+        NeighbourNode(
+          nodeID: 9,
+          heading: 0,
+          distanceTo: 5,
+        ),
+        NeighbourNode(
+          nodeID: 11,
+          heading: 180,
+          distanceTo: 5,
+        ),
+        NeighbourNode(
+          nodeID: 3,
+          levelNavigation: LevelNavigation.go_down,
+        ),
+      ],
+      name: 'Intersection',
+      section: 'B-C',
+      x: 6,
+      y: 16,
+      poiType: POIType.intersection,
+    );
 
     var node11 = POINode(
-        nodeID: 11,
-        level: 2,
-        nearestStairs: 10,
-        nodeName: 'POI Node 11',
-        nodeESP32ID: 'b40b5dbb-4a36-4226-b80f-bcd4139c77e3',
-        neighbourArray: [
-          NeighbourNode(
-            nodeID: 10,
-            heading: 0,
-          ),
-          NeighbourNode(
-            nodeID: 12,
-            heading: 270,
-          ),
-        ],
-        name: 'Intersection');
+      nodeID: 11,
+      level: 1,
+      nearestLift: 10,
+      nodeName: 'POI Node 11',
+      nodeESP32ID: 'b40b5dbb-4a36-4226-b80f-bcd4139c77e3',
+      neighbourArray: [
+        NeighbourNode(
+          nodeID: 10,
+          heading: 0,
+          distanceTo: 5,
+        ),
+        NeighbourNode(
+          nodeID: 12,
+          heading: 270,
+          distanceTo: 5,
+        ),
+      ],
+      name: 'Intersection',
+      section: 'B-C',
+      x: 11,
+      y: 16,
+      poiType: POIType.intersection,
+    );
 
     var node12 = POINode(
-        nodeID: 12,
-        level: 2,
-        nearestStairs: 10,
-        nodeName: 'POI Node 12',
-        nodeESP32ID: '38471efb-f2a4-427b-92db-aa6e5401df0e',
-        neighbourArray: [
-          NeighbourNode(
-            nodeID: 11,
-            heading: 90,
-          ),
-          NeighbourNode(
-            nodeID: 13,
-            heading: 270,
-          ),
-        ],
-        name: 'Software Project Lab');
+      nodeID: 12,
+      level: 1,
+      nearestLift: 10,
+      nodeName: 'POI Node 12',
+      nodeESP32ID: '38471efb-f2a4-427b-92db-aa6e5401df0e',
+      neighbourArray: [
+        NeighbourNode(
+          nodeID: 11,
+          heading: 90,
+          distanceTo: 5,
+        ),
+        NeighbourNode(
+          nodeID: 13,
+          heading: 270,
+          distanceTo: 5,
+        ),
+      ],
+      name: 'Software Project Lab',
+      section: 'B',
+      x: 11,
+      y: 11,
+      poiType: POIType.poi,
+    );
 
     var node13 = POINode(
-        nodeID: 13,
-        level: 2,
-        nearestStairs: 14,
-        nextLevelStairs: 6,
-        nodeName: 'POI Node 13',
-        nodeESP32ID: 'a1005b84-1da4-4e12-8663-7bc3194787b4',
-        neighbourArray: [
-          NeighbourNode(
-            nodeID: 12,
-            heading: 90,
-          ),
-          NeighbourNode(
-            nodeID: 14,
-            heading: 0,
-          ),
-        ],
-        name: 'Intersection');
+      nodeID: 13,
+      level: 1,
+      nearestLift: 14,
+      nextLevelLift: 6,
+      nodeName: 'POI Node 13',
+      nodeESP32ID: 'a1005b84-1da4-4e12-8663-7bc3194787b4',
+      neighbourArray: [
+        NeighbourNode(
+          nodeID: 12,
+          heading: 90,
+          distanceTo: 5,
+        ),
+        NeighbourNode(
+          nodeID: 14,
+          heading: 0,
+          distanceTo: 5,
+        ),
+      ],
+      name: 'Intersection',
+      section: 'A-B',
+      x: 11,
+      y: 6,
+      poiType: POIType.intersection,
+    );
 
     var node14 = POINode(
-        nodeID: 14,
-        level: 2,
-        nearestStairs: 14,
-        nextLevelStairs: 6,
-        nodeName: 'POI Node 14',
-        nodeESP32ID: 'ac39d55e-8d33-49be-9da1-5a960cf66ba9',
-        neighbourArray: [
-          NeighbourNode(
-            nodeID: 13,
-            heading: 180,
-          ),
-        ],
-        name: 'Hardware Lab 3');
+      nodeID: 14,
+      level: 1,
+      nearestLift: 14,
+      nextLevelLift: 6,
+      nodeName: 'POI Node 14',
+      nodeESP32ID: 'ac39d55e-8d33-49be-9da1-5a960cf66ba9',
+      neighbourArray: [
+        NeighbourNode(
+          nodeID: 13,
+          heading: 180,
+          distanceTo: 5,
+        ),
+        NeighbourNode(
+          nodeID: 6,
+          levelNavigation: LevelNavigation.go_down,
+        ),
+      ],
+      name: 'Hardware Lab 3',
+      section: 'A-B',
+      x: 6,
+      y: 6,
+      poiType: POIType.poi,
+    );
 
     poiList = [
       node1,

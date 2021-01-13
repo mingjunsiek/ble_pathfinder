@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:ble_pathfinder/utils/constants.dart';
 
 class NeighbourNode {
@@ -7,34 +5,18 @@ class NeighbourNode {
   double heading;
   bool isStartingNode;
   LevelNavigation levelNavigation;
+  double distanceTo;
 
   NeighbourNode({
     this.nodeID,
-    this.heading,
+    this.heading = 0,
     this.isStartingNode = false,
     this.levelNavigation = LevelNavigation.same_level,
+    this.distanceTo = 0,
   });
 
-  Map<String, dynamic> toMap() {
-    return {
-      'nodeID': nodeID,
-      'heading': heading,
-      'isStartingNode': isStartingNode,
-    };
+  @override
+  String toString() {
+    return '{ ${this.nodeID}, ${this.levelNavigation} }';
   }
-
-  factory NeighbourNode.fromMap(Map<String, dynamic> map) {
-    if (map == null) return null;
-
-    return NeighbourNode(
-      nodeID: map['nodeID'],
-      heading: map['heading'],
-      isStartingNode: map['isStartingNode'],
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory NeighbourNode.fromJson(String source) =>
-      NeighbourNode.fromMap(json.decode(source));
 }

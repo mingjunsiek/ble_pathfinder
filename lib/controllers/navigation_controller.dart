@@ -1,4 +1,5 @@
-import 'package:ble_pathfinder/models/beacon_data.dart';
+import 'dart:math';
+
 import 'package:ble_pathfinder/models/neighbour_node.dart';
 import 'package:ble_pathfinder/models/poinode.dart';
 import 'package:ble_pathfinder/utils/constants.dart';
@@ -7,27 +8,41 @@ import 'package:get/get.dart';
 
 class NavigationController extends GetxController {
   HashMap<int, POINode> nodesHashMap;
-  List<POINode> poiPriorityQueue;
+  List<POINode> poiPriorityQueue = [];
+  List<POINode> expandedNodes = [];
   Comparator<POINode> heuristicComparator =
       (a, b) => a.heuristic.compareTo(b.heuristic);
 
   int startingNodeId, destinationNodeId;
-  final currentNode = POINode().obs;
 
-  final visitedArray = <NeighbourNode>[].obs;
+  List<NeighbourNode> pathArray = <NeighbourNode>[];
   final directionDegree = 0.0.obs;
   final reachedDestination = false.obs;
   // final beaconList = <BeaconData>[].obs;
   bool isNavigating = false;
+  var tempDistanceTo = 0.0;
   final levelNavigation = LevelNavigation.empty.obs;
-
+  final currentNode = POINode(
+          level: null,
+          name: '',
+          nearestLift: null,
+          neighbourArray: [],
+          nodeESP32ID: '',
+          nodeID: null,
+          nodeName: '',
+          poiType: null,
+          section: '',
+          x: null,
+          y: null)
+      .obs;
   void setNavigationSettings(
     HashMap<int, POINode> hashMap,
     List<POINode> priorityQueue,
     int currentId,
     int destinationId,
   ) {
-    visitedArray.clear();
+    pathArray.clear();
+    expandedNodes.clear();
     reachedDestination.value = false;
     nodesHashMap = HashMap.from(hashMap);
     poiPriorityQueue = List.from(priorityQueue);
@@ -35,20 +50,16 @@ class NavigationController extends GetxController {
     destinationNodeId = destinationId;
   }
 
-  // String get printList {
-  //   // var tempString = "";
-  //   // visitedArray.forEach((element) {
-  //   //   tempString +=
-  //   //       "${element.nodeID} : ${element.heading} \n";
-  //   // });
-  //   // return tempString;
-
-  //   var tempString = "";
-  //   beaconList.forEach((element) {
-  //     tempString += "${element.name} : ${element.rssi}\n";
-  //   });
-  //   return tempString;
-  // }
+  void printList() {
+    print("Current Node: ${currentNode.value.nodeID}");
+    var tempString = "";
+    pathArray.forEach((element) {
+      tempString +=
+          "${element.nodeID} : ${element.heading} : ${element.levelNavigation} \n";
+    });
+    print(tempString);
+    return null;
+  }
 
   String get directionString {
     return 'Walk towards ${directionDegree.value}';
@@ -57,13 +68,14 @@ class NavigationController extends GetxController {
   void setCurrentLocation(POINode node) {
     currentNode.value = node;
     if (isNavigating) {
-      if (visitedArray.isNotEmpty) {
-        print('List Length: ${visitedArray.length}');
-        if (visitedArray.first.nodeID == node.nodeID) {
-          if (visitedArray.length != 1) {
-            visitedArray.removeAt(0);
+      if (pathArray.isNotEmpty) {
+        print('List Length: ${pathArray.length}');
+        print(pathArray.toString());
+        if (pathArray.first.nodeID == node.nodeID) {
+          if (pathArray.length != 1) {
+            pathArray.removeAt(0);
 
-            switch (visitedArray.first.levelNavigation) {
+            switch (pathArray.first.levelNavigation) {
               case LevelNavigation.go_down:
                 levelNavigation.value = LevelNavigation.go_down;
                 break;
@@ -76,7 +88,7 @@ class NavigationController extends GetxController {
                 break;
             }
 
-            directionDegree.value = visitedArray.first.heading;
+            directionDegree.value = pathArray.first.heading;
           } else {
             print("Reached Destination");
             reachedDestination.value = true;
@@ -87,109 +99,95 @@ class NavigationController extends GetxController {
     }
   }
 
+  double getHeuristic(double x1, double x2, double y1, double y2) {
+    return sqrt(pow((x2 - x1), 2) + pow((y2 - y1), 2));
+  }
+
   Future<void> findPathToDestination() {
     var currentNode = nodesHashMap[startingNodeId];
     var destinationNode = nodesHashMap[destinationNodeId];
     var sameLevel = true;
-    var reachedStairs = false;
-    var startAtStairs = false;
+    var reachedLift = false;
     var nextLevelDestinationNode;
-    POINode nextLevelStairNode;
 
     if (currentNode.level != destinationNode.level) {
       sameLevel = false;
       nextLevelDestinationNode = destinationNode;
-      destinationNode = nodesHashMap[currentNode.nearestStairs];
+      destinationNode = nodesHashMap[currentNode.nearestLift];
     }
     if (currentNode.nodeID == destinationNode.nodeID) {
-      startAtStairs = true;
+      reachedLift = true;
     }
 
-    // Initialize heuristic
     for (var i = 1; i <= 14; i++) {
-      nodesHashMap[i].heuristic = 10000;
+      nodesHashMap[i].heuristic = 9999999;
     }
 
-    visitedArray.add(NeighbourNode(
-      nodeID: currentNode.nodeID,
-      isStartingNode: true,
-    ));
+    while (currentNode.nodeID != destinationNode.nodeID || reachedLift) {
+      if (!sameLevel && reachedLift) {
+        reachedLift = false;
+        sameLevel = true;
+        destinationNode = nextLevelDestinationNode;
 
-    while (currentNode.nodeID != destinationNode.nodeID || startAtStairs) {
-      poiPriorityQueue.removeWhere((item) => item.nodeID == currentNode.nodeID);
-      // visitedArray.add(currentNode.nodeID);
+        POINode neighbourPOI = poiPriorityQueue.firstWhere(
+            (element) => element.nodeID == currentNode.nextLevelLift);
+        neighbourPOI.from = currentNode.nodeID;
 
-      if (!sameLevel && startAtStairs) {
-        reachedStairs = true;
-        startAtStairs = false;
-        nextLevelStairNode = nodesHashMap[currentNode.nextLevelStairs];
+        expandedNodes.add(poiPriorityQueue
+            .firstWhere((element) => element.nodeID == currentNode.nodeID));
+        poiPriorityQueue
+            .removeWhere((element) => element.nodeID == currentNode.nodeID);
+        currentNode = poiPriorityQueue
+            .firstWhere((element) => element.nodeID == neighbourPOI.nodeID);
       } else {
         for (NeighbourNode neighbour in currentNode.neighbourArray) {
-          var index = visitedArray
+          var index = expandedNodes
               .indexWhere((element) => element.nodeID == neighbour.nodeID);
           if (index == -1) {
-            var neighourNode = nodesHashMap[neighbour.nodeID];
-            var currentIndex = poiPriorityQueue
-                .indexWhere((item) => item.nodeID == neighourNode.nodeID);
+            POINode neighbourPOI = poiPriorityQueue
+                .firstWhere((element) => element.nodeID == neighbour.nodeID);
 
-            if (neighourNode.nodeID == destinationNode.nodeID) {
-              poiPriorityQueue[currentIndex].heuristic = 0;
-              if (!sameLevel) {
-                reachedStairs = true;
-                nextLevelStairNode = nodesHashMap[neighourNode.nextLevelStairs];
-                poiPriorityQueue
-                    .removeWhere((item) => item.nodeID == neighourNode.nodeID);
-                visitedArray.add(neighbour);
-              }
-              break;
-            } else {
-              var nodeHeuristic =
-                  (destinationNode.nodeID - neighourNode.nodeID).abs();
-
-              poiPriorityQueue[currentIndex].heuristic = nodeHeuristic;
+            tempDistanceTo = currentNode.distanceTo + neighbour.distanceTo;
+            if (neighbourPOI.distanceTo > tempDistanceTo ||
+                neighbourPOI.distanceTo == 0) {
+              neighbourPOI.distanceTo = tempDistanceTo;
+              neighbourPOI.from = currentNode.nodeID;
             }
+
+            neighbourPOI.heuristic = getHeuristic(destinationNode.x,
+                    neighbourPOI.x, destinationNode.y, neighbourPOI.y) +
+                neighbourPOI.distanceTo;
           }
         }
-      }
-      if (reachedStairs) {
-        reachedStairs = false;
-        sameLevel = true;
-
-        currentNode = nextLevelStairNode;
-        LevelNavigation tempLevel = LevelNavigation.same_level;
-        if (currentNode.nodeID >= 8)
-          tempLevel = LevelNavigation.go_down;
-        else
-          tempLevel = LevelNavigation.go_up;
-
-        visitedArray.add(NeighbourNode(
-          nodeID: currentNode.nodeID,
-          levelNavigation: tempLevel,
-        ));
-
-        destinationNode = nextLevelDestinationNode;
-        for (POINode node in poiPriorityQueue) {
-          node.heuristic = 10000;
-        }
-      } else {
+        expandedNodes.add(poiPriorityQueue
+            .firstWhere((element) => element.nodeID == currentNode.nodeID));
+        poiPriorityQueue
+            .removeWhere((element) => element.nodeID == currentNode.nodeID);
         poiPriorityQueue.sort(heuristicComparator);
-        var neighbourNode = currentNode.neighbourArray.firstWhere(
-            (element) => element.nodeID == poiPriorityQueue[0].nodeID);
-        visitedArray.add(neighbourNode);
-        //printQueue(poiPriorityQueue);
-        currentNode = poiPriorityQueue[0];
+        print('Queue: ${poiPriorityQueue.toString()}');
+        currentNode = poiPriorityQueue.first;
+        if (currentNode.nodeID == currentNode.nearestLift && !sameLevel)
+          reachedLift = true;
       }
     }
-    // Reached destination
-    // visitedArray.add(currentNode.nodeID);
-    return null;
-  }
+    //Reached Destination, Add to expandedNodes
+    expandedNodes.add(poiPriorityQueue
+        .firstWhere((element) => element.nodeID == destinationNodeId));
+    var retraceNode = expandedNodes
+        .firstWhere((element) => element.nodeID == destinationNodeId);
 
-  void printQueue(List queue) {
-    print('Starting Queue');
-    for (POINode t in queue) {
-      print(t.nodeID.toString() + ' : ' + t.heuristic.toString());
+    while (retraceNode.nodeID != startingNodeId) {
+      var neighbourNode = nodesHashMap[retraceNode.from]
+          .neighbourArray
+          .firstWhere((element) => element.nodeID == retraceNode.nodeID);
+      pathArray.add(neighbourNode);
+      retraceNode = nodesHashMap[retraceNode.from];
     }
-    print('End Queue');
+    pathArray.add(NeighbourNode(nodeID: startingNodeId));
+
+    pathArray = pathArray.reversed.toList();
+    print('Path: ${pathArray.toString()}');
+
+    return null;
   }
 }

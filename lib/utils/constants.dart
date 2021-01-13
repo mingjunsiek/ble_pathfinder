@@ -19,3 +19,10 @@ enum LevelNavigation {
   empty,
   reach_destination,
 }
+
+enum POIType {
+  poi,
+  intersection,
+  lift,
+  entrance,
+}
