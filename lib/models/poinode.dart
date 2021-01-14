@@ -10,6 +10,7 @@ class POINode {
   String section;
   double heuristic;
   double distanceTo;
+  double fValue;
   int from;
   int nearestLift;
   int nextLevelLift;
@@ -27,6 +28,8 @@ class POINode {
     @required this.section,
     this.heuristic = 0,
     this.distanceTo = 0,
+    this.fValue = 0,
+    this.from,
     @required this.nearestLift,
     this.nextLevelLift = 0,
     @required this.nodeName,
@@ -40,6 +43,6 @@ class POINode {
 
   @override
   String toString() {
-    return '{ ${this.nodeID}, ${this.heuristic} }';
+    return '{ ${this.nodeID}, ${this.fValue} }';
   }
 }

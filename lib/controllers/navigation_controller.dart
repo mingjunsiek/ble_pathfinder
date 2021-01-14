@@ -11,7 +11,7 @@ class NavigationController extends GetxController {
   List<POINode> poiPriorityQueue = [];
   List<POINode> expandedNodes = [];
   Comparator<POINode> heuristicComparator =
-      (a, b) => a.heuristic.compareTo(b.heuristic);
+      (a, b) => a.fValue.compareTo(b.fValue);
 
   int startingNodeId, destinationNodeId;
 
@@ -147,6 +147,9 @@ class NavigationController extends GetxController {
             POINode neighbourPOI = poiPriorityQueue
                 .firstWhere((element) => element.nodeID == neighbour.nodeID);
 
+            neighbourPOI.heuristic = getHeuristic(destinationNode.x,
+                neighbourPOI.x, destinationNode.y, neighbourPOI.y);
+
             tempDistanceTo = currentNode.distanceTo + neighbour.distanceTo;
             if (neighbourPOI.distanceTo > tempDistanceTo ||
                 neighbourPOI.distanceTo == 0) {
@@ -154,9 +157,8 @@ class NavigationController extends GetxController {
               neighbourPOI.from = currentNode.nodeID;
             }
 
-            neighbourPOI.heuristic = getHeuristic(destinationNode.x,
-                    neighbourPOI.x, destinationNode.y, neighbourPOI.y) +
-                neighbourPOI.distanceTo;
+            neighbourPOI.fValue =
+                neighbourPOI.distanceTo + neighbourPOI.heuristic;
           }
         }
         expandedNodes.add(poiPriorityQueue
