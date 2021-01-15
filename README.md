@@ -1,4 +1,6 @@
-```
+# Pathfinding Algorithm
+
+```pseudocode
 BEGIN
 
 IF currentNode.level != destinationNode.level:
