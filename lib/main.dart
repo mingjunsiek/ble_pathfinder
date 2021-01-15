@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'controllers/beacon_controller.dart';
 import 'controllers/compass_controller.dart';
 import 'controllers/image_controller.dart';
 import 'controllers/navigation_controller.dart';
@@ -21,6 +22,7 @@ class InitializeService extends GetxService {
     Get.put(PermissionController());
     Get.put(CompassController());
     Get.put(NavigationController());
+    Get.put(BeaconController());
     return this;
   }
 }

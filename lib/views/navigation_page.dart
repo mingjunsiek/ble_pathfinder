@@ -1,9 +1,12 @@
 import 'package:ble_pathfinder/controllers/compass_controller.dart';
-import 'package:ble_pathfinder/controllers/image_controller.dart';
 import 'package:ble_pathfinder/controllers/navigation_controller.dart';
 import 'package:ble_pathfinder/utils/constants.dart';
 import 'package:ble_pathfinder/utils/size_config.dart';
 import 'package:ble_pathfinder/utils/size_helpers.dart';
+import 'package:ble_pathfinder/widgets/default_navigation_widget.dart';
+import 'package:ble_pathfinder/widgets/destination_widget.dart';
+import 'package:ble_pathfinder/widgets/go_down_widget.dart';
+import 'package:ble_pathfinder/widgets/go_up_widget.dart';
 import 'package:ble_pathfinder/widgets/navigation_widget.dart';
 import 'package:ble_pathfinder/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +15,6 @@ import 'package:get/get.dart';
 class NavigationPage extends StatelessWidget {
   final navigationController = Get.find<NavigationController>();
   final compassController = Get.find<CompassController>();
-  final imageController = Get.find<ImageController>();
 
   @override
   Widget build(BuildContext context) {
@@ -102,92 +104,18 @@ class NavigationPage extends StatelessWidget {
                       switchInCurve: Curves.easeInExpo,
                       child: navigationController.levelNavigation.value ==
                               LevelNavigation.go_down
-                          ? Container(
-                              alignment: Alignment(0, 0),
-                              key: UniqueKey(),
-                              child: Column(
-                                children: [
-                                  Image.asset(
-                                    'assets/images/elevator_down.gif',
-                                    height: displayHeight(context) * 0.4,
-                                  ),
-                                  SizedBox(
-                                    height: displayHeight(context) * 0.02,
-                                  ),
-                                  Text(
-                                    'Go Down One Level',
-                                    style: TextStyle(
-                                      fontSize:
-                                          getDefaultProportionateScreenWidth(),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )
+                          ? GoDownWidget()
                           : navigationController.levelNavigation.value ==
                                   LevelNavigation.go_up
-                              ? Container(
-                                  alignment: Alignment(0, 0),
-                                  key: UniqueKey(),
-                                  child: Column(
-                                    children: [
-                                      Image.asset(
-                                        'assets/images/elevator_up.gif',
-                                        height: displayHeight(context) * 0.4,
-                                      ),
-                                      SizedBox(
-                                        height: displayHeight(context) * 0.02,
-                                      ),
-                                      Text(
-                                        'Go Up One Level',
-                                        style: TextStyle(
-                                          fontSize:
-                                              getDefaultProportionateScreenWidth(),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                )
+                              ? GoUpWidget()
                               : navigationController.levelNavigation.value ==
                                       LevelNavigation.same_level
-                                  ? Container(
-                                      alignment: Alignment(0, 0),
-                                      key: UniqueKey(),
-                                      child: NavigationWidget(),
-                                    )
+                                  ? NavigationWidget()
                                   : navigationController
                                               .levelNavigation.value ==
                                           LevelNavigation.empty
-                                      ? Container(
-                                          alignment: Alignment(0, 0),
-                                          key: UniqueKey(),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                'Finding Path to Destination',
-                                                style: TextStyle(
-                                                  fontSize:
-                                                      getDefaultProportionateScreenWidth(),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: displayHeight(context) *
-                                                    0.1,
-                                              ),
-                                              CircularProgressIndicator(),
-                                            ],
-                                          ),
-                                        )
-                                      : Container(
-                                          alignment: Alignment(0, 0),
-                                          key: UniqueKey(),
-                                          child: Image(
-                                            image: imageController
-                                                .gifDestinationPin.image,
-                                          ),
-                                        ),
+                                      ? DefaultNavigationWidget()
+                                      : DestinationWidget(),
                     ),
                   ),
                 ),

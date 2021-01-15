@@ -1,6 +1,8 @@
 import 'package:ble_pathfinder/controllers/compass_controller.dart';
 import 'package:ble_pathfinder/controllers/image_controller.dart';
 import 'package:ble_pathfinder/controllers/navigation_controller.dart';
+import 'package:ble_pathfinder/utils/size_config.dart';
+import 'package:ble_pathfinder/utils/size_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -22,11 +24,30 @@ class NavigationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => Transform.rotate(
-        angle: rotation,
-        child: Image(
-          image: imageController.gifNavigation.image,
+    return Container(
+      alignment: Alignment(0, 0),
+      key: UniqueKey(),
+      child: Obx(
+        () => Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Transform.rotate(
+              angle: rotation,
+              child: Image(
+                image: imageController.gifNavigation.image,
+                height: displayHeight(context) * 0.4,
+              ),
+            ),
+            SizedBox(
+              height: displayHeight(context) * 0.02,
+            ),
+            Text(
+              'Walk towards the arrow',
+              style: TextStyle(
+                fontSize: getDefaultProportionateScreenWidth(),
+              ),
+            ),
+          ],
         ),
       ),
     );

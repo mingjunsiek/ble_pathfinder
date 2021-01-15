@@ -219,7 +219,10 @@ class BeaconController extends GetxController {
       name: 'Software Lab 1',
       nodeID: 7,
     );
-    var loc7 = LocationInfo(name: 'Software Lab 3', nodeID: 8);
+    var loc7 = LocationInfo(
+      name: 'Software Lab 3',
+      nodeID: 8,
+    );
     var loc8 = LocationInfo(
       name: 'Software Project Lab',
       nodeID: 12,
@@ -245,7 +248,7 @@ class BeaconController extends GetxController {
   void fetchPoiNodes() {
     var node1 = POINode(
       nodeID: 1,
-      level: 0,
+      level: 1,
       nearestLift: 3,
       nodeName: 'POI Node 1',
       nodeESP32ID: '1510eae0-be73-451f-8faf-6b622f92ac5f',
@@ -265,7 +268,7 @@ class BeaconController extends GetxController {
 
     var node2 = POINode(
       nodeID: 2,
-      level: 0,
+      level: 1,
       nearestLift: 3,
       nodeName: 'POI Node 2',
       nodeESP32ID: '5f0868e1-a25a-4213-8d81-66d2517fa79e',
@@ -295,7 +298,7 @@ class BeaconController extends GetxController {
 
     var node3 = POINode(
       nodeID: 3,
-      level: 0,
+      level: 1,
       nearestLift: 3,
       nextLevelLift: 10,
       nodeName: 'POI Node 3',
@@ -320,7 +323,7 @@ class BeaconController extends GetxController {
 
     var node4 = POINode(
       nodeID: 4,
-      level: 0,
+      level: 1,
       nearestLift: 3,
       nodeName: 'POI Node 4',
       nodeESP32ID: '89206b21-ec85-4487-a051-c20819b40833',
@@ -345,7 +348,7 @@ class BeaconController extends GetxController {
 
     var node5 = POINode(
       nodeID: 5,
-      level: 0,
+      level: 1,
       nearestLift: 6,
       nodeName: 'POI Node 5',
       nodeESP32ID: '9f3442b9-5672-4501-9459-c74d7ce4e5dd',
@@ -375,7 +378,7 @@ class BeaconController extends GetxController {
 
     var node6 = POINode(
       nodeID: 6,
-      level: 0,
+      level: 1,
       nearestLift: 6,
       nextLevelLift: 14,
       nodeName: 'POI Node 6',
@@ -400,7 +403,7 @@ class BeaconController extends GetxController {
 
     var node7 = POINode(
       nodeID: 7,
-      level: 0,
+      level: 1,
       nearestLift: 6,
       nodeName: 'POI Node 7',
       nodeESP32ID: 'cbe5998b-842e-4b48-b3a2-dbd6f1f2c015',
@@ -420,7 +423,7 @@ class BeaconController extends GetxController {
 
     var node8 = POINode(
       nodeID: 8,
-      level: 1,
+      level: 0,
       nearestLift: 10,
       nodeName: 'POI Node 8',
       nodeESP32ID: 'ae558d63-13f3-4efb-a78a-c8f279d11f9c',
@@ -440,7 +443,7 @@ class BeaconController extends GetxController {
 
     var node9 = POINode(
       nodeID: 9,
-      level: 1,
+      level: 0,
       nearestLift: 10,
       nodeName: 'POI Node 9',
       nodeESP32ID: 'e7b4f5ea-2b25-4ba8-9a6f-ed0786436c80',
@@ -465,7 +468,7 @@ class BeaconController extends GetxController {
 
     var node10 = POINode(
       nodeID: 10,
-      level: 1,
+      level: 0,
       nearestLift: 10,
       nextLevelLift: 3,
       nodeName: 'POI Node 10',
@@ -495,7 +498,7 @@ class BeaconController extends GetxController {
 
     var node11 = POINode(
       nodeID: 11,
-      level: 1,
+      level: 0,
       nearestLift: 10,
       nodeName: 'POI Node 11',
       nodeESP32ID: 'b40b5dbb-4a36-4226-b80f-bcd4139c77e3',
@@ -520,7 +523,7 @@ class BeaconController extends GetxController {
 
     var node12 = POINode(
       nodeID: 12,
-      level: 1,
+      level: 0,
       nearestLift: 10,
       nodeName: 'POI Node 12',
       nodeESP32ID: '38471efb-f2a4-427b-92db-aa6e5401df0e',
@@ -545,7 +548,7 @@ class BeaconController extends GetxController {
 
     var node13 = POINode(
       nodeID: 13,
-      level: 1,
+      level: 0,
       nearestLift: 14,
       nextLevelLift: 6,
       nodeName: 'POI Node 13',
@@ -571,7 +574,7 @@ class BeaconController extends GetxController {
 
     var node14 = POINode(
       nodeID: 14,
-      level: 1,
+      level: 0,
       nearestLift: 14,
       nextLevelLift: 6,
       nodeName: 'POI Node 14',

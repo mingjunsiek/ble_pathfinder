@@ -27,7 +27,6 @@ class CalibrationPage extends StatelessWidget {
                 Text(
                   "Pathfinder",
                   style: TextStyle(
-                    fontSize: getDefaultProportionateScreenWidth(),
                     color: kPrimaryColor,
                     fontWeight: FontWeight.bold,
                   ),

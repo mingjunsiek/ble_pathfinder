@@ -1,3 +1,4 @@
+import 'package:ble_pathfinder/controllers/beacon_controller.dart';
 import 'package:ble_pathfinder/utils/constants.dart';
 import 'package:ble_pathfinder/utils/size_config.dart';
 import 'package:ble_pathfinder/utils/size_helpers.dart';
@@ -15,6 +16,7 @@ class OnboardingPage extends StatefulWidget {
 class _OnboardingPageState extends State<OnboardingPage> {
   int currentPage = 0;
   bool lastPage = false;
+  final beaconController = Get.find<BeaconController>();
 
   List<Map<String, String>> onboardingData = [
     {
@@ -81,7 +83,34 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       btnColor: Color(0xFFBD8570),
                       btnText: 'VIEW POINT OF INTERESTS',
                       btnFunction: () {
-                        // openAppSettings();
+                        Get.defaultDialog(
+                          title: 'Point of Interests',
+                          titleStyle: Theme.of(context)
+                              .textTheme
+                              .bodyText1
+                              .copyWith(
+                                fontWeight: FontWeight.bold,
+                                fontSize: getDefaultProportionateScreenWidth(),
+                              ),
+                          content: Container(
+                            height: displayHeight(context) * 0.4,
+                            width: displayWidth(context) * 0.7,
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: beaconController.locationList.length,
+                              itemBuilder: (context, index) {
+                                return Card(
+                                  child: ListTile(
+                                    title: Text(
+                                      beaconController.locationList[index].name,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        );
                       },
                     ),
                   SizedBox(

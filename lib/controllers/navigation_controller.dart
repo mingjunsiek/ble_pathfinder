@@ -120,7 +120,7 @@ class NavigationController extends GetxController {
     }
 
     for (var i = 1; i <= 14; i++) {
-      nodesHashMap[i].heuristic = 9999999;
+      nodesHashMap[i].fValue = 9999999;
     }
 
     while (currentNode.nodeID != destinationNode.nodeID || reachedLift) {

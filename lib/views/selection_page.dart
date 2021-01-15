@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class SelectionPage extends StatelessWidget {
-  final beaconController = Get.put(BeaconController());
+  final beaconController = Get.find<BeaconController>();
   final imageController = Get.find<ImageController>();
 
   @override
@@ -61,10 +61,7 @@ class SelectionPage extends StatelessWidget {
                             ],
                           ),
                         )
-                      : Container(
-                          key: UniqueKey(),
-                          child: SelectionWidget(),
-                        ),
+                      : SelectionWidget(),
             ),
           ),
         ),
