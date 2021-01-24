@@ -1,6 +1,6 @@
 import 'package:ble_pathfinder/controllers/compass_controller.dart';
-import 'package:ble_pathfinder/controllers/image_controller.dart';
 import 'package:ble_pathfinder/utils/constants.dart';
+import 'package:ble_pathfinder/utils/image_constants.dart';
 import 'package:ble_pathfinder/utils/size_config.dart';
 import 'package:ble_pathfinder/utils/size_helpers.dart';
 import 'package:ble_pathfinder/views/selection_page.dart';
@@ -10,7 +10,7 @@ import 'package:get/get.dart';
 
 class CalibrationPage extends StatelessWidget {
   final compassController = Get.find<CompassController>();
-  final imageController = Get.find<ImageController>();
+  // final imageController = Get.find<ImageController>();
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -29,6 +29,7 @@ class CalibrationPage extends StatelessWidget {
                   style: TextStyle(
                     color: kPrimaryColor,
                     fontWeight: FontWeight.bold,
+                    fontSize: getDefaultProportionateScreenWidth(),
                   ),
                 ),
                 Spacer(),
@@ -49,8 +50,8 @@ class CalibrationPage extends StatelessWidget {
                     fontSize: getDefaultProportionateScreenWidth(),
                   ),
                 ),
-                Image(
-                  image: imageController.gifCalibrate.image,
+                Image.asset(
+                  gifCalibrate,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,

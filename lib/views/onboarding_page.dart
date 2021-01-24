@@ -3,6 +3,7 @@ import 'package:ble_pathfinder/utils/constants.dart';
 import 'package:ble_pathfinder/utils/size_config.dart';
 import 'package:ble_pathfinder/utils/size_helpers.dart';
 import 'package:ble_pathfinder/views/tutorial_page.dart';
+import 'package:ble_pathfinder/widgets/map_widget.dart';
 import 'package:ble_pathfinder/widgets/onboarding_widget.dart';
 import 'package:ble_pathfinder/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
@@ -92,23 +93,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
                                 fontWeight: FontWeight.bold,
                                 fontSize: getDefaultProportionateScreenWidth(),
                               ),
-                          content: Container(
-                            height: displayHeight(context) * 0.4,
-                            width: displayWidth(context) * 0.7,
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: beaconController.locationList.length,
-                              itemBuilder: (context, index) {
-                                return Card(
-                                  child: ListTile(
-                                    title: Text(
-                                      beaconController.locationList[index].name,
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
+                          content: MapWidget(
+                            mapType: MapType.onboard,
                           ),
                         );
                       },

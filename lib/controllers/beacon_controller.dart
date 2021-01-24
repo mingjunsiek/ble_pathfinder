@@ -15,8 +15,8 @@ import 'navigation_controller.dart';
 
 class BeaconController extends GetxController {
   var poiNodes = HashMap<int, POINode>();
-  var poiList = List<POINode>();
-  var locationList = List<LocationInfo>();
+  var poiList = List<POINode>.empty();
+  var locationList = List<LocationInfo>.empty();
   final currentLocation = POINode(
     level: null,
     name: '',
@@ -43,7 +43,7 @@ class BeaconController extends GetxController {
       StreamController<String>.broadcast();
 
   Comparator<BeaconData> rssiComparator = (a, b) => a.rssi.compareTo(b.rssi);
-  final beaconDataPriorityQueue = List<BeaconData>().obs;
+  final beaconDataPriorityQueue = List<BeaconData>.empty().obs;
 
   @override
   void onInit() {
@@ -311,7 +311,7 @@ class BeaconController extends GetxController {
         ),
         NeighbourNode(
           nodeID: 10,
-          levelNavigation: LevelNavigation.go_up,
+          levelNavigation: LevelNavigation.go_down,
         ),
       ],
       name: 'Software Lab 2',
@@ -391,7 +391,7 @@ class BeaconController extends GetxController {
         ),
         NeighbourNode(
           nodeID: 14,
-          levelNavigation: LevelNavigation.go_up,
+          levelNavigation: LevelNavigation.go_down,
         ),
       ],
       name: 'Hardware Lab 1',
@@ -486,7 +486,7 @@ class BeaconController extends GetxController {
         ),
         NeighbourNode(
           nodeID: 3,
-          levelNavigation: LevelNavigation.go_down,
+          levelNavigation: LevelNavigation.go_up,
         ),
       ],
       name: 'Intersection',
@@ -587,7 +587,7 @@ class BeaconController extends GetxController {
         ),
         NeighbourNode(
           nodeID: 6,
-          levelNavigation: LevelNavigation.go_down,
+          levelNavigation: LevelNavigation.go_up,
         ),
       ],
       name: 'Hardware Lab 3',

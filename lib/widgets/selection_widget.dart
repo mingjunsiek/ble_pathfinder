@@ -1,5 +1,4 @@
 import 'package:ble_pathfinder/controllers/beacon_controller.dart';
-import 'package:ble_pathfinder/controllers/image_controller.dart';
 import 'package:ble_pathfinder/controllers/navigation_controller.dart';
 import 'package:ble_pathfinder/models/location.dart';
 import 'package:ble_pathfinder/utils/constants.dart';
@@ -18,7 +17,6 @@ import '../utils/size_helpers.dart';
 class SelectionWidget extends StatelessWidget {
   final beaconController = Get.find<BeaconController>();
   final navigationController = Get.find<NavigationController>();
-  final imageController = Get.find<ImageController>();
 
   @override
   Widget build(BuildContext context) {
@@ -151,8 +149,8 @@ class SelectionWidget extends StatelessWidget {
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
-                                Image(
-                                  image: imageController.vectorShadow.image,
+                                Image.asset(
+                                  'assets/images/vectors/vector_shadow.png',
                                   width: displayWidth(context) * 0.8,
                                 ),
                               ],

@@ -1,6 +1,6 @@
 import 'package:ble_pathfinder/controllers/compass_controller.dart';
-import 'package:ble_pathfinder/controllers/image_controller.dart';
 import 'package:ble_pathfinder/controllers/navigation_controller.dart';
+import 'package:ble_pathfinder/utils/image_constants.dart';
 import 'package:ble_pathfinder/utils/size_config.dart';
 import 'package:ble_pathfinder/utils/size_helpers.dart';
 import 'package:flutter/material.dart';
@@ -11,9 +11,6 @@ import 'dart:math';
 class NavigationWidget extends StatelessWidget {
   final navigationController = Get.find<NavigationController>();
   final compassController = Get.find<CompassController>();
-  final imageController = Get.find<ImageController>();
-
-  // final double currentBearing, locationBearing;
 
   double get rotation {
     double direction = navigationController.directionDegree.value -
@@ -32,12 +29,11 @@ class NavigationWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Transform.rotate(
-              angle: rotation,
-              child: Image(
-                image: imageController.gifNavigation.image,
-                height: displayHeight(context) * 0.4,
-              ),
-            ),
+                angle: rotation,
+                child: Image.asset(
+                  gifNavigation,
+                  height: displayHeight(context) * 0.4,
+                )),
             SizedBox(
               height: displayHeight(context) * 0.02,
             ),

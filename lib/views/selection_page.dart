@@ -1,5 +1,5 @@
 import 'package:ble_pathfinder/controllers/beacon_controller.dart';
-import 'package:ble_pathfinder/controllers/image_controller.dart';
+import 'package:ble_pathfinder/utils/image_constants.dart';
 import 'package:ble_pathfinder/utils/size_config.dart';
 import 'package:ble_pathfinder/utils/size_helpers.dart';
 import 'package:ble_pathfinder/widgets/selection_widget.dart';
@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 
 class SelectionPage extends StatelessWidget {
   final beaconController = Get.find<BeaconController>();
-  final imageController = Get.find<ImageController>();
+  // final imageController = Get.find<ImageController>();
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +29,9 @@ class SelectionPage extends StatelessWidget {
                       key: UniqueKey(),
                       alignment: Alignment(0, 0),
                       // height: displayWidth(context) * 0.7,
-                      child: Image(
-                        image: imageController.gifLoading.image,
-                      ),
-                    )
+                      child: Image.asset(
+                        gifLoading,
+                      ))
                   : beaconController.haveCurrentLocation == false.obs
                       ? Center(
                           key: UniqueKey(),
