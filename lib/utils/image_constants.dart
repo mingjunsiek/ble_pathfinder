@@ -20,3 +20,4 @@ String gifNode12 = 'assets/images/map/12.gif';
 String gifNode13 = 'assets/images/map/13.gif';
 String gifNode14 = 'assets/images/map/14.gif';
 String gifNodeAll = 'assets/images/map/map_all.gif';
+String gifMapPinch = 'assets/images/map/pinch.gif';

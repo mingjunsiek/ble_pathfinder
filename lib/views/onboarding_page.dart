@@ -1,5 +1,6 @@
 import 'package:ble_pathfinder/controllers/beacon_controller.dart';
 import 'package:ble_pathfinder/utils/constants.dart';
+import 'package:ble_pathfinder/utils/image_constants.dart';
 import 'package:ble_pathfinder/utils/size_config.dart';
 import 'package:ble_pathfinder/utils/size_helpers.dart';
 import 'package:ble_pathfinder/views/tutorial_page.dart';
@@ -85,18 +86,34 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       btnText: 'VIEW POINT OF INTERESTS',
                       btnFunction: () {
                         Get.defaultDialog(
-                          title: 'Point of Interests',
-                          titleStyle: Theme.of(context)
-                              .textTheme
-                              .bodyText1
-                              .copyWith(
-                                fontWeight: FontWeight.bold,
-                                fontSize: getDefaultProportionateScreenWidth(),
+                            title: 'Point of Interests',
+                            titleStyle:
+                                Theme.of(context).textTheme.bodyText1.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize:
+                                          getDefaultProportionateScreenWidth(),
+                                    ),
+                            content: MapWidget(
+                              mapType: MapType.onboard,
+                            ),
+                            actions: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Pinch to Zoom',
+                                    style: TextStyle(
+                                      fontSize:
+                                          getDefaultProportionateScreenWidth(),
+                                    ),
+                                  ),
+                                  Image.asset(
+                                    gifMapPinch,
+                                    width: displayWidth(context) * 0.1,
+                                  ),
+                                ],
                               ),
-                          content: MapWidget(
-                            mapType: MapType.onboard,
-                          ),
-                        );
+                            ]);
                       },
                     ),
                   SizedBox(

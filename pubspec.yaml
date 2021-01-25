@@ -89,6 +89,7 @@ flutter:
     - assets/images/map/12.gif
     - assets/images/map/13.gif
     - assets/images/map/14.gif
+    - assets/images/map/pinch.gif
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

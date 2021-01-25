@@ -29,18 +29,5 @@ enum POIType {
 
 enum MapType {
   onboard,
-  node1,
-  node2,
-  node3,
-  node4,
-  node5,
-  node6,
-  node7,
-  node8,
-  node9,
-  node10,
-  node11,
-  node12,
-  node13,
-  node14,
+  view_map,
 }
