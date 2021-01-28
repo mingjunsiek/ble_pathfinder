@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 
 import 'controllers/beacon_controller.dart';
 import 'controllers/compass_controller.dart';
+import 'controllers/map_controller.dart';
 import 'controllers/navigation_controller.dart';
 import 'controllers/permission_controller.dart';
 
@@ -22,6 +23,7 @@ class InitializeService extends GetxService {
     Get.put(CompassController());
     Get.put(NavigationController());
     Get.put(BeaconController());
+    Get.put(MapController());
     return this;
   }
 }
@@ -45,6 +47,15 @@ class _MyAppState extends State<MyApp> {
           ),
           bodyText2: TextStyle(
             color: kTextColor,
+          ),
+        ),
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: OutlinedButton.styleFrom(
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(10),
+              ),
+            ),
           ),
         ),
         visualDensity: VisualDensity.adaptivePlatformDensity,

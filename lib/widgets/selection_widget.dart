@@ -1,11 +1,12 @@
 import 'package:ble_pathfinder/controllers/beacon_controller.dart';
+import 'package:ble_pathfinder/controllers/map_controller.dart';
 import 'package:ble_pathfinder/controllers/navigation_controller.dart';
 import 'package:ble_pathfinder/models/location.dart';
 import 'package:ble_pathfinder/utils/constants.dart';
-import 'package:ble_pathfinder/utils/image_constants.dart';
 import 'package:ble_pathfinder/utils/size_config.dart';
 import 'package:ble_pathfinder/utils/size_helpers.dart';
 import 'package:ble_pathfinder/views/navigation_page.dart';
+import 'package:ble_pathfinder/views/settings_page.dart';
 import 'package:ble_pathfinder/widgets/rounded_button.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
@@ -14,11 +15,11 @@ import 'package:outline_material_icons/outline_material_icons.dart';
 
 import '../utils/constants.dart';
 import '../utils/size_helpers.dart';
-import 'map_widget.dart';
 
 class SelectionWidget extends StatelessWidget {
   final beaconController = Get.find<BeaconController>();
   final navigationController = Get.find<NavigationController>();
+  final mapController = Get.find<MapController>();
 
   @override
   Widget build(BuildContext context) {
@@ -46,12 +47,13 @@ class SelectionWidget extends StatelessWidget {
                             size: displayWidth(context) * 0.08,
                           ),
                           onPressed: () {
-                            Get.defaultDialog(
-                              title: 'Beacon List',
-                              content: Obx(
-                                () => Text(beaconController.printList),
-                              ),
-                            );
+                            Get.to(SettingsPage());
+                            // Get.defaultDialog(
+                            //   title: 'Beacon List',
+                            //   content: Obx(
+                            //     () => Text(beaconController.printList),
+                            //   ),
+                            // );
                           },
                         ),
                         IconButton(
@@ -61,37 +63,10 @@ class SelectionWidget extends StatelessWidget {
                             size: displayWidth(context) * 0.08,
                           ),
                           onPressed: () {
-                            Get.defaultDialog(
-                                title: 'Current Location',
-                                titleStyle: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1
-                                    .copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize:
-                                          getDefaultProportionateScreenWidth(),
-                                    ),
-                                content: MapWidget(
-                                  mapType: MapType.view_map,
-                                ),
-                                actions: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'Pinch to Zoom',
-                                        style: TextStyle(
-                                          fontSize:
-                                              getDefaultProportionateScreenWidth(),
-                                        ),
-                                      ),
-                                      Image.asset(
-                                        gifMapPinch,
-                                        width: displayWidth(context) * 0.1,
-                                      ),
-                                    ],
-                                  ),
-                                ]);
+                            mapController.getAllPOIDialog(
+                              context,
+                              MapType.view_map,
+                            );
                           },
                         ),
                       ],

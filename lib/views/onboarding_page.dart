@@ -1,10 +1,9 @@
 import 'package:ble_pathfinder/controllers/beacon_controller.dart';
+import 'package:ble_pathfinder/controllers/map_controller.dart';
 import 'package:ble_pathfinder/utils/constants.dart';
-import 'package:ble_pathfinder/utils/image_constants.dart';
 import 'package:ble_pathfinder/utils/size_config.dart';
 import 'package:ble_pathfinder/utils/size_helpers.dart';
 import 'package:ble_pathfinder/views/tutorial_page.dart';
-import 'package:ble_pathfinder/widgets/map_widget.dart';
 import 'package:ble_pathfinder/widgets/onboarding_widget.dart';
 import 'package:ble_pathfinder/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +18,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
   int currentPage = 0;
   bool lastPage = false;
   final beaconController = Get.find<BeaconController>();
+  final mapController = Get.find<MapController>();
 
   List<Map<String, String>> onboardingData = [
     {
@@ -85,35 +85,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       btnColor: Color(0xFFBD8570),
                       btnText: 'VIEW POINT OF INTERESTS',
                       btnFunction: () {
-                        Get.defaultDialog(
-                            title: 'Point of Interests',
-                            titleStyle:
-                                Theme.of(context).textTheme.bodyText1.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize:
-                                          getDefaultProportionateScreenWidth(),
-                                    ),
-                            content: MapWidget(
-                              mapType: MapType.onboard,
-                            ),
-                            actions: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Pinch to Zoom',
-                                    style: TextStyle(
-                                      fontSize:
-                                          getDefaultProportionateScreenWidth(),
-                                    ),
-                                  ),
-                                  Image.asset(
-                                    gifMapPinch,
-                                    width: displayWidth(context) * 0.1,
-                                  ),
-                                ],
-                              ),
-                            ]);
+                        mapController.getAllPOIDialog(
+                          context,
+                          MapType.onboard,
+                        );
                       },
                     ),
                   SizedBox(

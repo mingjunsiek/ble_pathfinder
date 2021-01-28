@@ -7,9 +7,14 @@ import 'package:ble_pathfinder/views/selection_page.dart';
 import 'package:ble_pathfinder/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CalibrationPage extends StatelessWidget {
+  CalibrationPage({Key key, @required this.caliType}) : super(key: key);
+
   final compassController = Get.find<CompassController>();
+  final CaliType caliType;
+
   // final imageController = Get.find<ImageController>();
   @override
   Widget build(BuildContext context) {
@@ -66,7 +71,7 @@ class CalibrationPage extends StatelessWidget {
                     Obx(
                       () => Text(
                         compassController.accuracy.value,
-                        textAlign: TextAlign.center,
+                        textAlign: TextAlign.left,
                         style: TextStyle(
                           fontSize: getDefaultProportionateScreenWidth(),
                           color: kPrimaryColor,
@@ -79,13 +84,24 @@ class CalibrationPage extends StatelessWidget {
                 SizedBox(
                   height: displayHeight(context) * 0.02,
                 ),
-                RoundedButton(
-                  btnColor: kPrimaryColor,
-                  btnText: 'CONTINUE',
-                  btnFunction: () {
-                    Get.to(SelectionPage());
-                  },
-                ),
+                caliType == CaliType.onboard
+                    ? RoundedButton(
+                        btnColor: kPrimaryColor,
+                        btnText: 'CONTINUE',
+                        btnFunction: () async {
+                          SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                          prefs.setBool('initial', true);
+                          Get.off(SelectionPage());
+                        },
+                      )
+                    : RoundedButton(
+                        btnColor: kPrimaryColor,
+                        btnText: 'BACK',
+                        btnFunction: () {
+                          Get.back();
+                        },
+                      ),
                 Spacer(),
               ],
             ),

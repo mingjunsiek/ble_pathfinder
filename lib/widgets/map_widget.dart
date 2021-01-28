@@ -10,7 +10,7 @@ class MapWidget extends StatelessWidget {
   MapWidget({Key key, this.mapType}) : super(key: key);
   final MapType mapType;
   final beaconController = Get.find<BeaconController>();
-  final mapController = Get.put(MapController());
+  final mapController = Get.find<MapController>();
 
   @override
   Widget build(BuildContext context) {

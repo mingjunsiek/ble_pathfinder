@@ -1,8 +1,42 @@
+import 'package:ble_pathfinder/utils/constants.dart';
 import 'package:ble_pathfinder/utils/image_constants.dart';
+import 'package:ble_pathfinder/utils/size_config.dart';
+import 'package:ble_pathfinder/utils/size_helpers.dart';
+import 'package:ble_pathfinder/widgets/map_widget.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class MapController extends GetxController {
   String currentMap = gifNodeAll;
+
+  Future<Dialog> getAllPOIDialog(BuildContext context, MapType mapType) {
+    return Get.defaultDialog(
+        title: 'Point of Interests',
+        titleStyle: Theme.of(context).textTheme.bodyText1.copyWith(
+              fontWeight: FontWeight.bold,
+              fontSize: getDefaultProportionateScreenWidth(),
+            ),
+        content: MapWidget(
+          mapType: mapType,
+        ),
+        actions: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Pinch to Zoom',
+                style: TextStyle(
+                  fontSize: getDefaultProportionateScreenWidth(),
+                ),
+              ),
+              Image.asset(
+                gifMapPinch,
+                width: displayWidth(context) * 0.1,
+              ),
+            ],
+          ),
+        ]);
+  }
 
   String getMap(int nodeID) {
     switch (nodeID) {

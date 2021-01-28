@@ -5,7 +5,6 @@ import 'package:ble_pathfinder/widgets/rounded_button.dart';
 import 'package:ble_pathfinder/widgets/tutorial_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class TutorialPage extends StatefulWidget {
   @override
@@ -72,10 +71,9 @@ class _TutorialPageState extends State<TutorialPage> {
                     btnColor: kPrimaryColor,
                     btnText: 'CONTINUE',
                     btnFunction: () async {
-                      SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
-                      prefs.setBool('initial', true);
-                      Get.off(CalibrationPage());
+                      Get.off(CalibrationPage(
+                        caliType: CaliType.onboard,
+                      ));
                     },
                   ),
                   Spacer(),

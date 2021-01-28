@@ -31,3 +31,8 @@ enum MapType {
   onboard,
   view_map,
 }
+
+enum CaliType {
+  onboard,
+  setting,
+}

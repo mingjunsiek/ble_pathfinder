@@ -23,7 +23,7 @@ class NavigationPage extends StatelessWidget {
         child: Center(
           child: Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: 20,
+              horizontal: 40,
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
