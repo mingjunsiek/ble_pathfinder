@@ -524,7 +524,7 @@ class BeaconController extends GetxController {
     var node12 = POINode(
       nodeID: 12,
       level: 0,
-      nearestLift: 10,
+      nearestLift: 14,
       nodeName: 'POI Node 12',
       nodeESP32ID: '38471efb-f2a4-427b-92db-aa6e5401df0e',
       neighbourArray: [
