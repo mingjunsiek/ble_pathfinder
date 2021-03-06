@@ -38,7 +38,7 @@ class NavigationWidget extends StatelessWidget {
               height: displayHeight(context) * 0.02,
             ),
             Text(
-              'Walk towards the arrow',
+              'Follow the arrow',
               style: TextStyle(
                 fontSize: getDefaultProportionateScreenWidth(),
               ),

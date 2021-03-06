@@ -92,7 +92,7 @@ class CalibrationPage extends StatelessWidget {
                           SharedPreferences prefs =
                               await SharedPreferences.getInstance();
                           prefs.setBool('initial', true);
-                          Get.off(SelectionPage());
+                          Get.offAll(SelectionPage());
                         },
                       )
                     : RoundedButton(

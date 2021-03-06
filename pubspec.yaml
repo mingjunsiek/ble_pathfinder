@@ -24,7 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
   get: ^3.17.1
-  dropdown_search: ^0.4.8
+  dropdown_search: ^0.4.9
   beacons_plugin: ^1.0.17
   flutter_blue: ^0.7.3
   flutter_launcher_icons: ^0.8.1

@@ -97,6 +97,7 @@ class SettingsPage extends StatelessWidget {
                               ),
                               onPressed: () {
                                 mapController.getAllPOIDialog(
+                                  'All Points of Interests',
                                   context,
                                   MapType.onboard,
                                 );

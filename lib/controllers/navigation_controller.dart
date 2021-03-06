@@ -1,23 +1,24 @@
 import 'dart:math';
 
+import 'package:ble_pathfinder/controllers/beacon_controller.dart';
 import 'package:ble_pathfinder/models/neighbour_node.dart';
 import 'package:ble_pathfinder/models/poinode.dart';
 import 'package:ble_pathfinder/utils/constants.dart';
-import 'dart:collection';
 import 'package:get/get.dart';
 
 class NavigationController extends GetxController {
-  HashMap<int, POINode> nodesHashMap;
+  Map<int, POINode> nodesHashMap;
   List<POINode> poiPriorityQueue = [];
   List<POINode> expandedNodes = [];
   Comparator<POINode> heuristicComparator =
       (a, b) => a.fValue.compareTo(b.fValue);
 
   int startingNodeId, destinationNodeId;
-
   List<NeighbourNode> pathArray = <NeighbourNode>[];
   final directionDegree = 0.0.obs;
   final reachedDestination = false.obs;
+  final pathArrayLength = 'Loading...'.obs;
+  // final beaconController = Get.find<BeaconController>();
   // final beaconList = <BeaconData>[].obs;
   bool isNavigating = false;
   var tempDistanceTo = 0.0;
@@ -36,16 +37,15 @@ class NavigationController extends GetxController {
           y: null)
       .obs;
   void setNavigationSettings(
-    HashMap<int, POINode> hashMap,
+    Map<int, POINode> hashMap,
     List<POINode> priorityQueue,
     int currentId,
     int destinationId,
   ) {
-    pathArray.clear();
-    expandedNodes.clear();
+    print("Setting Navigation Settings");
     reachedDestination.value = false;
-    nodesHashMap = HashMap.from(hashMap);
-    poiPriorityQueue = List.from(priorityQueue);
+    nodesHashMap = {...hashMap};
+    poiPriorityQueue = [...priorityQueue];
     startingNodeId = currentId;
     destinationNodeId = destinationId;
   }
@@ -74,7 +74,6 @@ class NavigationController extends GetxController {
         if (pathArray.first.nodeID == node.nodeID) {
           if (pathArray.length != 1) {
             pathArray.removeAt(0);
-
             switch (pathArray.first.levelNavigation) {
               case LevelNavigation.go_down:
                 levelNavigation.value = LevelNavigation.go_down;
@@ -90,11 +89,15 @@ class NavigationController extends GetxController {
 
             directionDegree.value = pathArray.first.heading;
           } else {
+            pathArray.removeAt(0);
+            isNavigating = false;
             print("Reached Destination");
             reachedDestination.value = true;
             levelNavigation.value = LevelNavigation.reach_destination;
           }
         }
+
+        pathArrayLength.value = pathArray.length.toString();
       }
     }
   }
@@ -104,6 +107,18 @@ class NavigationController extends GetxController {
   }
 
   Future<void> findPathToDestination() {
+    for (var i = 1; i <= poiPriorityQueue.length; i++) {
+      nodesHashMap[i].fValue = 9999999;
+      nodesHashMap[i].heuristic = 9999999;
+      nodesHashMap[i].from = null;
+      nodesHashMap[i].distanceTo = 0;
+
+      poiPriorityQueue[i - 1].fValue = 9999999;
+      poiPriorityQueue[i - 1].heuristic = 9999999;
+      poiPriorityQueue[i - 1].from = null;
+      poiPriorityQueue[i - 1].distanceTo = 0;
+    }
+
     var currentNode = nodesHashMap[startingNodeId];
     var destinationNode = nodesHashMap[destinationNodeId];
     var sameLevel = true;
@@ -119,11 +134,11 @@ class NavigationController extends GetxController {
       reachedLift = true;
     }
 
-    for (var i = 1; i <= 14; i++) {
-      nodesHashMap[i].fValue = 9999999;
-    }
-
+    pathArray.clear();
+    expandedNodes.clear();
+    int count = 0;
     while (currentNode.nodeID != destinationNode.nodeID || reachedLift) {
+      print("Counting: ${count++}");
       if (!sameLevel && reachedLift) {
         reachedLift = false;
         sameLevel = true;
@@ -140,6 +155,7 @@ class NavigationController extends GetxController {
         currentNode = poiPriorityQueue
             .firstWhere((element) => element.nodeID == neighbourPOI.nodeID);
       } else {
+        print('Neighbour Array: ${currentNode.neighbourArray}');
         for (NeighbourNode neighbour in currentNode.neighbourArray) {
           var index = expandedNodes
               .indexWhere((element) => element.nodeID == neighbour.nodeID);
@@ -185,6 +201,7 @@ class NavigationController extends GetxController {
       pathArray.add(neighbourNode);
       retraceNode = nodesHashMap[retraceNode.from];
     }
+
     pathArray.add(NeighbourNode(nodeID: startingNodeId));
 
     pathArray = pathArray.reversed.toList();

@@ -43,6 +43,6 @@ class POINode {
 
   @override
   String toString() {
-    return '{ ${this.nodeID}, ${this.fValue} }';
+    return '{ Node ID: ${this.nodeID}, fValue: ${this.fValue}, heuristic: ${this.heuristic}, from: ${this.from}, nArray: $neighbourArray}';
   }
 }

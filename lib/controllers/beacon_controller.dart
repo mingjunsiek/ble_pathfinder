@@ -1,4 +1,3 @@
-import 'dart:collection';
 import 'dart:async';
 import 'package:ble_pathfinder/models/beacon_data.dart';
 import 'package:ble_pathfinder/models/location.dart';
@@ -14,7 +13,7 @@ import '../models/poinode.dart';
 import 'navigation_controller.dart';
 
 class BeaconController extends GetxController {
-  var poiNodes = HashMap<int, POINode>();
+  var poiNodes = Map<int, POINode>();
   var poiList = List<POINode>.empty();
   var locationList = List<LocationInfo>.empty();
   final currentLocation = POINode(
@@ -105,7 +104,7 @@ class BeaconController extends GetxController {
   }
 
   Future<void> beaconInitPlatformState() async {
-    BeaconsPlugin.setDebugLevel(2);
+    BeaconsPlugin.setDebugLevel(0);
 
     BeaconsPlugin.listenToBeacons(beaconEventsController);
     print('listenToBeacons Init');
@@ -117,7 +116,7 @@ class BeaconController extends GetxController {
 
     startTimer(5);
     beaconEventsController.stream.listen((data) {
-      print('DATA: $data');
+      // print('DATA: $data');
       if (data.isNotEmpty) {
         fetchingBeacons.value = false;
 

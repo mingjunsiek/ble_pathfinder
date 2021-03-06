@@ -15,7 +15,6 @@ import 'package:get/get.dart';
 class NavigationPage extends StatelessWidget {
   final navigationController = Get.find<NavigationController>();
   final compassController = Get.find<CompassController>();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,7 +88,28 @@ class NavigationPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                Spacer(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Checkpoints Left: ',
+                      style: TextStyle(
+                        fontSize: getProportionateScreenWidth(
+                          15,
+                        ),
+                      ),
+                    ),
+                    Obx(
+                      () => Text(
+                        navigationController.pathArrayLength.value,
+                        style: TextStyle(
+                          fontSize: getProportionateScreenWidth(15),
+                          color: kPrimaryColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
                 Container(
                   height: displayHeight(context) * 0.6,
                   alignment: Alignment(0, 0),

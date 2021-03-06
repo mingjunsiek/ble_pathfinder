@@ -1,14 +1,17 @@
 import 'package:ble_pathfinder/controllers/beacon_controller.dart';
+import 'package:ble_pathfinder/controllers/map_controller.dart';
+import 'package:ble_pathfinder/utils/constants.dart';
 import 'package:ble_pathfinder/utils/image_constants.dart';
 import 'package:ble_pathfinder/utils/size_config.dart';
 import 'package:ble_pathfinder/utils/size_helpers.dart';
+import 'package:ble_pathfinder/widgets/rounded_button.dart';
 import 'package:ble_pathfinder/widgets/selection_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class SelectionPage extends StatelessWidget {
   final beaconController = Get.find<BeaconController>();
-  // final imageController = Get.find<ImageController>();
+  final mapController = Get.find<MapController>();
 
   @override
   Widget build(BuildContext context) {
@@ -36,27 +39,48 @@ class SelectionPage extends StatelessWidget {
                       ? Center(
                           key: UniqueKey(),
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(
-                                "You are not near a Point Of Interest",
-                                style: TextStyle(
-                                  fontSize:
-                                      getDefaultProportionateScreenWidth(),
+                              Spacer(),
+                              Expanded(
+                                flex: 5,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "You are not near a Point Of Interest",
+                                      style: TextStyle(
+                                        fontSize:
+                                            getDefaultProportionateScreenWidth(),
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    SizedBox(
+                                      height: displayHeight(context) * 0.02,
+                                    ),
+                                    Text(
+                                      "Please move to the nearest Point Of Interest",
+                                      style: TextStyle(
+                                        fontSize:
+                                            getDefaultProportionateScreenWidth(),
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
                                 ),
-                                textAlign: TextAlign.center,
                               ),
-                              SizedBox(
-                                height: displayHeight(context) * 0.02,
+                              Spacer(),
+                              RoundedButton(
+                                btnColor: Color(0xFFBD8570),
+                                btnText: 'VIEW POINT OF INTERESTS',
+                                btnFunction: () {
+                                  mapController.getAllPOIDialog(
+                                    'All Point Of Interests',
+                                    context,
+                                    MapType.onboard,
+                                  );
+                                },
                               ),
-                              Text(
-                                "Please move to the nearest Point Of Interest",
-                                style: TextStyle(
-                                  fontSize:
-                                      getDefaultProportionateScreenWidth(),
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
+                              Spacer(),
                             ],
                           ),
                         )

@@ -9,9 +9,10 @@ import 'package:get/get.dart';
 class MapController extends GetxController {
   String currentMap = gifNodeAll;
 
-  Future<Dialog> getAllPOIDialog(BuildContext context, MapType mapType) {
+  Future<Dialog> getAllPOIDialog(
+      String title, BuildContext context, MapType mapType) {
     return Get.defaultDialog(
-        title: 'Point of Interests',
+        title: title,
         titleStyle: Theme.of(context).textTheme.bodyText1.copyWith(
               fontWeight: FontWeight.bold,
               fontSize: getDefaultProportionateScreenWidth(),

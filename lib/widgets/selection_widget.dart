@@ -20,6 +20,7 @@ class SelectionWidget extends StatelessWidget {
   final beaconController = Get.find<BeaconController>();
   final navigationController = Get.find<NavigationController>();
   final mapController = Get.find<MapController>();
+  final _ddKey = GlobalKey<DropdownSearchState<LocationInfo>>();
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +65,7 @@ class SelectionWidget extends StatelessWidget {
                           ),
                           onPressed: () {
                             mapController.getAllPOIDialog(
+                              'Current Location',
                               context,
                               MapType.view_map,
                             );
@@ -178,19 +180,22 @@ class SelectionWidget extends StatelessWidget {
                     // Obx(
                     //   () =>
                     DropdownSearch<LocationInfo>(
+                      key: _ddKey,
                       label: 'Select Destination',
                       mode: Mode.BOTTOM_SHEET,
                       // items: beaconController.getSelectionList(
                       //     beaconController.currentLocation.value.name),
                       itemAsString: (LocationInfo loc) => loc.name,
                       onChanged: (value) {
-                        beaconController.setDestination(value.nodeID);
-                        print(beaconController.destinationLocation.name);
+                        if (value != null) {
+                          beaconController.setDestination(value.nodeID);
+                          print(beaconController.destinationLocation.name);
+                        }
                       },
                       showSearchBox: true,
                       searchBoxDecoration: InputDecoration(
                         prefixIcon: Icon(OMIcons.search),
-                        labelText: 'Search POI',
+                        labelText: 'Search Point of Interests',
                       ),
                       onFind: (String filter) =>
                           beaconController.onSearch(filter),
@@ -223,12 +228,15 @@ class SelectionWidget extends StatelessWidget {
                           );
                         } else {
                           navigationController.setNavigationSettings(
-                              beaconController.poiNodes,
-                              beaconController.poiList,
-                              beaconController.currentLocation.value.nodeID,
-                              beaconController.destinationLocation.nodeID);
+                            beaconController.poiNodes,
+                            beaconController.poiList,
+                            beaconController.currentLocation.value.nodeID,
+                            beaconController.destinationLocation.nodeID,
+                          );
                           navigationController.findPathToDestination();
                           navigationController.isNavigating = true;
+                          beaconController.destinationLocation = null;
+                          _ddKey.currentState.changeSelectedItem(null);
                           Get.to(NavigationPage());
                         }
                       },

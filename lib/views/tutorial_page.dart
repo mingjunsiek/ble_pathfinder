@@ -13,6 +13,8 @@ class TutorialPage extends StatefulWidget {
 
 class _TutorialPageState extends State<TutorialPage> {
   int currentPage = 0;
+  bool lastPage = false;
+  final PageController pageController = PageController();
 
   List<Map<String, String>> tutorialData = [
     {},
@@ -42,6 +44,7 @@ class _TutorialPageState extends State<TutorialPage> {
               Expanded(
                 flex: 4,
                 child: PageView.builder(
+                  controller: pageController,
                   itemCount: tutorialData.length,
                   itemBuilder: (context, index) => TutorialWidget(
                     index: index,
@@ -50,6 +53,10 @@ class _TutorialPageState extends State<TutorialPage> {
                   onPageChanged: (value) {
                     setState(() {
                       currentPage = value;
+                      if (value == tutorialData.length - 1)
+                        lastPage = true;
+                      else
+                        lastPage = false;
                     });
                   },
                 ),
@@ -70,10 +77,21 @@ class _TutorialPageState extends State<TutorialPage> {
                   RoundedButton(
                     btnColor: kPrimaryColor,
                     btnText: 'CONTINUE',
-                    btnFunction: () async {
-                      Get.off(CalibrationPage(
-                        caliType: CaliType.onboard,
-                      ));
+                    btnFunction: () {
+                      if (lastPage) {
+                        Get.to(
+                          CalibrationPage(
+                            caliType: CaliType.onboard,
+                          ),
+                        );
+                      } else {
+                        pageController.nextPage(
+                          duration: Duration(
+                            milliseconds: 200,
+                          ),
+                          curve: Curves.easeIn,
+                        );
+                      }
                     },
                   ),
                   Spacer(),

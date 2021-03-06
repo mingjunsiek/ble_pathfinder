@@ -19,6 +19,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
   bool lastPage = false;
   final beaconController = Get.find<BeaconController>();
   final mapController = Get.find<MapController>();
+  final PageController pageController = PageController();
 
   List<Map<String, String>> onboardingData = [
     {
@@ -52,6 +53,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
               Expanded(
                 flex: 3,
                 child: PageView.builder(
+                  controller: pageController,
                   itemCount: onboardingData.length,
                   itemBuilder: (context, index) => OnboardingWidget(
                     text: onboardingData[index]['text'],
@@ -86,6 +88,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       btnText: 'VIEW POINT OF INTERESTS',
                       btnFunction: () {
                         mapController.getAllPOIDialog(
+                          'All Point Of Interests',
                           context,
                           MapType.onboard,
                         );
@@ -98,7 +101,16 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     btnColor: kPrimaryColor,
                     btnText: 'CONTINUE',
                     btnFunction: () {
-                      Get.to(TutorialPage());
+                      if (lastPage) {
+                        Get.to(TutorialPage());
+                      } else {
+                        pageController.nextPage(
+                          duration: Duration(
+                            milliseconds: 200,
+                          ),
+                          curve: Curves.easeIn,
+                        );
+                      }
                     },
                   ),
                   Spacer(),
