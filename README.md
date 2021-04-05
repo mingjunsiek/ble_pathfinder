@@ -6,6 +6,11 @@
 <img src="./assets/launcher/Foreground.png" height="200">
 </p>
 
+<iframe width="560" height="315"
+src="https://youtu.be/DAWCtcEs20o" 
+frameborder="0" 
+allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+allowfullscreen></iframe>
 # Project Objective
 
 This project aims to provide an intuitive solution to indoor localization and indoor navigation. ESP32 boards were configured to be beacons using the iBeacon protocol. These beacons were placed in specific Point of Interest (POI) in SCSE, mainly near entrances of laboratories. A mobile app, Pathfinder, was developed to receive advertisement packets broadcasted by the beacons. These packets could be used to find out how far a user is to a beacon by using the RSSI in the packet. By placing a network of beacons in SCSE, we were able to navigate the user from any POI to a destination POI the user selected using Pathfinder by literally pointing them in the right direction.

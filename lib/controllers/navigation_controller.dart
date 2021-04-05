@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:ble_pathfinder/controllers/beacon_controller.dart';
 import 'package:ble_pathfinder/models/neighbour_node.dart';
 import 'package:ble_pathfinder/models/poinode.dart';
 import 'package:ble_pathfinder/utils/constants.dart';
