@@ -6,8 +6,7 @@
 <img src="./assets/launcher/Foreground.png" height="200">
 </p>
 
-<iframe width="560" height="315" src="https://youtu.be/DAWCtcEs20o" 
-frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/DAWCtcEs20o" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 # Project Objective
 
