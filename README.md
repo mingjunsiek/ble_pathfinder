@@ -24,7 +24,7 @@ This project aims to provide an intuitive solution to indoor localization and in
 
 For our project, we decided to use an ESP32 board. This is because it has in-built Wi-Fi and Bluetooth. It is also affordable. We are able to use Arduino IDE to configure this board into a beacon using the iBeacon protocol. To power these boards, we needed 18650 Li-Ion batteries. In actual scenario, these beacons would be placed at the ceiling in the area outside of the entrance of laboratories. This will ensure the advertisement packets would be spread our evenly.
 
-The code to configure the ESP32 board can be found in '_./Arduino Code/BLE_iBeacon_Edited.ino_'.
+The code to configure the ESP32 board can be found in '_./BLE_iBeacon_Edited/BLE_iBeacon_Edited.ino_'. Please read the README file inside the folder.
 
 # Screenshots of Pathfinder
 
