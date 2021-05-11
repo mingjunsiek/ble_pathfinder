@@ -14,9 +14,11 @@
 
 This project aims to provide an intuitive solution to indoor localization and indoor navigation. ESP32 boards were configured to be beacons using the iBeacon protocol. These beacons were placed in specific Point of Interest (POI) in SCSE, mainly near entrances of laboratories. A mobile app, Pathfinder, was developed to receive advertisement packets broadcasted by the beacons. These packets could be used to find out how far a user is to a beacon by using the RSSI in the packet. By placing a network of beacons in SCSE, we were able to navigate the user from any POI to a destination POI the user selected using Pathfinder by literally pointing them in the right direction.
 
-# Pathfinder APK
+# Pathfinder App Installation
 
-Pathfinder can be installed on Android devices using the APK found in '_./app.apk_' in the root folder.
+Pathfinder is currently only available on Android devices. Please visit the 'Releases' page of this Github repository to download the APK.
+
+<a href="https://github.com/mingjunsiek/ble_pathfinder/releases">APK Download Link</a>
 
 # ESP32 Board
 
