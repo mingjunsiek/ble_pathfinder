@@ -14,9 +14,25 @@
 
 This project aims to provide an intuitive solution to indoor localization and indoor navigation. ESP32 boards were configured to be beacons using the iBeacon protocol. These beacons were placed in specific Point of Interest (POI) in SCSE, mainly near entrances of laboratories. A mobile app, Pathfinder, was developed to receive advertisement packets broadcasted by the beacons. These packets could be used to find out how far a user is to a beacon by using the RSSI in the packet. By placing a network of beacons in SCSE, we were able to navigate the user from any POI to a destination POI the user selected using Pathfinder by literally pointing them in the right direction.
 
+# Pathfinder
+
+Pathfinder is developed using the **Flutter** framework using the Dart language.
+
+Flutter is a framework that allows us to build native app on iOS and Android from a single codebase. Dart is the programming language used to code Flutter apps. It also provides various libraries that would help us in our development of this app.
+
+Below is a list of libraries used for this app.
+
+- beacon_plugin: Detect iBeacon advertisement packets
+- flutter_blue: Detect if Bluetooth is enabled
+- permission_handler: Handles permission for our app
+- flutter_compass: Detect the user’s bearing based on device orientation
+
 # Pathfinder App Installation
 
 Pathfinder is currently only available on Android devices. Please visit the 'Releases' page of this Github repository to download the APK.
+You can install the APK directly to your Android smartphone and utilize the app for navigation.
+
+**TAKE NOTE**: Pathfinder can only work if you are near the beacons. If not, Pathfinder will not know where you are located.
 
 <a href="https://github.com/mingjunsiek/ble_pathfinder/releases">APK Download Link</a>
 
@@ -104,10 +120,6 @@ END
 <img src="./assets/readme/Map.png" height="500">
 </p>
 The environment for this project is in SCSE. Please ensure that the beacons are placed near the nodes as seen in the image above. The beacons are physically tagged with a Node ID which corresponds to the Node ID in the image above.
-
-## Pathfinder Application
-
-This application is currenly only available for Android devices. The APK can be found in '_./build/app/outputs/flutter-apk/app.apk_'. You can install the APK directly to your Android smartphone and utilize the app for navigation. **TAKE NOTE**: Pathfinder can only work if you are near the beacons. If not, Pathfinder will not know where you are located.
 
 # Configuring of Beacon Data
 
